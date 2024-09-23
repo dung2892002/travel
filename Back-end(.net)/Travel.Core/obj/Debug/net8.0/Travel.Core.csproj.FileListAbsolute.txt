@@ -1,0 +1,13 @@
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.AssemblyInfoInputs.cache
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.AssemblyInfo.cs
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.csproj.CoreCompileInputs.cache
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.sourcelink.json
+D:\do_an\travel\Back-end(.net)\Travel.Core\bin\Debug\net8.0\Travel.Core.deps.json
+D:\do_an\travel\Back-end(.net)\Travel.Core\bin\Debug\net8.0\Travel.Core.dll
+D:\do_an\travel\Back-end(.net)\Travel.Core\bin\Debug\net8.0\Travel.Core.pdb
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.csproj.AssemblyReference.cache
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.dll
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\refint\Travel.Core.dll
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\Travel.Core.pdb
+D:\do_an\travel\Back-end(.net)\Travel.Core\obj\Debug\net8.0\ref\Travel.Core.dll
