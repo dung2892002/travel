@@ -9,17 +9,23 @@ namespace Travel.Infrastructure.Repositories
     {
         private readonly TravelDbContext _dbContext = travelDbContext;
 
-        public async Task AddAsync(User user)
+        public async Task Add(User user)
         {
             await _dbContext.User.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<User?> GetUserByUsernameAsync(string username)
+        public async Task<User?> GetUserById(Guid id)
+        {
+            return await _dbContext.User.SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<User?> GetUserByUsername(string username)
         {
             return await _dbContext.User.Include(u => u.UserRole)
                     .ThenInclude(ur => ur.Role)
-                    .FirstOrDefaultAsync(x => x.Username == username);
+                    .SingleOrDefaultAsync(x => x.Username == username);
         }
+
     }
 }

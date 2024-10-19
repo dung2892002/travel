@@ -4,6 +4,6 @@ namespace Travel.Core.Interfaces.IRepositories
 {
     public interface IRoleRepository
     {
-        Task<Role?> GetRoleByRoleValueAsync(int roleValue);
+        Task<Role?> GetRoleByRoleValue(int roleValue);
     }
 }

@@ -22,7 +22,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
     public virtual DbSet<City> City { get; set; }
 
-    public virtual DbSet<Country> Country { get; set; }
+    public virtual DbSet<Province> Province { get; set; }
 
     public virtual DbSet<Destination> Destination { get; set; }
 
@@ -222,27 +222,24 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.ToTable("city");
 
-            entity.HasIndex(e => e.CountryId, "FK_city_CountryId");
+            entity.HasIndex(e => e.ProvinceId, "FK_city_ProvinceId");
 
-            entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.Image).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(50);
 
-            entity.HasOne(d => d.Country).WithMany(p => p.City)
-                .HasForeignKey(d => d.CountryId)
+            entity.HasOne(d => d.Province).WithMany(p => p.City)
+                .HasForeignKey(d => d.ProvinceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_city_CountryId");
+                .HasConstraintName("FK_city_ProvinceId");
         });
 
-        modelBuilder.Entity<Country>(entity =>
+        modelBuilder.Entity<Province>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("country");
+            entity.ToTable("province");
 
-            entity.Property(e => e.Continent).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Region).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Destination>(entity =>
@@ -253,7 +250,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.HasIndex(e => e.CityId, "FK_destination_CityId");
 
-            entity.Property(e => e.Descrption).HasMaxLength(2500);
+            entity.Property(e => e.Description).HasMaxLength(2500);
             entity.Property(e => e.Name).HasMaxLength(50);
 
             entity.HasOne(d => d.City).WithMany(p => p.Destination)
@@ -387,7 +384,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasIndex(e => e.RoomId, "FK_image_RoomId");
 
             entity.Property(e => e.Path).HasMaxLength(255);
-            entity.Property(e => e.Title).HasMaxLength(255);
 
             entity.HasOne(d => d.Activity).WithMany(p => p.Image)
                 .HasForeignKey(d => d.ActivityId)

@@ -3,19 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Travel.Api;
+using Travel.Api.Middleware;
 using Travel.Core.Services;
 using Travel.Infrastructure.Data;
 using Travel.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add dbContext
 builder.Services.AddDbContext<TravelDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    ));
+    )
+    .LogTo(Console.WriteLine, LogLevel.Warning));
 
 // Cấu hình JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -28,8 +29,8 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -40,10 +41,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
-    options.AddPolicy("HotelPartnerPolicy", policy => policy.RequireRole("HotelPartner"));
-    options.AddPolicy("TourPartnerPolicy", policy => policy.RequireRole("TourPartner"));
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("User", policy => policy.RequireRole("User"));
+    options.AddPolicy("HotelPartner", policy => policy.RequireRole("HotelPartner"));
+    options.AddPolicy("TourPartner", policy => policy.RequireRole("TourPartner"));
 });
 
 // Cấu hình CORS
@@ -60,12 +61,16 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.RegisterServicesAndRepositories(
-    typeof(AuthService).Assembly,
+    typeof(UserService).Assembly,
     typeof(UserRepository).Assembly
 );
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    
+}); ;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -82,6 +87,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowVueApp");
+app.UseMiddleware<HotelOwnershipMiddleware>();
 
 app.UseAuthentication();
 

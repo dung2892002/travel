@@ -4,6 +4,6 @@ namespace Travel.Core.Interfaces.IRepositories
 {
     public interface IUserRoleRepository
     {
-        Task AddAsync(UserRole userRole);
+        Task Add(UserRole userRole);
     }
 }

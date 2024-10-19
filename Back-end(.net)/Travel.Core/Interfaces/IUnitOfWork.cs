@@ -7,8 +7,17 @@ namespace Travel.Core.Interfaces
         IUserRepository Users { get; }
         IRoleRepository Roles { get; }
         IUserRoleRepository UserRoles { get; }
-
+        IImageRepository Images { get; }
+        IProvinceRepository Provinces { get; }
+        ICityRepository Cities { get; }
+        IDestinationRepository Destinations { get; }
+        IHotelRepository Hotels { get; }
+        IHotelDestinationRepository HotelsDestination { get; }
+        
         Task<int> CompleteAsync();
-        void Dispose();
+        Task BeginTransaction();
+        Task CommitTransaction();
+        Task RollbackTransaction();
+        new void Dispose();
     }
 }

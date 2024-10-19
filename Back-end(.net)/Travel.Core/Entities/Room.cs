@@ -1,4 +1,6 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class Room
     {
@@ -34,8 +36,10 @@
 
         public int HotelId { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();
 
+        [JsonIgnore]
         public virtual Hotel Hotel { get; set; } = null!;
 
         public virtual ICollection<Image> Image { get; set; } = new List<Image>();

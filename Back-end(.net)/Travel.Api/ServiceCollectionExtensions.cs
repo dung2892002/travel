@@ -8,7 +8,6 @@ namespace Travel.Api
     {
         public static void RegisterServicesAndRepositories(this IServiceCollection services, params Assembly[] assemblies)
         {
-            // Đăng ký tất cả các IService
             var serviceTypes = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => t.GetInterfaces().Contains(typeof(IService)) && t.IsClass);
 
@@ -21,7 +20,6 @@ namespace Travel.Api
                 }
             }
 
-            // Đăng ký tất cả các IRepository
             var repositoryTypes = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => t.GetInterfaces().Contains(typeof(IRepository)) && t.IsClass);
 

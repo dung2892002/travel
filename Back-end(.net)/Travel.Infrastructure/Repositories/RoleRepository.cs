@@ -8,9 +8,9 @@ namespace Travel.Infrastructure.Repositories
     public class RoleRepository(TravelDbContext dbContext) : IRoleRepository, IRepository
     {
         private readonly TravelDbContext _dbContext = dbContext;
-        public async Task<Role?> GetRoleByRoleValueAsync(int roleValue)
+        public async Task<Role?> GetRoleByRoleValue(int roleValue)
         {
-            return await _dbContext.Role.FirstOrDefaultAsync(r => r.RoleValue == roleValue);
+            return await _dbContext.Role.SingleOrDefaultAsync(r => r.RoleValue == roleValue);
         }
     }
 }

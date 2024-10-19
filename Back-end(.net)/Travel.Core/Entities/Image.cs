@@ -1,12 +1,12 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class Image
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Path { get; set; } = null!;
-
-        public string? Title { get; set; }
 
         public int? HotelId { get; set; }
 
@@ -16,12 +16,16 @@
 
         public int? ActivityId { get; set; }
 
+        [JsonIgnore]
         public virtual Activity? Activity { get; set; }
 
+        [JsonIgnore]
         public virtual Destination? Destination { get; set; }
 
+        [JsonIgnore]
         public virtual Hotel? Hotel { get; set; }
 
+        [JsonIgnore]
         public virtual Room? Room { get; set; }
     }
 }

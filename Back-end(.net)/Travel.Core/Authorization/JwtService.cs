@@ -20,7 +20,8 @@ namespace Travel.Core.Authorization
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userDTO.Username)
+                new(ClaimTypes.Name, userDTO.Username),
+                new("Id", userDTO.Id.ToString()),
             };
 
             foreach (var role in userDTO.Roles)
@@ -31,7 +32,7 @@ namespace Travel.Core.Authorization
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -39,7 +40,26 @@ namespace Travel.Core.Authorization
             return tokenHandler.WriteToken(token);
         }
 
-        public ClaimsPrincipal ValidateToken(string token)
+        public string GetUserId(string token)
+        {
+            var principal = ValidateToken(token);
+            var userId = principal.Claims.Where(c => c.Type == "Id").Select(c => c.Value).FirstOrDefault();
+
+            if (userId == null)
+            {
+                return "null";
+            }
+            return userId;
+        }
+
+        public List<string> GetUserRoles(string token)
+        {
+            var principal = ValidateToken(token);
+            var roles = principal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+            return roles ?? new List<string>();
+        }
+
+        private ClaimsPrincipal ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);

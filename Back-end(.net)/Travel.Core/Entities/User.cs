@@ -4,19 +4,19 @@
     {
         public Guid Id { get; set; }
 
-        public string Fullname { get; set; } = null!;
+        public string Fullname { get; set; } = string.Empty;
 
-        public string Email { get; set; } = null!;
+        public string Email { get; set; } = string.Empty;
 
-        public string PhoneNumber { get; set; } = null!;
+        public string PhoneNumber { get; set; } = string.Empty;
 
-        public string Username { get; set; } = null!;
+        public string Username { get; set; } = string.Empty;
 
-        public string Password { get; set; } = null!;
+        public string Password { get; set; } = string.Empty;
 
-        public string DisplayName { get; set; } = null!;
+        public string DisplayName { get; set; } = string.Empty;
 
-        public string AvatarImage { get; set; } = null!;
+        public string AvatarImage { get; set; } = string.Empty;
 
         public virtual ICollection<BookingFlight> BookingFlight { get; set; } = new List<BookingFlight>();
 
