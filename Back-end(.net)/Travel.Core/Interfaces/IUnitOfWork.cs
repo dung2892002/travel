@@ -13,7 +13,7 @@ namespace Travel.Core.Interfaces
         IDestinationRepository Destinations { get; }
         IHotelRepository Hotels { get; }
         IHotelDestinationRepository HotelsDestination { get; }
-        
+        IRoomRepository Room { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitTransaction();

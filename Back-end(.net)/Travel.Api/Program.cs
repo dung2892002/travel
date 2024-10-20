@@ -88,6 +88,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowVueApp");
 app.UseMiddleware<HotelOwnershipMiddleware>();
+app.UseMiddleware<RoomOwnershipMiddleware>();
 
 app.UseAuthentication();
 

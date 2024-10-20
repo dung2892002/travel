@@ -226,6 +226,80 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "GetByHotel",
+    "RelativePath": "api/v1/Rooms",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hotelId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "CreateRoom",
+    "RelativePath": "api/v1/Rooms",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "room",
+        "Type": "Travel.Core.Entities.Room",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "UpdateRoom",
+    "RelativePath": "api/v1/Rooms/edit",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "roomId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "room",
+        "Type": "Travel.Core.Entities.Room",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "UploadRoomImage",
+    "RelativePath": "api/v1/Rooms/edit/upload-image",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "roomId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.UsersController",
     "Method": "ChangeAvatar",
     "RelativePath": "api/v1/Users/change-avatar/{id}",
