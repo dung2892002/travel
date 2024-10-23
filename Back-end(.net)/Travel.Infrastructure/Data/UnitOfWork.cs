@@ -15,7 +15,8 @@ namespace Travel.Infrastructure.Data
                       ICityRepository cityRepository,
                       IHotelRepository hotelRepository,
                       IHotelDestinationRepository hotelDestinationRepository,
-                      IRoomRepository roomRepository) : IUnitOfWork, IRepository, IDisposable
+                      IRoomRepository roomRepository,
+                      IBookingRoomRepository bookingRoomRepository) : IUnitOfWork, IRepository, IDisposable
     {
         private readonly TravelDbContext _dbContext = dbContext;
         private IDbContextTransaction? _transaction;
@@ -30,6 +31,7 @@ namespace Travel.Infrastructure.Data
         public IHotelRepository Hotels {  get; } = hotelRepository;
         public IHotelDestinationRepository HotelsDestination {  get; } = hotelDestinationRepository;
         public IRoomRepository Room { get; } = roomRepository;
+        public IBookingRoomRepository BookingRoom { get; } = bookingRoomRepository;
 
         public async Task BeginTransaction()
         {

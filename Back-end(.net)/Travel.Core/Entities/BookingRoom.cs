@@ -1,8 +1,10 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class BookingRoom
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
 
@@ -16,16 +18,18 @@
 
         public string CustomerName { get; set; } = null!;
 
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
-        public int Status { get; set; }
+        public int? Status { get; set; }
 
-        public string CancelReason { get; set; } = null!;
+        public string? CancelReason { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } 
 
-        public virtual Room Room { get; set; } = null!;
+        [JsonIgnore]
+        public virtual Room? Room { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        [JsonIgnore]
+        public virtual User? User { get; set; } 
     }
 }

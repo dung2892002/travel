@@ -7,6 +7,9 @@ using Travel.Api.Middleware;
 using Travel.Core.Services;
 using Travel.Infrastructure.Data;
 using Travel.Infrastructure.Repositories;
+using Quartz;
+using Quartz.AspNetCore;
+using Travel.Core.Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +62,23 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddQuartz(q =>
+{
+    // Đăng ký job và trigger
+    var jobKey = new JobKey("BookingTimeoutJob");
+    q.AddJob<BookingTimeoutJob>(opts => opts.WithIdentity(jobKey)); 
+
+    // Thiết lập trigger cho job
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey) 
+        .WithIdentity("BookingTimeoutJob") 
+        .StartNow()
+        .WithSimpleSchedule(x => x
+            .WithInterval(TimeSpan.FromMinutes(1)) 
+            .RepeatForever())
+    );
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 builder.Services.RegisterServicesAndRepositories(
     typeof(UserService).Assembly,

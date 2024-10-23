@@ -1,0 +1,97 @@
+﻿using Travel.Core.Entities;
+using Travel.Core.Interfaces;
+using Travel.Core.Interfaces.IServices;
+
+namespace Travel.Core.Services
+{
+    public class BookingRoomService(IUnitOfWork unitOfWork) : IBookingRoomService, IService
+    {
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        public async Task<bool> CancelBooking(Guid id, BookingRoom booking)
+        {
+            var bookingExisting = await _unitOfWork.BookingRoom.GetById(id);
+            if (bookingExisting == null)
+            {
+                throw new ArgumentException("booking not exist");
+            }
+
+            if (bookingExisting.Status != 0)
+            {
+                throw new InvalidCastException("Can only cancel unpaid bookings");
+            }
+            bookingExisting.Status = 2;
+            bookingExisting.CancelReason = booking.CancelReason;
+
+            var result = await _unitOfWork.CompleteAsync();
+            return result > 0;
+        }
+
+        public async Task Create(BookingRoom booking)
+        {
+            var roomExisting = await _unitOfWork.Room.GetById(booking.RoomId);
+            if (roomExisting == null)
+            {
+                throw new ArgumentException("room not exist");
+            }
+
+            var totalBooking = await _unitOfWork.BookingRoom.CountTotalBookingByTime(booking.RoomId, booking.CheckInDate, booking.CheckOutDate);
+
+            var totalRoomAvailabel = roomExisting.Quantity - totalBooking;
+            if (totalRoomAvailabel < booking.Quantity)
+            {
+                throw new InvalidCastException($"Can only booking maximum {totalRoomAvailabel} room");
+            }
+            booking.Id = Guid.NewGuid();
+            booking.CreatedAt = DateTime.Now;
+            booking.Status = 0;
+
+            booking.Price = roomExisting.Price * booking.Quantity * (booking.CheckOutDate - booking.CheckInDate).Days;
+            await _unitOfWork.BookingRoom.Create(booking);
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetByHotel(int hotelId)
+        {
+            var hotelExisting = await _unitOfWork.Hotels.GetById(hotelId);
+            if (hotelExisting == null)
+            {
+                throw new ArgumentException("hotel not exist");
+            }
+
+            var bookings = await _unitOfWork.BookingRoom.GetByHotel(hotelId);
+            return bookings;
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetByRoom(int roomId)
+        {
+            var roomExisting = await _unitOfWork.Room.GetById(roomId);
+            if (roomExisting == null)
+            {
+                throw new ArgumentException("room not exist");
+            }
+
+            var bookings = await _unitOfWork.BookingRoom.GetByRoom(roomId);
+            return bookings;
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetByUser(Guid userId)
+        {
+            var user = await _unitOfWork.Users.GetUserById(userId);
+            if (user == null)
+            {
+                throw new ArgumentException("user not exist");
+            }
+
+            var bookings = await _unitOfWork.BookingRoom.GetByUser(userId);
+            return bookings;
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetExpiredBookings()
+        {
+            var currentTime = DateTime.Now;
+
+            var expirationTime = currentTime.AddMinutes(-10);
+
+            return await _unitOfWork.BookingRoom.GetExpiredBookings(expirationTime);
+        }
+    }
+}

@@ -1,5 +1,69 @@
 [
   {
+    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "Method": "CreateBookingRoom",
+    "RelativePath": "api/v1/BookingRooms",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "booking",
+        "Type": "Travel.Core.Entities.BookingRoom",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "Method": "GetByHotel",
+    "RelativePath": "api/v1/BookingRooms/hotel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "Method": "GetByRoom",
+    "RelativePath": "api/v1/BookingRooms/room",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "Method": "GetByUser",
+    "RelativePath": "api/v1/BookingRooms/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.CitiesController",
     "Method": "GetAll",
     "RelativePath": "api/v1/Cities",
@@ -197,6 +261,58 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.PaymentsController",
+    "Method": "PayForRoom",
+    "RelativePath": "api/v1/Payments/pay-room",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Travel.Core.DTOs.PaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.PaymentsController",
+    "Method": "PayForTour",
+    "RelativePath": "api/v1/Payments/pay-tour",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Travel.Core.DTOs.PaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.PaymentsController",
+    "Method": "PaymentResponseForRoom",
+    "RelativePath": "api/v1/Payments/payment-response/room",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.PaymentsController",
+    "Method": "PaymentResponseForTour",
+    "RelativePath": "api/v1/Payments/payment-response/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

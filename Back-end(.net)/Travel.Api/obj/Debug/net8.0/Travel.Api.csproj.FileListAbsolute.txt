@@ -77,3 +77,7 @@ D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Microsoft.Extensions.
 D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\BCrypt.Net-Next.dll
 D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Microsoft.DotNet.PlatformAbstractions.dll
 D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Quartz.dll
+D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Quartz.AspNetCore.dll
+D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Quartz.Extensions.DependencyInjection.dll
+D:\do_an\travel\Back-end(.net)\Travel.Api\bin\Debug\net8.0\Quartz.Extensions.Hosting.dll
