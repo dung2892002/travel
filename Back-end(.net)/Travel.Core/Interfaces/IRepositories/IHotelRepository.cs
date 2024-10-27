@@ -6,7 +6,7 @@ namespace Travel.Core.Interfaces.IRepositories
     {
         Task<IEnumerable<Hotel>> GetAllHotel();
 
-        Task<Hotel?> GetById(int id);
+        Task<Hotel?> GetById(Guid id);
         
         Task<IEnumerable<Hotel>> GetByPartner(Guid partnerId);
 

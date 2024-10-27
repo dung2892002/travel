@@ -78,12 +78,18 @@ namespace Travel.Core.Services
         {
             if (type == 0)
             {
-                var booking = await _unitOfWork.BookingRoom.GetById(id);
+                var booking = await _unitOfWork.BookingsRoom.GetById(id);
+                booking.Status = 1;
+                var result = await _unitOfWork.CompleteAsync();
+                return result > 0;
+            } else
+            {
+                var booking = await _unitOfWork.BookingsTour.GetById(id);
                 booking.Status = 1;
                 var result = await _unitOfWork.CompleteAsync();
                 return result > 0;
             }
-            return false;
+            
         }
     }
 }

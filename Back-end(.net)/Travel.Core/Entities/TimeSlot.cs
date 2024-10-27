@@ -1,19 +1,20 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class TimeSlot
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int TourDayId { get; set; }
+        public Guid TourDayId { get; set; }
 
-        public TimeOnly StartTime { get; set; }
-
-        public TimeOnly EndTime { get; set; }
+        public int Time {  get; set; }
 
         public string Description { get; set; } = null!;
 
         public virtual ICollection<Activity> Activity { get; set; } = new List<Activity>();
 
-        public virtual TourDay TourDay { get; set; } = null!;
+        [JsonIgnore]
+        public virtual TourDay? TourDay { get; set; }
     }
 }

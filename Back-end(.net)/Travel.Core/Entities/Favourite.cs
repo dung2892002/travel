@@ -6,13 +6,13 @@
 
         public Guid UserId { get; set; }
 
-        public int? HotelId { get; set; }
+        public Guid? HotelId { get; set; }
 
         public int? CityId { get; set; }
 
         public int? DestinationId { get; set; }
 
-        public int? TourId { get; set; }
+        public Guid TourId { get; set; }
 
         public virtual City? City { get; set; }
 

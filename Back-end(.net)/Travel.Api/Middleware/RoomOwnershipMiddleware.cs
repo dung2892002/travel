@@ -18,7 +18,7 @@ namespace Travel.Api.Middleware
                 if (context.Request.Method.Equals("PUT", StringComparison.OrdinalIgnoreCase) || context.Request.Path.ToString().Contains("edit"))
                 {
                     Console.WriteLine("Put");
-                    if (!int.TryParse(context.Request.Query["roomId"], out var roomId))
+                    if (!Guid.TryParse(context.Request.Query["roomId"], out var roomId))
                     {
                         context.Response.StatusCode = StatusCodes.Status400BadRequest;
                         await context.Response.WriteAsync("Invalid roomId");
@@ -57,7 +57,7 @@ namespace Travel.Api.Middleware
                         context.Request.Body.Position = 0;
 
                         var room = JsonConvert.DeserializeObject<Room>(body);
-                        if (room == null || room.HotelId == 0)
+                        if (room == null)
                         {
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;
                             await context.Response.WriteAsync("Invalid HotelId in request body");

@@ -16,10 +16,10 @@ namespace Travel.Core.Services
             {
                 throw new ArgumentException("Hotel not exits");
             }
-            await _unitOfWork.Room.CreateRoom(room);
+            await _unitOfWork.Rooms.CreateRoom(room);
         }
 
-        public async Task<IEnumerable<Room>> GetRoomByHotel(int hotelId)
+        public async Task<IEnumerable<Room>> GetRoomByHotel(Guid hotelId)
         {
             var hotelExisting = await _unitOfWork.Hotels.GetById(hotelId);
             if (hotelExisting == null)
@@ -27,13 +27,13 @@ namespace Travel.Core.Services
                 throw new ArgumentException("Hotel not exits");
             }
 
-            var rooms = await _unitOfWork.Room.GetByHotel(hotelId);
+            var rooms = await _unitOfWork.Rooms.GetByHotel(hotelId);
             return rooms;
         }
 
-        public async Task<bool> UpdateRoom(int roomId, Room room)
+        public async Task<bool> UpdateRoom(Guid roomId, Room room)
         {
-            var roomExisting = await _unitOfWork.Room.GetById(roomId);
+            var roomExisting = await _unitOfWork.Rooms.GetById(roomId);
             if(roomExisting == null)
             {
                 throw new ArgumentException("Room not exist");
@@ -59,7 +59,7 @@ namespace Travel.Core.Services
             return result > 0;
         }
 
-        public async Task<bool> UploadImagesAsync(List<IFormFile> files, int roomId)
+        public async Task<bool> UploadImagesAsync(List<IFormFile> files, Guid roomId)
         {
             if (files == null || files.Count == 0)
                 throw new ArgumentException("No files were provided.");

@@ -178,6 +178,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.Property(e => e.CancelReason).HasMaxLength(255);
             entity.Property(e => e.Price).HasPrecision(19, 2);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Tour).WithMany(p => p.BookingTour)
                 .HasForeignKey(d => d.TourId)
@@ -375,7 +376,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.ToTable("image");
 
-            entity.HasIndex(e => e.ActivityId, "FK_image_ActivityId");
+            entity.HasIndex(e => e.TourId, "FK_image_TourId");
 
             entity.HasIndex(e => e.DestinationId, "FK_image_DestinationId");
 
@@ -385,9 +386,9 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.Property(e => e.Path).HasMaxLength(255);
 
-            entity.HasOne(d => d.Activity).WithMany(p => p.Image)
-                .HasForeignKey(d => d.ActivityId)
-                .HasConstraintName("FK_image_ActivityId");
+            entity.HasOne(d => d.Tour).WithMany(p => p.Image)
+                .HasForeignKey(d => d.TourId)
+                .HasConstraintName("FK_image_TourId");
 
             entity.HasOne(d => d.Destination).WithMany(p => p.Image)
                 .HasForeignKey(d => d.DestinationId)
@@ -474,8 +475,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasIndex(e => e.TourDayId, "FK_time_slot_TourDayId");
 
             entity.Property(e => e.Description).HasMaxLength(1500);
-            entity.Property(e => e.EndTime).HasColumnType("time");
-            entity.Property(e => e.StartTime).HasColumnType("time");
 
             entity.HasOne(d => d.TourDay).WithMany(p => p.TimeSlot)
                 .HasForeignKey(d => d.TourDayId)

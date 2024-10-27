@@ -5,10 +5,10 @@ namespace Travel.Core.Interfaces.IServices
 {
     public interface IRoomService
     {
-        Task<IEnumerable<Room>> GetRoomByHotel(int hotelId);
+        Task<IEnumerable<Room>> GetRoomByHotel(Guid hotelId);
         Task CreateRoom(Room room);
-        Task<bool> UpdateRoom(int roomId, Room room);
-        Task<bool> UploadImagesAsync(List<IFormFile> files, int roomId);
+        Task<bool> UpdateRoom(Guid roomId, Room room);
+        Task<bool> UploadImagesAsync(List<IFormFile> files, Guid roomId);
 
     }
 }

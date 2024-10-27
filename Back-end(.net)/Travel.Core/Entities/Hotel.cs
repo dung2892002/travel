@@ -4,7 +4,7 @@ namespace Travel.Core.Entities
 {
     public class Hotel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = null!;
 

@@ -8,16 +8,16 @@ namespace Travel.Core.Entities
 
         public string Path { get; set; } = null!;
 
-        public int? HotelId { get; set; }
+        public Guid? HotelId { get; set; }
 
         public int? DestinationId { get; set; }
 
-        public int? RoomId { get; set; }
+        public Guid? RoomId { get; set; }
 
-        public int? ActivityId { get; set; }
+        public Guid? TourId { get; set; }
 
         [JsonIgnore]
-        public virtual Activity? Activity { get; set; }
+        public virtual Tour? Tour { get; set; }
 
         [JsonIgnore]
         public virtual Destination? Destination { get; set; }

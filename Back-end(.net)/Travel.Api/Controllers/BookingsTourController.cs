@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
@@ -8,10 +7,9 @@ namespace Travel.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class BookingRoomsController(IBookingRoomService bookingRoomService) : ControllerBase
+    public class BookingsTourController(IBookingTourService bookingTourService) : ControllerBase
     {
-        private readonly IBookingRoomService _bookingRoomService = bookingRoomService;
-
+        private readonly IBookingTourService _bookingTourService = bookingTourService;
 
         [Authorize(Policy = "User")]
         [HttpGet("user")]
@@ -19,7 +17,7 @@ namespace Travel.Api.Controllers
         {
             try
             {
-                var bookings = await _bookingRoomService.GetByUser(id);
+                var bookings = await _bookingTourService.GetByUser(id);
                 return StatusCode(200, bookings);
             }
             catch (ArgumentException ex)
@@ -32,31 +30,12 @@ namespace Travel.Api.Controllers
             }
         }
 
-        [HttpGet("hotel")]
-        public async Task<IActionResult> GetByHotel([FromQuery] int id)
+        [HttpGet("tour")]
+        public async Task<IActionResult> GetByTour([FromQuery] Guid id)
         {
             try
             {
-                var bookings = await _bookingRoomService.GetByHotel(id);
-                return StatusCode(200, bookings);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [HttpGet("room")]
-        public async Task<IActionResult> GetByRoom([FromQuery] int id)
-        {
-            try
-            {
-                var bookings = await _bookingRoomService.GetByRoom(id);
+                var bookings = await _bookingTourService.GetByTour(id);
                 return StatusCode(200, bookings);
             }
             catch (ArgumentException ex)
@@ -71,12 +50,12 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "User")]
         [HttpPost]
-        public async Task<IActionResult> CreateBookingRoom([FromBody] BookingRoom booking)
+        public async Task<IActionResult> CreateBookingTour([FromBody] BookingTour booking)
         {
             try
             {
-                await _bookingRoomService.Create(booking);
-                return StatusCode(200, "creat booking room successfull");
+                await _bookingTourService.Create(booking);
+                return StatusCode(200, "creat booking tour successfull");
             }
             catch (ArgumentException ex)
             {

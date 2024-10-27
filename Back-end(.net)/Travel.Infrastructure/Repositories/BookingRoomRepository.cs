@@ -9,7 +9,7 @@ namespace Travel.Infrastructure.Repositories
     {
         private readonly TravelDbContext _dbContext = dbContext;
 
-        public async Task<int> CountTotalBookingByTime(int roomId, DateTime start, DateTime end)
+        public async Task<int> CountTotalBookingByTime(Guid roomId, DateTime start, DateTime end)
         {
             var result = await _dbContext.BookingRoom
                 .Where(b => b.RoomId == roomId && 
@@ -25,7 +25,7 @@ namespace Travel.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByHotel(int hotelId)
+        public async Task<IEnumerable<BookingRoom>> GetByHotel(Guid hotelId)
         {
             var bookings = await _dbContext.BookingRoom.Include(b => b.Room).Where(b => b.Room.HotelId == hotelId).ToListAsync();
             return bookings;
@@ -37,7 +37,7 @@ namespace Travel.Infrastructure.Repositories
             return booking;
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByRoom(int roomId)
+        public async Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId)
         {
             var bookings = await _dbContext.BookingRoom.Where(b => b.RoomId == roomId).ToListAsync();
 

@@ -12,11 +12,11 @@
 
         public string CreatedAt { get; set; } = null!;
 
-        public int? HotelId { get; set; }
+        public Guid? HotelId { get; set; }
 
         public int? DestinationId { get; set; }
 
-        public int? TourId { get; set; }
+        public Guid TourId { get; set; }
 
         public virtual Destination? Destination { get; set; }
 

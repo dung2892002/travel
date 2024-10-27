@@ -56,7 +56,7 @@ namespace Travel.Infrastructure.Repositories
             return hotels;
         }
 
-        public async Task<Hotel?> GetById(int id)
+        public async Task<Hotel?> GetById(Guid id)
         {
             var hotel = await _dbContext.Hotel.Include(x => x.Image).SingleOrDefaultAsync(h => h.Id == id);
             return hotel;

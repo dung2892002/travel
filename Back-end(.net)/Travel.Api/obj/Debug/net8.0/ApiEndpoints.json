@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
     "Method": "CreateBookingRoom",
-    "RelativePath": "api/v1/BookingRooms",
+    "RelativePath": "api/v1/BookingsRoom",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -16,41 +16,89 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
     "Method": "GetByHotel",
-    "RelativePath": "api/v1/BookingRooms/hotel",
+    "RelativePath": "api/v1/BookingsRoom/hotel",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
     "Method": "GetByRoom",
-    "RelativePath": "api/v1/BookingRooms/room",
+    "RelativePath": "api/v1/BookingsRoom/room",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Travel.Api.Controllers.BookingRoomsController",
+    "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
     "Method": "GetByUser",
-    "RelativePath": "api/v1/BookingRooms/user",
+    "RelativePath": "api/v1/BookingsRoom/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingsTourController",
+    "Method": "CreateBookingTour",
+    "RelativePath": "api/v1/BookingsTour",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "booking",
+        "Type": "Travel.Core.Entities.BookingTour",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingsTourController",
+    "Method": "GetByTour",
+    "RelativePath": "api/v1/BookingsTour/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingsTourController",
+    "Method": "GetByUser",
+    "RelativePath": "api/v1/BookingsTour/user",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -194,7 +242,7 @@
     "Parameters": [
       {
         "Name": "hotelId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {
@@ -215,7 +263,7 @@
     "Parameters": [
       {
         "Name": "hotelId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {
@@ -241,7 +289,7 @@
       },
       {
         "Name": "hotelId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
@@ -351,7 +399,7 @@
     "Parameters": [
       {
         "Name": "hotelId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
@@ -383,7 +431,7 @@
     "Parameters": [
       {
         "Name": "roomId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {
@@ -404,13 +452,92 @@
     "Parameters": [
       {
         "Name": "roomId",
-        "Type": "System.Int32",
+        "Type": "System.Guid",
         "IsRequired": false
       },
       {
         "Name": "files",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ToursController",
+    "Method": "GetAll",
+    "RelativePath": "api/v1/Tours",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ToursController",
+    "Method": "CreateTour",
+    "RelativePath": "api/v1/Tours",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tour",
+        "Type": "Travel.Core.Entities.Tour",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ToursController",
+    "Method": "GetByDestination",
+    "RelativePath": "api/v1/Tours/destination/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ToursController",
+    "Method": "UploadImages",
+    "RelativePath": "api/v1/Tours/edit/upload-image",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "tourId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ToursController",
+    "Method": "GetByPartner",
+    "RelativePath": "api/v1/Tours/partner/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

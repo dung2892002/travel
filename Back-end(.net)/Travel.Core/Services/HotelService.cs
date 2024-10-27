@@ -11,7 +11,7 @@ namespace Travel.Core.Services
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IFirebaseStorageService _firebaseStorageService = firebaseStorageService;
 
-        public async Task<bool> AddDestination(List<Destination> destinations, int hotelId)
+        public async Task<bool> AddDestination(List<Destination> destinations, Guid hotelId)
         {
             var hotelDestinations = new List<HotelDestination>();
             foreach (var destination in destinations)
@@ -49,7 +49,7 @@ namespace Travel.Core.Services
             return await _unitOfWork.Hotels.GetByPartner(partnerId);
         }
 
-        public async Task<bool> UpdateHotel(int id, Hotel hotel)
+        public async Task<bool> UpdateHotel(Guid id, Hotel hotel)
         {
             var hotelExisting = await _unitOfWork.Hotels.GetById(id);
             if (hotelExisting == null)
@@ -72,7 +72,7 @@ namespace Travel.Core.Services
             return result > 0;
         }
 
-        public async Task<bool> UploadImagesAsync(List<IFormFile> files, int hotelId)
+        public async Task<bool> UploadImagesAsync(List<IFormFile> files, Guid hotelId)
         {
             if (files == null || files.Count == 0)
                 throw new ArgumentException("No files were provided.");

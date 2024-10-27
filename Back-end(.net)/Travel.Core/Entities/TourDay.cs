@@ -1,10 +1,12 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class TourDay
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int TourId { get; set; }
+        public Guid TourId { get; set; }
 
         public int DayNumber { get; set; }
 
@@ -12,6 +14,7 @@
 
         public virtual ICollection<TimeSlot> TimeSlot { get; set; } = new List<TimeSlot>();
 
-        public virtual Tour Tour { get; set; } = null!;
+        [JsonIgnore]
+        public virtual Tour? Tour { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Travel.Core.Services
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         public async Task<bool> CancelBooking(Guid id, BookingRoom booking)
         {
-            var bookingExisting = await _unitOfWork.BookingRoom.GetById(id);
+            var bookingExisting = await _unitOfWork.BookingsRoom.GetById(id);
             if (bookingExisting == null)
             {
                 throw new ArgumentException("booking not exist");
@@ -28,13 +28,13 @@ namespace Travel.Core.Services
 
         public async Task Create(BookingRoom booking)
         {
-            var roomExisting = await _unitOfWork.Room.GetById(booking.RoomId);
+            var roomExisting = await _unitOfWork.Rooms.GetById(booking.RoomId);
             if (roomExisting == null)
             {
                 throw new ArgumentException("room not exist");
             }
 
-            var totalBooking = await _unitOfWork.BookingRoom.CountTotalBookingByTime(booking.RoomId, booking.CheckInDate, booking.CheckOutDate);
+            var totalBooking = await _unitOfWork.BookingsRoom.CountTotalBookingByTime(booking.RoomId, booking.CheckInDate, booking.CheckOutDate);
 
             var totalRoomAvailabel = roomExisting.Quantity - totalBooking;
             if (totalRoomAvailabel < booking.Quantity)
@@ -46,10 +46,10 @@ namespace Travel.Core.Services
             booking.Status = 0;
 
             booking.Price = roomExisting.Price * booking.Quantity * (booking.CheckOutDate - booking.CheckInDate).Days;
-            await _unitOfWork.BookingRoom.Create(booking);
+            await _unitOfWork.BookingsRoom.Create(booking);
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByHotel(int hotelId)
+        public async Task<IEnumerable<BookingRoom>> GetByHotel(Guid hotelId)
         {
             var hotelExisting = await _unitOfWork.Hotels.GetById(hotelId);
             if (hotelExisting == null)
@@ -57,19 +57,19 @@ namespace Travel.Core.Services
                 throw new ArgumentException("hotel not exist");
             }
 
-            var bookings = await _unitOfWork.BookingRoom.GetByHotel(hotelId);
+            var bookings = await _unitOfWork.BookingsRoom.GetByHotel(hotelId);
             return bookings;
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByRoom(int roomId)
+        public async Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId)
         {
-            var roomExisting = await _unitOfWork.Room.GetById(roomId);
+            var roomExisting = await _unitOfWork.Rooms.GetById(roomId);
             if (roomExisting == null)
             {
                 throw new ArgumentException("room not exist");
             }
 
-            var bookings = await _unitOfWork.BookingRoom.GetByRoom(roomId);
+            var bookings = await _unitOfWork.BookingsRoom.GetByRoom(roomId);
             return bookings;
         }
 
@@ -81,7 +81,7 @@ namespace Travel.Core.Services
                 throw new ArgumentException("user not exist");
             }
 
-            var bookings = await _unitOfWork.BookingRoom.GetByUser(userId);
+            var bookings = await _unitOfWork.BookingsRoom.GetByUser(userId);
             return bookings;
         }
 
@@ -91,7 +91,7 @@ namespace Travel.Core.Services
 
             var expirationTime = currentTime.AddMinutes(-10);
 
-            return await _unitOfWork.BookingRoom.GetExpiredBookings(expirationTime);
+            return await _unitOfWork.BookingsRoom.GetExpiredBookings(expirationTime);
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public int? HotelId { get; set; }
+        public Guid? HotelId { get; set; }
 
         public int? DestinationId { get; set; }
 

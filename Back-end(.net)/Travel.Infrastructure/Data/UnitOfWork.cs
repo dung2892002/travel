@@ -16,7 +16,13 @@ namespace Travel.Infrastructure.Data
                       IHotelRepository hotelRepository,
                       IHotelDestinationRepository hotelDestinationRepository,
                       IRoomRepository roomRepository,
-                      IBookingRoomRepository bookingRoomRepository) : IUnitOfWork, IRepository, IDisposable
+                      IBookingRoomRepository bookingRoomRepository,
+                      ITourRepository tourRepository,
+                      ITourDayRepository tourDayRepository,
+                      ITimeSlotRepository timeSlotRepository,
+                      IActivityRepository activityRepository,
+                      ITourDestinationRepository tourDestinationRepository,
+                      IBookingTourRepository bookingTourRepository) : IUnitOfWork, IRepository, IDisposable
     {
         private readonly TravelDbContext _dbContext = dbContext;
         private IDbContextTransaction? _transaction;
@@ -30,9 +36,14 @@ namespace Travel.Infrastructure.Data
         public ICityRepository Cities {  get; } = cityRepository;
         public IHotelRepository Hotels {  get; } = hotelRepository;
         public IHotelDestinationRepository HotelsDestination {  get; } = hotelDestinationRepository;
-        public IRoomRepository Room { get; } = roomRepository;
-        public IBookingRoomRepository BookingRoom { get; } = bookingRoomRepository;
-
+        public IRoomRepository Rooms { get; } = roomRepository;
+        public IBookingRoomRepository BookingsRoom { get; } = bookingRoomRepository;
+        public ITourRepository Tours { get; } = tourRepository;
+        public ITourDayRepository ToursDay { get; } = tourDayRepository;
+        public ITimeSlotRepository TimeSlots { get; } = timeSlotRepository;
+        public IActivityRepository Activitys { get; } = activityRepository;
+        public ITourDestinationRepository ToursDestination { get; } = tourDestinationRepository;
+        public IBookingTourRepository BookingsTour { get; }  = bookingTourRepository;
         public async Task BeginTransaction()
         {
             if (_transaction != null)
@@ -46,7 +57,6 @@ namespace Travel.Infrastructure.Data
         {
             try
             {
-                await _dbContext.SaveChangesAsync();
                 await _transaction.CommitAsync();
             } catch
             {

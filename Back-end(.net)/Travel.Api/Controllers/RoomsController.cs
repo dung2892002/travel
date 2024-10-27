@@ -13,7 +13,7 @@ namespace Travel.Api.Controllers
         private readonly IRoomService _roomService = roomService;
 
         [HttpGet]
-        public async Task<IActionResult> GetByHotel([FromQuery] int hotelId)
+        public async Task<IActionResult> GetByHotel([FromQuery] Guid hotelId)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "HotelPartner")]
         [HttpPut("edit")]
-        public async Task<IActionResult> UpdateRoom([FromQuery]int roomId, [FromBody] Room room)
+        public async Task<IActionResult> UpdateRoom([FromQuery]Guid roomId, [FromBody] Room room)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "HotelPartner")]
         [HttpPut("edit/upload-image")]
-        public async Task<IActionResult> UploadRoomImage([FromQuery] int roomId, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> UploadRoomImage([FromQuery] Guid roomId, [FromForm] List<IFormFile> files)
         {
             try
             {

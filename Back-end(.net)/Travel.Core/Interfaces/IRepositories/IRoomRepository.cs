@@ -4,8 +4,8 @@ namespace Travel.Core.Interfaces.IRepositories
 {
     public interface IRoomRepository
     {
-        Task<IEnumerable<Room>> GetByHotel(int hotelId);
-        Task<Room?> GetById(int id);
+        Task<IEnumerable<Room>> GetByHotel(Guid hotelId);
+        Task<Room?> GetById(Guid id);
         Task CreateRoom(Room room);
     }
 }

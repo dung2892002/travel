@@ -14,13 +14,13 @@ namespace Travel.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Room>> GetByHotel(int hotelId)
+        public async Task<IEnumerable<Room>> GetByHotel(Guid hotelId)
         {
             var rooms = await _dbContext.Room.Include(r => r.Image).Where(r => r.HotelId == hotelId).ToListAsync();
             return rooms;
         }
 
-        public async Task<Room?> GetById(int id)
+        public async Task<Room?> GetById(Guid id)
         {
             return await _dbContext.Room.SingleOrDefaultAsync(r => r.Id == id);
         }

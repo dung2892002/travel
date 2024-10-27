@@ -73,7 +73,7 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "HotelPartner")]
         [HttpPut("edit")]
-        public async Task<IActionResult> UpdateHotel([FromQuery] int hotelId, [FromBody] Hotel hotel)
+        public async Task<IActionResult> UpdateHotel([FromQuery] Guid hotelId, [FromBody] Hotel hotel)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "HotelPartner")]
         [HttpPost("edit/upload-image")]
-        public async Task<IActionResult> UploadImages([FromForm] List<IFormFile> files,[FromQuery] int hotelId)
+        public async Task<IActionResult> UploadImages([FromForm] List<IFormFile> files,[FromQuery] Guid hotelId)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "HotelPartner")]
         [HttpPost("edit/add-destination")]
-        public async Task<IActionResult> AddDestination([FromQuery] int hotelId, [FromBody] List<Destination> destinations)
+        public async Task<IActionResult> AddDestination([FromQuery] Guid hotelId, [FromBody] List<Destination> destinations)
         {
             try
             {

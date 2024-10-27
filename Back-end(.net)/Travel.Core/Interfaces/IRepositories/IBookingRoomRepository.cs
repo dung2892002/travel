@@ -7,12 +7,12 @@ namespace Travel.Core.Interfaces.IRepositories
         Task Create(BookingRoom bookingRoom);
 
         Task<IEnumerable<BookingRoom>> GetByUser(Guid userId);
-        Task<IEnumerable<BookingRoom>> GetByHotel(int hotelId);
-        Task<IEnumerable<BookingRoom>> GetByRoom(int roomId);
+        Task<IEnumerable<BookingRoom>> GetByHotel(Guid hotelId);
+        Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings(DateTime expirationTime);
 
         Task<BookingRoom?> GetById(Guid id);
 
-        Task<int> CountTotalBookingByTime(int roomId, DateTime start, DateTime end);
+        Task<int> CountTotalBookingByTime(Guid roomId, DateTime start, DateTime end);
     }
 }

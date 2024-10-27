@@ -4,7 +4,7 @@ namespace Travel.Core.Entities
 {
     public class Room
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = null!;
 
@@ -34,7 +34,7 @@ namespace Travel.Core.Entities
 
         public string? Dirention { get; set; }
 
-        public int HotelId { get; set; }
+        public Guid HotelId { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();

@@ -8,7 +8,7 @@ namespace Travel.Core.Entities
 
         public Guid UserId { get; set; }
 
-        public int RoomId { get; set; }
+        public Guid RoomId { get; set; }
 
         public DateTime CheckInDate { get; set; }
 

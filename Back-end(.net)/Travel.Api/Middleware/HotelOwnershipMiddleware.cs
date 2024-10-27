@@ -14,7 +14,7 @@ namespace Travel.Api.Middleware
         {
             if (context.Request.Path.StartsWithSegments("/api/v1/Hotels/edit"))
             {
-                if (!int.TryParse(context.Request.Query["hotelId"], out var hotelId))
+                if (!Guid.TryParse(context.Request.Query["hotelId"], out var hotelId))
                 {
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await context.Response.WriteAsync("Invalid hotelId.");
