@@ -16,6 +16,8 @@ namespace Travel.Core.Entities
 
         public Guid? TourId { get; set; }
 
+        public int? ReviewId { get; set; }
+
         [JsonIgnore]
         public virtual Tour? Tour { get; set; }
 
@@ -27,5 +29,8 @@ namespace Travel.Core.Entities
 
         [JsonIgnore]
         public virtual Room? Room { get; set; }
+
+        [JsonIgnore]
+        public virtual Review? Review { get; set; }
     }
 }

@@ -22,7 +22,8 @@ namespace Travel.Infrastructure.Data
                       ITimeSlotRepository timeSlotRepository,
                       IActivityRepository activityRepository,
                       ITourDestinationRepository tourDestinationRepository,
-                      IBookingTourRepository bookingTourRepository) : IUnitOfWork, IRepository, IDisposable
+                      IBookingTourRepository bookingTourRepository,
+                      IReviewRepository reviewRepository) : IUnitOfWork, IRepository, IDisposable
     {
         private readonly TravelDbContext _dbContext = dbContext;
         private IDbContextTransaction? _transaction;
@@ -44,6 +45,7 @@ namespace Travel.Infrastructure.Data
         public IActivityRepository Activitys { get; } = activityRepository;
         public ITourDestinationRepository ToursDestination { get; } = tourDestinationRepository;
         public IBookingTourRepository BookingsTour { get; }  = bookingTourRepository;
+        public IReviewRepository Reviews { get; } = reviewRepository;
         public async Task BeginTransaction()
         {
             if (_transaction != null)

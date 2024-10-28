@@ -384,6 +384,8 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.HasIndex(e => e.RoomId, "FK_image_RoomId");
 
+            entity.HasIndex(e => e.ReviewId, "FK_image_ReviewId");
+
             entity.Property(e => e.Path).HasMaxLength(255);
 
             entity.HasOne(d => d.Tour).WithMany(p => p.Image)
@@ -401,6 +403,11 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasOne(d => d.Room).WithMany(p => p.Image)
                 .HasForeignKey(d => d.RoomId)
                 .HasConstraintName("FK_image_RoomId");
+
+            entity.HasOne(d => d.Review).WithMany(p => p.Image)
+                .HasForeignKey(d => d.ReviewId)
+                .HasConstraintName("FK_image_ReviewId")
+                .OnDelete(DeleteBehavior.Cascade);                
         });
 
         modelBuilder.Entity<Review>(entity =>
@@ -417,7 +424,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.HasIndex(e => e.UserId, "FK_Review_UserId");
 
-            entity.Property(e => e.CreatedAt).HasMaxLength(255);
             entity.Property(e => e.Description).HasMaxLength(255);
 
             entity.HasOne(d => d.Destination).WithMany(p => p.Review)

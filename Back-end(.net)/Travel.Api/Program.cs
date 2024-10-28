@@ -8,7 +8,6 @@ using Travel.Core.Services;
 using Travel.Infrastructure.Data;
 using Travel.Infrastructure.Repositories;
 using Quartz;
-using Quartz.AspNetCore;
 using Travel.Core.Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -109,6 +108,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowVueApp");
 app.UseMiddleware<HotelOwnershipMiddleware>();
 app.UseMiddleware<RoomOwnershipMiddleware>();
+//app.UseMiddleware<ReviewMiddleware>();
 
 app.UseAuthentication();
 

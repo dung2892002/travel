@@ -21,6 +21,7 @@ namespace Travel.Core.Interfaces
         IActivityRepository Activitys { get; }
         ITourDestinationRepository ToursDestination { get; }
         IBookingTourRepository BookingsTour { get; }
+        IReviewRepository Reviews { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitTransaction();

@@ -390,6 +390,696 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.ReviewsController",
+    "Method": "CreateReview",
+    "RelativePath": "api/v1/Reviews",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Point",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "CreatedAt",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "HotelId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "DestinationId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "TourId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.CityId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.ProvinceId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Image",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Province.Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Province.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Province.City",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.City, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Airport",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Airport, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Destination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Destination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.Tour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Tour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.City.TrainStation",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.TrainStation, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.HotelDestination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.HotelDestination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Image",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Image, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Destination.TourDestination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.TourDestination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Rating",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.CheckInTime",
+        "Type": "System.TimeOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.CheckOutTime",
+        "Type": "System.TimeOnly",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.AllowedAnimal",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.UserId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.HotelDestination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.HotelDestination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Room",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Room, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Fullname",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Username",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.DisplayName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.AvatarImage",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.BookingFlight",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingFlight, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.BookingRoom",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingRoom, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.BookingTour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.BookingTrain",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTrain, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Hotel",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Hotel, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.UserRole",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.UserRole, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.Image",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Image, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Code",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.NumberOfDay",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Rating",
+        "Type": "System.Int16",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCityId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.PriceToddler",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.PricePrimaryChildren",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.PriceAdultPeople",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.UserId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.BookingTour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.ProvinceId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Image",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Province.Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Province.Name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Province.City",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.City, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Airport",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Airport, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Destination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Destination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.Tour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Tour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.DepartureCity.TrainStation",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.TrainStation, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.Image",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Image, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.TourDay",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.TourDay, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.TourDestination",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.TourDestination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Fullname",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Username",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.DisplayName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.AvatarImage",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.BookingFlight",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingFlight, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.BookingRoom",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingRoom, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.BookingTour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.BookingTrain",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTrain, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Hotel",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Hotel, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tour.User.UserRole",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.UserRole, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Fullname",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.PhoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Username",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Password",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.DisplayName",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.AvatarImage",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.BookingFlight",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingFlight, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.BookingRoom",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingRoom, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.BookingTour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.BookingTrain",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.BookingTrain, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Favourite",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Favourite, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Hotel",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Hotel, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Review",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.UserRole",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.UserRole, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Image, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "files",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ReviewsController",
+    "Method": "DeleteReview",
+    "RelativePath": "api/v1/Reviews/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ReviewsController",
+    "Method": "GetByDestination",
+    "RelativePath": "api/v1/Reviews/destination",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ReviewsController",
+    "Method": "GetByHotel",
+    "RelativePath": "api/v1/Reviews/hotel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ReviewsController",
+    "Method": "GetByTour",
+    "RelativePath": "api/v1/Reviews/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.RoomsController",
     "Method": "GetByHotel",
     "RelativePath": "api/v1/Rooms",

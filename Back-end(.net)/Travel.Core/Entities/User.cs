@@ -1,4 +1,6 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class User
     {
@@ -18,20 +20,28 @@
 
         public string AvatarImage { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public virtual ICollection<BookingFlight> BookingFlight { get; set; } = new List<BookingFlight>();
 
+        [JsonIgnore]
         public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();
 
+        [JsonIgnore]
         public virtual ICollection<BookingTour> BookingTour { get; set; } = new List<BookingTour>();
 
+        [JsonIgnore]
         public virtual ICollection<BookingTrain> BookingTrain { get; set; } = new List<BookingTrain>();
 
+        [JsonIgnore]
         public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
 
+        [JsonIgnore]
         public virtual ICollection<Hotel> Hotel { get; set; } = new List<Hotel>();
 
+        [JsonIgnore]
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
 
+        [JsonIgnore]
         public virtual ICollection<UserRole> UserRole { get; set; } = new List<UserRole>();
     }
 }

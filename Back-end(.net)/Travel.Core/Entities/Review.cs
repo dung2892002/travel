@@ -1,4 +1,6 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class Review
     {
@@ -10,20 +12,25 @@
 
         public string Description { get; set; } = null!;
 
-        public string CreatedAt { get; set; } = null!;
+        public DateTime CreatedAt { get; set; }
 
         public Guid? HotelId { get; set; }
 
         public int? DestinationId { get; set; }
 
-        public Guid TourId { get; set; }
+        public Guid? TourId { get; set; }
 
+        [JsonIgnore]
         public virtual Destination? Destination { get; set; }
 
+        [JsonIgnore]
         public virtual Hotel? Hotel { get; set; }
 
+        [JsonIgnore]
         public virtual Tour? Tour { get; set; }
+        
+        public virtual User? User { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        public virtual ICollection<Image> Image { get; set; } = new List<Image>();
     }
 }
