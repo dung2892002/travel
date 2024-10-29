@@ -27,7 +27,6 @@ namespace Travel.Core.Entities
         [JsonIgnore]
         public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
 
-        [JsonIgnore]
         public virtual ICollection<HotelDestination> HotelDestination { get; set; } = new List<HotelDestination>();
 
         [JsonIgnore]

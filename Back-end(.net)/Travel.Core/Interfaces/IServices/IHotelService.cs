@@ -11,6 +11,5 @@ namespace Travel.Core.Interfaces.IServices
         Task CreateHotel(Hotel hotel);    
         Task<bool> UpdateHotel(Guid id, Hotel hotel);
         Task<bool> UploadImagesAsync(List<IFormFile> files, Guid hotelId);
-        Task<bool> AddDestination(List<Destination> destinations, Guid hotelId);
     }
 }

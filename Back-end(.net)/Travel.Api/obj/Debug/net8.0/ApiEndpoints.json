@@ -191,6 +191,54 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "Create",
+    "RelativePath": "api/v1/Favourites",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "favourite",
+        "Type": "Travel.Core.Entities.Favourite",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "Delete",
+    "RelativePath": "api/v1/Favourites/delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "GetByUser",
+    "RelativePath": "api/v1/Favourites/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.HotelsController",
     "Method": "GetAll",
     "RelativePath": "api/v1/Hotels",
@@ -248,27 +296,6 @@
       {
         "Name": "hotel",
         "Type": "Travel.Core.Entities.Hotel",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Travel.Api.Controllers.HotelsController",
-    "Method": "AddDestination",
-    "RelativePath": "api/v1/Hotels/edit/add-destination",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "hotelId",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "destinations",
-        "Type": "System.Collections.Generic.List\u00601[[Travel.Core.Entities.Destination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }
     ],
@@ -683,6 +710,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Hotel.User.Tour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Tour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Hotel.User.Review",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
@@ -704,11 +736,6 @@
       },
       {
         "Name": "Tour.Name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "Tour.Code",
         "Type": "System.String",
         "IsRequired": false
       },
@@ -913,6 +940,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Tour.User.Tour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Tour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Tour.User.Review",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Review, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
@@ -990,6 +1022,11 @@
       {
         "Name": "User.Hotel",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Hotel, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Tour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Tour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {

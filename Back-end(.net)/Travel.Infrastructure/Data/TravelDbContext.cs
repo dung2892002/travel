@@ -342,7 +342,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.Property(e => e.CheckOutTime).HasColumnType("time");
             entity.Property(e => e.Description).HasMaxLength(1500);
             entity.Property(e => e.Email).HasMaxLength(50);
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.PhoneNumber).HasMaxLength(255);
 
             entity.HasOne(d => d.User).WithMany(p => p.Hotel)
@@ -496,7 +496,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.HasIndex(e => e.DepartureCityId, "FK_tour_DepartureCityId");
 
-            entity.Property(e => e.Code).HasMaxLength(255);
             entity.Property(e => e.Description).HasMaxLength(2500);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.PriceAdultPeople)
@@ -513,6 +512,11 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.DepartureCityId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_tour_DepartureCityId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Tour)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tour_UserId");
         });
 
         modelBuilder.Entity<TourDay>(entity =>

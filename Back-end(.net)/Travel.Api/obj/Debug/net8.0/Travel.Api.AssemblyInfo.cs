@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Travel.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e9af29aff225f12500149b541aeebf833106334")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d9f1e809236f4f78a03c9d75383eecc1ccda3a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Travel.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Travel.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

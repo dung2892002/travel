@@ -1,4 +1,6 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class Favourite
     {
@@ -12,7 +14,7 @@
 
         public int? DestinationId { get; set; }
 
-        public Guid TourId { get; set; }
+        public Guid? TourId { get; set; }
 
         public virtual City? City { get; set; }
 
@@ -22,6 +24,7 @@
 
         public virtual Tour? Tour { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        [JsonIgnore]
+        public virtual User? User { get; set; } = null!;
     }
 }

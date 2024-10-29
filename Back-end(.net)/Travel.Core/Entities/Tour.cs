@@ -8,8 +8,6 @@ namespace Travel.Core.Entities
 
         public string Name { get; set; } = null!;
 
-        public string Code { get; set; } = null!;
-
         public short NumberOfDay { get; set; }
 
         public short Rating { get; set; }

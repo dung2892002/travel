@@ -8,9 +8,10 @@ namespace Travel.Infrastructure.Repositories
     {
         private readonly TravelDbContext _dbContext = dbContext;
 
-        public async Task AddRange(IEnumerable<HotelDestination> hotelDestinations)
+        public async Task AddRange(List<HotelDestination> hotelDestinations)
         {
-            await _dbContext.Set<HotelDestination>().AddRangeAsync(hotelDestinations);
+            await _dbContext.AddRangeAsync(hotelDestinations);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

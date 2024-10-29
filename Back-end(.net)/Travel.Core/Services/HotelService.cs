@@ -11,27 +11,20 @@ namespace Travel.Core.Services
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IFirebaseStorageService _firebaseStorageService = firebaseStorageService;
 
-        public async Task<bool> AddDestination(List<Destination> destinations, Guid hotelId)
-        {
-            var hotelDestinations = new List<HotelDestination>();
-            foreach (var destination in destinations)
-            {
-                var hotelDestination = new HotelDestination
-                {
-                    DestinationId = destination.Id,
-                    HotelId = hotelId
-                };
-                hotelDestinations.Add(hotelDestination);
-            }
-
-            await _unitOfWork.HotelsDestination.AddRange(hotelDestinations);
-            await _unitOfWork.CompleteAsync();
-            return true;
-        }
-
+        
         public async Task CreateHotel(Hotel hotel)
         {
-            await _unitOfWork.Hotels.CreateHotel(hotel);
+            try
+            {
+                hotel.Id = Guid.NewGuid();
+                await _unitOfWork.Hotels.CreateHotel(hotel);
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                // Handle exception (log it, rethrow it, etc.)
+                throw new ApplicationException("Error creating tour", ex);
+            }
         }
 
         public async Task<IEnumerable<Hotel>> GetAll()

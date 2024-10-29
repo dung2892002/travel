@@ -106,21 +106,6 @@ namespace Travel.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
-        [Authorize(Policy = "HotelPartner")]
-        [HttpPost("edit/add-destination")]
-        public async Task<IActionResult> AddDestination([FromQuery] Guid hotelId, [FromBody] List<Destination> destinations)
-        {
-            try
-            {
-                var result = await _hotelService.AddDestination(destinations, hotelId);
-                if (!result) return StatusCode(400, "Failed to upload images.");
-                return StatusCode(201, "add destination successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
+                
     }
 }

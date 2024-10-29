@@ -10,7 +10,7 @@ namespace Travel.Infrastructure.Repositories
         private readonly TravelDbContext _dbContext = dbContext;
         public async Task CreateHotel(Hotel hotel)
         {
-            await _dbContext.Hotel.AddAsync(hotel);
+            await _dbContext.AddAsync(hotel);
             await _dbContext.SaveChangesAsync();
         }
 
