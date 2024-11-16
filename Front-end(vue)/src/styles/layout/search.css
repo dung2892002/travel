@@ -1,0 +1,144 @@
+.search {
+  width: 90%;
+  height: 60px;
+  margin: 0 auto;
+  padding: 10px 200px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 6px;
+}
+
+.search-item {
+  min-width: 320px;
+  border: 1px solid gray;
+  padding-left: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.search-item:hover {
+  border: 1px solid var(--color-main);
+}
+
+.search-location {
+  border-radius: 10px 0 0 10px;
+}
+
+.search-time,
+.search-room {
+  padding: 10px;
+}
+
+.search-button {
+  min-width: 60px;
+  border: none;
+  align-items: center;
+  background-color: var(--color-main);
+  border-radius: 0 10px 10px 0;
+  padding: 10px;
+}
+
+.show-select {
+  background-color: #fff;
+  border-radius: 6px;
+  width: 320px;
+  max-height: 480px;
+  position: absolute;
+  left: 0;
+  top: 48px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.select-location {
+  overflow-y: scroll;
+}
+
+.location-item {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 6px;
+  border-top: 1px solid gray;
+  height: 48px;
+  align-items: center;
+  position: relative;
+}
+.location--name,
+.location--type {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.location--name-province {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.location--type {
+  font-size: 14px;
+  position: absolute;
+  right: 6px;
+}
+
+.location--image {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  margin-right: 6px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.select-time,
+.select-room {
+  padding: 10px 20px;
+}
+
+.time-item,
+.room-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border-bottom: 2px solid gray;
+  padding-bottom: 6px;
+}
+
+.room-input {
+  display: flex;
+  flex-direction: row;
+}
+
+.btn--quantity,
+.show-quantity {
+  width: 36px;
+  height: 36px;
+  background-color: #80808041;
+  border-radius: 6px;
+  font-size: 16px;
+  padding: 10px 0;
+  margin: 0 4px;
+  color: var(--color-main);
+}
+
+.btn-quantity {
+  cursor: pointer;
+}
+
+.show-quantity {
+  background-color: #fff;
+  border: 1px solid #80808041;
+  text-align: center;
+}
+
+.error-message {
+  font-size: 14px;
+  color: red;
+}
+
+.room-control,
+.time-control {
+  border-bottom: none;
+  padding-bottom: 0;
+}

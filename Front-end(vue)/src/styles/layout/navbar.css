@@ -1,0 +1,16 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  margin: 0 15rem;
+}
+
+.nav-link {
+  font-size: 24px;
+  margin: 0 10px;
+  color: var(--color-main);
+  transition: 0.4s;
+}
+
+.nav-link:hover {
+  background-color: var(--color-main-hover);
+}
