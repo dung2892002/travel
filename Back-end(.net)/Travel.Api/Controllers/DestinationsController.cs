@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
 
 namespace Travel.Api.Controllers
@@ -9,6 +10,20 @@ namespace Travel.Api.Controllers
     public class DestinationsController(IDestinationService destinationService) : ControllerBase
     {
         private readonly IDestinationService _destinationService = destinationService;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var destiantions = await _destinationService.GetAll();
+                return StatusCode(201, destiantions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         [HttpGet("{cityId}")]
         public async Task<IActionResult> GetDestinationOfCity(int cityId)

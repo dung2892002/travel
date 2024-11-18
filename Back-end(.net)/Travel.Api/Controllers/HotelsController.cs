@@ -25,6 +25,24 @@ namespace Travel.Api.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var hotel = await _hotelService.GetById(id);
+                return StatusCode(200, hotel);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("destination/{id}")]
         public async Task<IActionResult> GetByDestination(int id)
         {

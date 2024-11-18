@@ -2,17 +2,15 @@
 
 namespace Travel.Core.Entities
 {
-    public class HotelDestination
+    public class HotelFacility
     {
         public int Id { get; set; }
-
-        public Guid? HotelId { get; set; }
-
-        public int? DestinationId { get; set; }
-
-        public virtual Destination? Destination { get; set; }
+        public Guid HotelId { get; set; }
+        public int FacilityId { get; set; }
 
         [JsonIgnore]
         public virtual Hotel? Hotel { get; set; }
+        public virtual Facility? Facility { get; set; }
+
     }
 }

@@ -46,12 +46,8 @@ namespace Travel.Core.Services
             roomExisting.FreeWifi = room.FreeWifi;
             roomExisting.MaxAdultPeople = room.MaxAdultPeople;
             roomExisting.MaxChildrenPeople = room.MaxChildrenPeople;
-            roomExisting.NoSmoking = room.NoSmoking;
             roomExisting.SingleBed = room.SingleBed;
             roomExisting.DoubleBed = room.DoubleBed;
-            roomExisting.HasWindow = room.HasWindow;
-            roomExisting.HasBathub = room.HasBathub;
-            roomExisting.HasAirConditioned = room.HasAirConditioned;
             roomExisting.Dirention = room.Dirention;
 
             var result = await _unitOfWork.CompleteAsync();

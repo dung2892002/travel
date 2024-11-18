@@ -20,17 +20,9 @@ namespace Travel.Core.Entities
 
         public short MaxChildrenPeople { get; set; }
 
-        public bool NoSmoking { get; set; }
-
         public short SingleBed { get; set; }
 
         public short DoubleBed { get; set; }
-
-        public bool HasWindow { get; set; }
-
-        public bool HasBathub { get; set; }
-
-        public bool HasAirConditioned { get; set; }
 
         public string? Dirention { get; set; }
 
@@ -43,5 +35,6 @@ namespace Travel.Core.Entities
         public virtual Hotel? Hotel { get; set; } 
 
         public virtual ICollection<Image> Image { get; set; } = new List<Image>();
+        public virtual ICollection<RoomFacility> RoomFacility { get; set; } = new List<RoomFacility>();
     }
 }

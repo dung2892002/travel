@@ -23,6 +23,7 @@ namespace Travel.Core.Interfaces
         IBookingTourRepository BookingsTour { get; }
         IReviewRepository Reviews { get; }
         IFavouriteRepository Favorites { get; }
+        IFacilityRepository Facilities { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitTransaction();

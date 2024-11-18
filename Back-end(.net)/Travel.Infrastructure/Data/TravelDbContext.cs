@@ -26,6 +26,8 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
     public virtual DbSet<Destination> Destination { get; set; }
 
+    public virtual DbSet<Facility> Facility {  get; set; }
+
     public virtual DbSet<Favourite> Favourite { get; set; }
 
     public virtual DbSet<Flight> Flight { get; set; }
@@ -33,6 +35,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
     public virtual DbSet<Hotel> Hotel { get; set; }
 
     public virtual DbSet<HotelDestination> HotelDestination { get; set; }
+    public virtual DbSet<HotelFacility> HotelFacility { get; set; }
 
     public virtual DbSet<Image> Image { get; set; }
 
@@ -41,7 +44,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
     public virtual DbSet<Role> Role { get; set; }
 
     public virtual DbSet<Room> Room { get; set; }
-
+    public virtual DbSet<RoomFacility> RoomFacility { get; set; }
     public virtual DbSet<TimeSlot> TimeSlot { get; set; }
 
     public virtual DbSet<Tour> Tour { get; set; }
@@ -260,6 +263,13 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasConstraintName("FK_destination_CityId");
         });
 
+        modelBuilder.Entity<Facility>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("facility");
+            entity.Property(e =>e.Name).HasMaxLength(255);
+        });
+
         modelBuilder.Entity<Favourite>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -337,6 +347,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.ToTable("hotel");
 
             entity.HasIndex(e => e.UserId, "FK_hotel_UserId");
+            entity.HasIndex(e => e.UserId, "FK_hotel_CityId");
 
             entity.Property(e => e.CheckInTime).HasColumnType("time");
             entity.Property(e => e.CheckOutTime).HasColumnType("time");
@@ -349,6 +360,10 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_hotel_UserId");
+
+            entity.HasOne(d => d.City).WithMany(p => p.Hotel)
+                .HasForeignKey(d => d.CityId)
+                .HasConstraintName("FK_hotel_CityId");
         });
 
         modelBuilder.Entity<HotelDestination>(entity =>
@@ -368,6 +383,25 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasOne(d => d.Hotel).WithMany(p => p.HotelDestination)
                 .HasForeignKey(d => d.HotelId)
                 .HasConstraintName("FK_hotel_destination_HotelId");
+        });
+
+        modelBuilder.Entity<HotelFacility>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("hotel_facility");
+
+            entity.HasIndex(e => e.FacilityId, "FK_hotel_facility_FacilityId");
+
+            entity.HasIndex(e => e.HotelId, "FK_hotel_destination_HotelId");
+
+            entity.HasOne(d => d.Facility).WithMany(p => p.HotelFacility)
+                .HasForeignKey(d => d.FacilityId)
+                .HasConstraintName("FK_hotel_facility_FacilityId");
+
+            entity.HasOne(d => d.Hotel).WithMany(p => p.HotelFacility)
+                .HasForeignKey(d => d.HotelId)
+                .HasConstraintName("FK_hotel_facility_HotelId");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -470,6 +504,25 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.HotelId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_room_HotelId");
+        });
+
+        modelBuilder.Entity<RoomFacility>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("room_facility");
+
+            entity.HasIndex(e => e.FacilityId, "FK_room_facility_FacilityId");
+
+            entity.HasIndex(e => e.RoomId, "FK_room_facility_RoomId");
+
+            entity.HasOne(d => d.Facility).WithMany(p => p.RoomFacility)
+                .HasForeignKey(d => d.FacilityId)
+                .HasConstraintName("FK_room_facility_FacilityId");
+
+            entity.HasOne(d => d.Room).WithMany(p => p.RoomFacility)
+                .HasForeignKey(d => d.RoomId)
+                .HasConstraintName("FK_room_facility_RoomId");
         });
 
         modelBuilder.Entity<TimeSlot>(entity =>

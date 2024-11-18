@@ -23,7 +23,7 @@ namespace Travel.Core.Services
             {
                 await _unitOfWork.RollbackTransaction();
                 // Handle exception (log it, rethrow it, etc.)
-                throw new ApplicationException("Error creating tour", ex);
+                throw new ApplicationException("Error creating hotel", ex);
             }
         }
 
@@ -35,6 +35,16 @@ namespace Travel.Core.Services
         public async Task<IEnumerable<Hotel>> GetByDestination(int destiantionId)
         {
             return await _unitOfWork.Hotels.GetByDestination(destiantionId);
+        }
+
+        public async Task<Hotel?> GetById(Guid id)
+        {
+            var hotel = await _unitOfWork.Hotels.GetById(id);
+            if (hotel == null)
+            {
+                throw new ArgumentException("Hotel not exist");
+            }
+            return hotel;
         }
 
         public async Task<IEnumerable<Hotel>> GetByPartner(Guid partnerId)
@@ -54,7 +64,6 @@ namespace Travel.Core.Services
             hotelExisting.Name = hotel.Name;
             Console.WriteLine($"name sau khi doi: {hotelExisting.Name}");
 
-            hotelExisting.AllowedAnimal = hotel.AllowedAnimal;
             hotelExisting.Description = hotel.Description;
             hotelExisting.Rating = hotel.Rating;
             hotelExisting.CheckInTime = hotel.CheckInTime;

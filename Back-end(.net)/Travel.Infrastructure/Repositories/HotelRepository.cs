@@ -25,8 +25,7 @@ namespace Travel.Infrastructure.Repositories
                 Email = h.Email,
                 PhoneNumber = h.PhoneNumber,
                 CheckInTime = h.CheckInTime,
-                CheckOutTime = h.CheckOutTime,
-                AllowedAnimal = h.AllowedAnimal
+                CheckOutTime = h.CheckOutTime
             }).ToListAsync();
 
 
@@ -36,21 +35,13 @@ namespace Travel.Infrastructure.Repositories
         {
             var hotels = await _dbContext.Hotel
                 .Include(h => h.Image)
+                .Include(h => h.City)
+                    .ThenInclude(c => c.Province)
                 .Include(h => h.HotelDestination)
                     .ThenInclude(hd => hd.Destination)
+                .Include(h => h.HotelFacility)
+                    .ThenInclude(hf => hf.Facility)
                 .Where(h => h.HotelDestination.Any(hd => hd.DestinationId == destinationId))
-                .Select(h => new Hotel
-                {
-                    Id = h.Id,
-                    Name = h.Name,
-                    Description = h.Description,
-                    Rating = h.Rating,
-                    Email = h.Email,
-                    PhoneNumber = h.PhoneNumber,
-                    CheckInTime = h.CheckInTime,
-                    CheckOutTime = h.CheckOutTime,
-                    AllowedAnimal = h.AllowedAnimal
-                })
                 .ToListAsync();
 
             return hotels;
@@ -58,13 +49,28 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<Hotel?> GetById(Guid id)
         {
-            var hotel = await _dbContext.Hotel.Include(x => x.Image).SingleOrDefaultAsync(h => h.Id == id);
+            var hotel = await _dbContext.Hotel
+                .Include(x => x.Image)
+                .Include(h => h.City)
+                    .ThenInclude(c => c.Province)
+                .Include(h => h.HotelDestination)
+                    .ThenInclude(hd => hd.Destination)
+                .Include(h => h.HotelFacility)
+                    .ThenInclude(hf => hf.Facility)
+                .SingleOrDefaultAsync(h => h.Id == id);
             return hotel;
         }
 
         public async Task<IEnumerable<Hotel>> GetByPartner(Guid partnerId)
         {
-            return await _dbContext.Hotel.Include(x => x.Image).Where(h => h.UserId == partnerId).ToListAsync();
+            return await _dbContext.Hotel
+                .Include(x => x.Image)
+                .Include(h => h.City)
+                    .ThenInclude(c => c.Province)
+                .Include(h => h.HotelFacility)
+                    .ThenInclude(hf => hf.Facility)
+                .Where(h => h.UserId == partnerId)
+                .ToListAsync();
         }
     }
 }

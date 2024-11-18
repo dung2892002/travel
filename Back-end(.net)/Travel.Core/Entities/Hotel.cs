@@ -19,15 +19,18 @@ namespace Travel.Core.Entities
         public TimeOnly CheckInTime { get; set; }
 
         public TimeOnly CheckOutTime { get; set; }
-
-        public bool AllowedAnimal { get; set; }
+        public int Type { get; set; }
 
         public Guid UserId { get; set; }
+
+        public int CityId { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
 
         public virtual ICollection<HotelDestination> HotelDestination { get; set; } = new List<HotelDestination>();
+
+        public virtual ICollection<HotelFacility> HotelFacility { get; set; } = new List<HotelFacility>();
 
         [JsonIgnore]
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
@@ -37,6 +40,8 @@ namespace Travel.Core.Entities
 
         [JsonIgnore]
         public virtual User? User { get; set; }
+
+        public virtual City? City { get; set; }
 
         public virtual ICollection<Image> Image { get; set; } = new List<Image>();
     }

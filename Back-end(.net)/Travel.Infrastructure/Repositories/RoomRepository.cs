@@ -16,7 +16,12 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<Room>> GetByHotel(Guid hotelId)
         {
-            var rooms = await _dbContext.Room.Include(r => r.Image).Where(r => r.HotelId == hotelId).ToListAsync();
+            var rooms = await _dbContext.Room
+                .Include(r => r.Image)
+                .Include(r => r.RoomFacility)
+                    .ThenInclude(rf => rf.Facility)
+                .Where(r => r.HotelId == hotelId)
+                .ToListAsync();
             return rooms;
         }
 

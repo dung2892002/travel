@@ -8,6 +8,12 @@ namespace Travel.Infrastructure.Repositories
     public class DestinationRepository(TravelDbContext travelDbContext) : IDestinationRepository, IRepository
     {
         private readonly TravelDbContext _travelDbContext = travelDbContext;
+
+        public async Task<IEnumerable<Destination>> GetAll()
+        {
+            return await _travelDbContext.Destination.Include(d => d.Image).ToListAsync();
+        }
+
         public async Task<IEnumerable<Destination>> GetByCity(int cityId)
         {
             return await _travelDbContext.Destination.Include(d => d.Image).Where(d => d.CityId == cityId).ToListAsync();

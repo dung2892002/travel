@@ -9,6 +9,12 @@ namespace Travel.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IFirebaseStorageService _firebaseStorageService = firebaseStorageService;
+
+        public async Task<IEnumerable<Destination>> GetAll()
+        {
+            return await _unitOfWork.Destinations.GetAll();
+        }
+
         public async Task<IEnumerable<Destination>> GetByCity(int cityId)
         {
             return await _unitOfWork.Destinations.GetByCity(cityId);
