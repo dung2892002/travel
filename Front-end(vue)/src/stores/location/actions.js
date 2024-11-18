@@ -25,11 +25,11 @@ export default {
       return { success: false, message: error.response.data }
     }
   },
-  async fetchDestinations() {
+  async fetchDestinations(cityId) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
 
-      const destinationsRes = await axios.get(`${apiServer}/Destinations`)
+      const destinationsRes = await axios.get(`${apiServer}/Destinations/${cityId}`)
       const destinations = destinationsRes.data
 
       this.destinations = destinations

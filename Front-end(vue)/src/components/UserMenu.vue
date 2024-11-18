@@ -48,6 +48,7 @@ const showProfile = () => {
 
 const logout = () => {
   userStore.logout()
+  router.push('login')
   toggleMenu()
 }
 

@@ -28,12 +28,20 @@
   background-color: var(--color-main);
   color: #fff;
 }
+
+.btn--add:hover,
+.btn--success:hover {
+  background-color: var(--color-main-hover);
+  color: #fff;
+}
+
 .btn--close,
 .btn--remove {
   background-color: #ff0000 !important;
   color: #fff !important;
 }
 .btn--close:hover,
-.btn--close:focus {
+.btn--close:focus,
+.btn--remove:hover {
   background-color: #970000 !important;
 }

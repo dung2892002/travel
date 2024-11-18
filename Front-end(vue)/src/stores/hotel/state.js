@@ -1,6 +1,9 @@
 export default function () {
   return {
     hotels: null,
-    hotel: null
+    hotel: {},
+    popularFacilities: null,
+    uniqueFacilities: null,
+    roomFacilities: null
   }
 }
