@@ -47,6 +47,10 @@
         </div>
       </div>
     </div>
+    <div class="item-action" v-if="mode == 1">
+      <button @click="handleUpdateHotel" class="action-button action--first">Chỉnh sửa</button>
+      <button @click="showRoom" class="action-button">Xem phòng</button>
+    </div>
   </div>
 </template>
 
@@ -54,8 +58,38 @@
 import { getLinkImage } from '@/utils'
 import '../../styles/main.css'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const showAllFacilities = ref(false)
+
+// eslint-disable-next-line no-unused-vars
+const props = defineProps({
+  hotel: {
+    type: Object,
+    required: true
+  },
+  mode: {
+    type: Number,
+    required: true
+  }
+})
+
+const router = useRouter()
+
+const emit = defineEmits(['updateHotel'])
+
+function handleUpdateHotel() {
+  emit('updateHotel')
+}
+
+function showRoom() {
+  router.push({
+    name: 'RoomsList',
+    params: {
+      hotelId: props.hotel.Id
+    }
+  })
+}
 
 function getTypeHotel(type) {
   const types = {
@@ -73,15 +107,6 @@ function renderRating(rating) {
   const fullStar = '★'
   const emptyStar = '☆'
 
-  // Kết hợp số sao đầy và sao rỗng
   return fullStar.repeat(rating) + emptyStar.repeat(5 - rating)
 }
-
-// eslint-disable-next-line no-unused-vars
-const props = defineProps({
-  hotel: {
-    type: Object,
-    required: true
-  }
-})
 </script>

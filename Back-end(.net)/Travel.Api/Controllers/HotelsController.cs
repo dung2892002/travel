@@ -98,7 +98,7 @@ namespace Travel.Api.Controllers
                 var result = await _hotelService.UpdateHotel(hotelId, hotel);
                 if (!result)
                 {
-                    return StatusCode(400, "update fail");
+                    return StatusCode(400, "update failed, no field change");
                 }
                 return StatusCode(200, "update hotel successfully");
             }

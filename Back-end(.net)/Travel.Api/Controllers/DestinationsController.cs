@@ -17,7 +17,7 @@ namespace Travel.Api.Controllers
             try
             {
                 var destiantions = await _destinationService.GetAll();
-                return StatusCode(201, destiantions);
+                return StatusCode(200, destiantions);
             }
             catch (Exception ex)
             {
@@ -31,7 +31,7 @@ namespace Travel.Api.Controllers
             try
             {
                 var destiantions = await _destinationService.GetByCity(cityId);
-                return StatusCode(201, destiantions);
+                return StatusCode(200, destiantions);
             }
             catch (Exception ex)
             {

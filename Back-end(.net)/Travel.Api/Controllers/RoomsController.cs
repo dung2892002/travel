@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
+using Travel.Core.Services;
 
 namespace Travel.Api.Controllers
 {
@@ -28,6 +29,24 @@ namespace Travel.Api.Controllers
             {
                 return StatusCode(500, ex.Message);
             }            
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            try
+            {
+                var room = await _roomService.GetRoomDetail(id);
+                return StatusCode(200, room);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [Authorize(Policy = "HotelPartner")]

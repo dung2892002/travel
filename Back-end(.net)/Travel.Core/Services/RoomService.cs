@@ -11,12 +11,25 @@ namespace Travel.Core.Services
         private readonly IFirebaseStorageService _firebaseStorageService = firebaseStorageService;
         public async Task CreateRoom(Room room)
         {
-            var hotelExisting = await _unitOfWork.Hotels.GetById(room.HotelId);
-            if (hotelExisting == null)
+            await _unitOfWork.BeginTransaction();
+            try
             {
-                throw new ArgumentException("Hotel not exits");
+                room.Id = Guid.NewGuid();
+                await _unitOfWork.Rooms.CreateRoom(room);
+
+                foreach (var roomFacility in room.RoomFacility)
+                {
+                    roomFacility.RoomId = room.Id;
+                    roomFacility.Facility = null;
+                    await _unitOfWork.Rooms.CreateRoomFacility(roomFacility);
+                }
+                await _unitOfWork.CommitTransaction();
             }
-            await _unitOfWork.Rooms.CreateRoom(room);
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                throw new ApplicationException("Error creating hotel", ex);
+            }
         }
 
         public async Task<IEnumerable<Room>> GetRoomByHotel(Guid hotelId)
@@ -31,28 +44,51 @@ namespace Travel.Core.Services
             return rooms;
         }
 
+        public async Task<Room?> GetRoomDetail(Guid id)
+        {
+            var room = await _unitOfWork.Rooms.GetDetail(id);
+            if (room == null)
+            {
+                throw new ArgumentException("Room not exits");
+            }
+            return room;
+        }
+
         public async Task<bool> UpdateRoom(Guid roomId, Room room)
         {
-            var roomExisting = await _unitOfWork.Rooms.GetById(roomId);
-            if(roomExisting == null)
+            await _unitOfWork.BeginTransaction();
+            try
             {
-                throw new ArgumentException("Room not exist");
+                var roomExisting = await _unitOfWork.Rooms.GetDetail(roomId);
+                if (roomExisting == null)
+                {
+                    throw new ArgumentException("Room not exist");
+                }
+
+                roomExisting.Name = room.Name;
+                roomExisting.Price = room.Price;
+                roomExisting.Quantity = room.Quantity;
+                roomExisting.Area = room.Area;
+                roomExisting.MaxAdultPeople = room.MaxAdultPeople;
+                roomExisting.MaxChildrenPeople = room.MaxChildrenPeople;
+                roomExisting.SingleBed = room.SingleBed;
+                roomExisting.DoubleBed = room.DoubleBed;
+                roomExisting.Dirention = room.Dirention;
+
+                UpdateRoomFacilities(roomExisting, room.RoomFacility);
+
+                var result = await _unitOfWork.CompleteAsync();
+                await _unitOfWork.CommitTransaction();
+
+                return result > 0;
             }
+            catch (Exception ex)
+            {
 
-            roomExisting.Name = room.Name;
-            roomExisting.Price = room.Price;
-            roomExisting.Quantity = room.Quantity;
-            roomExisting.Area = room.Area;
-            roomExisting.FreeWifi = room.FreeWifi;
-            roomExisting.MaxAdultPeople = room.MaxAdultPeople;
-            roomExisting.MaxChildrenPeople = room.MaxChildrenPeople;
-            roomExisting.SingleBed = room.SingleBed;
-            roomExisting.DoubleBed = room.DoubleBed;
-            roomExisting.Dirention = room.Dirention;
-
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result > 0;
+                Console.WriteLine(ex.ToString());
+                await _unitOfWork.RollbackTransaction();
+                throw new ApplicationException("Error update room", ex);
+            }
         }
 
         public async Task<bool> UploadImagesAsync(List<IFormFile> files, Guid roomId)
@@ -81,6 +117,25 @@ namespace Travel.Core.Services
             }
             await _unitOfWork.CompleteAsync();
             return true;
+        }
+
+        private async void UpdateRoomFacilities(Room existingRoom, ICollection<RoomFacility> newFacilities)
+        {
+            var roomFacilityRemove = existingRoom.RoomFacility
+                .Where(f => !newFacilities.Any(nf => nf.FacilityId == f.FacilityId))
+                .ToList();
+            foreach (var roomFacility in roomFacilityRemove)
+            {
+                await _unitOfWork.Rooms.DeleteRoomFacility(roomFacility);
+            }
+
+            var existingIds = existingRoom.RoomFacility.Select(f => f.FacilityId).ToList();
+            var roomFacilityAdd = newFacilities.Where(nf => !existingIds.Contains(nf.FacilityId)).ToList();
+            foreach (var roomFacility in roomFacilityAdd)
+            {
+                roomFacility.RoomId = existingRoom.Id;
+                await _unitOfWork.Rooms.CreateRoomFacility(roomFacility);
+            }
         }
     }
 }

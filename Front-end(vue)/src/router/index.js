@@ -9,6 +9,7 @@ import HotelPage from '@/views/hotel/HotelPage.vue'
 import TourPage from '@/views/tour/TourPage.vue'
 import MyProfile from '@/views/user/MyProfile.vue'
 import MyHotel from '@/views/hotel/MyHotel.vue'
+import HotelsRoom from '@/views/hotel/HotelsRoom.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +48,11 @@ const router = createRouter({
           path: '/my-hotel',
           name: 'my-hotel',
           component: MyHotel
+        },
+        {
+          path: 'rooms/hotel/:hotelId',
+          name: 'RoomsList',
+          component: HotelsRoom
         }
       ]
     },

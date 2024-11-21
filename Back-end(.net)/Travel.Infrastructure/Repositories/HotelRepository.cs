@@ -10,8 +10,27 @@ namespace Travel.Infrastructure.Repositories
         private readonly TravelDbContext _dbContext = dbContext;
         public async Task CreateHotel(Hotel hotel)
         {
-            await _dbContext.AddAsync(hotel);
+            await _dbContext.Hotel.AddAsync(hotel);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task CreateHotelDestination(HotelDestination hotelDestination)
+        {
+            await _dbContext.HotelDestination.AddAsync(hotelDestination);
+        }
+        public async Task DeleteHotelDestination(HotelDestination hotelDestination)
+        {
+            _dbContext.HotelDestination.Remove(hotelDestination);
+            await Task.CompletedTask;
+        }
+        public async Task CreateHotelFacility(HotelFacility hotelFacility)
+        {
+            await _dbContext.HotelFacility.AddAsync(hotelFacility);
+        }
+        public async Task DeleteHotelFacility(HotelFacility hotelFacility)
+        {
+            _dbContext.HotelFacility.Remove(hotelFacility);
+            await Task.CompletedTask;
         }
 
         public async Task<IEnumerable<Hotel>> GetAllHotel()

@@ -95,26 +95,49 @@ button {
 
 .content-item {
   margin: 10px 0px;
-  height: auto;
+  height: 180px;
   background-color: #f2f4f7;
   border-radius: 6px;
-  cursor: pointer;
+  position: relative;
 }
 
 .item-img img {
   width: 280px;
-  height: 180px;
+  height: 100%;
   border-radius: 6px 0 0 6px;
 }
 
 .item-info {
-  padding: 15px;
+  padding: 5px 10px;
+}
+
+.item-action {
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+}
+
+.action-button {
+  color: white;
+  height: 100%;
+  background-color: var(--color-main);
+  border-top: 1px solid black;
+}
+
+.action--first {
+  border: none;
 }
 
 .info-value {
   border-radius: 12px;
   font-size: 16px;
   margin-bottom: 8px;
+  margin-right: 8px;
   display: flex;
   align-items: center;
 }
@@ -178,6 +201,12 @@ button {
   overflow-y: auto;
   width: 200px;
   z-index: 10;
+}
+
+.room__facility {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .popup-facility {

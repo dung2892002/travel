@@ -48,7 +48,7 @@ namespace Travel.Api.Middleware
 
                 if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine("Posst");
+                    Console.WriteLine("Post");
                     context.Request.EnableBuffering();
                     var jwt = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
                     using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true))

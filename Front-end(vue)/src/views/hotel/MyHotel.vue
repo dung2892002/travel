@@ -8,10 +8,11 @@
     </div>
     <div class="content-main">
       <HotelItem
-        :hotel="hotel"
         v-for="hotel in hotels"
+        :hotel="hotel"
+        :mode="1"
         :key="hotel.Id"
-        @click="updateHotel(hotel.Id)"
+        @updateHotel="updateHotel(hotel.Id)"
       ></HotelItem>
     </div>
   </div>

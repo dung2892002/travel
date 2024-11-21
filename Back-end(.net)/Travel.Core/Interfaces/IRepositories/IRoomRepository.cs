@@ -7,5 +7,9 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<Room>> GetByHotel(Guid hotelId);
         Task<Room?> GetById(Guid id);
         Task CreateRoom(Room room);
+        Task<Room?> GetDetail(Guid id);
+        Task CreateRoomFacility(RoomFacility roomFacility);
+        Task DeleteRoomFacility(RoomFacility roomFacility);
     }
 }
+ 

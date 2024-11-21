@@ -156,7 +156,7 @@
                         >
                           +
                         </button>
-                        <span>{{ destination.Name }}</span>
+                        <span class="destination__name">{{ destination.Name }}</span>
                       </div>
                     </div>
                     <button class="btn btn--close w-4" @click="closeSelect">Ok</button>
@@ -165,7 +165,13 @@
                 <div class="multichoice">
                   <div v-for="destination in hotel.HotelDestination" :key="destination.Id">
                     <div class="destination__hotel">
-                      <span>{{ destination.Destination.Name }}</span>
+                      <span class="destination__name">{{ destination.Destination.Name }}</span>
+                      <button
+                        class="destination__button btn--remove"
+                        @click="removeDestination(destination.Destination)"
+                      >
+                        -
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -338,8 +344,12 @@ function formatHotelData() {
   submitHotel.value.Description = hotel.value.Description
   submitHotel.value.Email = hotel.value.Email
   submitHotel.value.PhoneNumber = hotel.value.PhoneNumber
-  submitHotel.value.CheckInTime = `${hotel.value.CheckInTime}:00`
-  submitHotel.value.CheckOutTime = `${hotel.value.CheckOutTime}:00`
+  submitHotel.value.CheckInTime =
+    hotel.value.CheckInTime.length < 8 ? `${hotel.value.CheckInTime}:00` : hotel.value.CheckInTime
+  submitHotel.value.CheckOutTime =
+    hotel.value.CheckOutTime.length < 8
+      ? `${hotel.value.CheckOutTime}:00`
+      : hotel.value.CheckOutTime
   submitHotel.value.CityId = hotel.value.CityId
   submitHotel.value.Type = hotel.value.Type
   submitHotel.value.UserId = userStore.getUser.Id
@@ -363,7 +373,12 @@ async function submitForm() {
       errorMessage.value = response.message
     }
   } else {
-    console.log('chinh sua hotel')
+    const response = await hotelStore.updateHotel(props.id, submitHotel.value, userStore.getToken)
+    if (response.success) {
+      closeForm()
+    } else {
+      errorMessage.value = response.message
+    }
   }
   console.log(submitHotel)
 }

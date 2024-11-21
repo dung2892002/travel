@@ -67,5 +67,95 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+  async updateHotel(id, hotel, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Hotels/edit`, hotel, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          hotelId: id
+        }
+      })
+      if (response.status === 200) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async fetchRoomByHotel(hotelId) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Rooms`, {
+        params: {
+          hotelId: hotelId
+        }
+      })
+
+      const rooms = response.data
+      this.rooms = rooms
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+  async fetchRoom(id) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Rooms/${id}`)
+
+      const room = response.data
+      this.room = room
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async createRoom(room, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Rooms`, room, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async updateRoom(id, room, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Rooms/edit`, room, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          roomId: id
+        }
+      })
+      if (response.status === 200) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

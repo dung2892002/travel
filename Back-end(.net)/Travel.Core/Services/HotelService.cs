@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
@@ -14,15 +13,29 @@ namespace Travel.Core.Services
         
         public async Task CreateHotel(Hotel hotel)
         {
+            await _unitOfWork.BeginTransaction();
             try
             {
                 hotel.Id = Guid.NewGuid();
                 await _unitOfWork.Hotels.CreateHotel(hotel);
+                foreach (var hotelDestination in hotel.HotelDestination)
+                {
+                    hotelDestination.HotelId = hotel.Id;
+                    hotelDestination.Destination = null;
+                    await _unitOfWork.Hotels.CreateHotelDestination(hotelDestination);
+                }
+
+                foreach (var hotelFacility in hotel.HotelFacility)
+                {
+                    hotelFacility.HotelId = hotel.Id;
+                    hotelFacility.Facility = null;
+                    await _unitOfWork.Hotels.CreateHotelFacility(hotelFacility);
+                }
+                await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
             {
                 await _unitOfWork.RollbackTransaction();
-                // Handle exception (log it, rethrow it, etc.)
                 throw new ApplicationException("Error creating hotel", ex);
             }
         }
@@ -54,24 +67,40 @@ namespace Travel.Core.Services
 
         public async Task<bool> UpdateHotel(Guid id, Hotel hotel)
         {
-            var hotelExisting = await _unitOfWork.Hotels.GetById(id);
-            if (hotelExisting == null)
+            await _unitOfWork.BeginTransaction();
+            try
             {
-                throw new ArgumentException("Hotel not exist");
+                var hotelExisting = await _unitOfWork.Hotels.GetById(id);
+                if (hotelExisting == null)
+                {
+                    throw new ArgumentException("Hotel not exist");
+                }
+
+                hotelExisting.Name = hotel.Name;
+                hotelExisting.Description = hotel.Description;
+                hotelExisting.Rating = hotel.Rating;
+                hotelExisting.CheckInTime = hotel.CheckInTime;
+                hotelExisting.CheckOutTime = hotel.CheckOutTime;
+                hotelExisting.Email = hotel.Email;
+                hotelExisting.PhoneNumber = hotel.PhoneNumber;
+                hotelExisting.CityId = hotel.CityId;
+                hotelExisting.Type = hotel.Type;
+
+                UpdateHotelDestinations(hotelExisting, hotel.HotelDestination);
+                UpdateHotelFacilities(hotelExisting, hotel.HotelFacility);
+
+                var result = await _unitOfWork.CompleteAsync();
+                await _unitOfWork.CommitTransaction();
+
+                return result > 0;
             }
 
-            Console.WriteLine($"name truowsc khi doi: {hotelExisting.Name}");
-            hotelExisting.Name = hotel.Name;
-            Console.WriteLine($"name sau khi doi: {hotelExisting.Name}");
 
-            hotelExisting.Description = hotel.Description;
-            hotelExisting.Rating = hotel.Rating;
-            hotelExisting.CheckInTime = hotel.CheckInTime;
-            hotelExisting.CheckOutTime = hotel.CheckOutTime;
-
-            var result = await _unitOfWork.CompleteAsync();
-
-            return result > 0;
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransaction();
+                throw new ApplicationException("Error update hotel", ex);
+            }
         }
 
         public async Task<bool> UploadImagesAsync(List<IFormFile> files, Guid hotelId)
@@ -100,6 +129,44 @@ namespace Travel.Core.Services
             }
             await _unitOfWork.CompleteAsync();
             return true;
+        }
+
+        private async void UpdateHotelDestinations(Hotel existingHotel, ICollection<HotelDestination> newDestinations)
+        {
+            var hotelDestinationRemove = existingHotel.HotelDestination
+                .Where(d => !newDestinations.Any(nd => nd.DestinationId == d.DestinationId))
+                .ToList();
+            foreach (var hotelDestination in hotelDestinationRemove)
+            {
+                await _unitOfWork.Hotels.DeleteHotelDestination(hotelDestination);
+            }
+
+            var existingIds = existingHotel.HotelDestination.Select(d => d.DestinationId).ToList();
+            var hotelDestinationAdd = newDestinations.Where(nd => !existingIds.Contains(nd.DestinationId)).ToList();
+            foreach (var hotelDestination in hotelDestinationAdd)
+            {
+                hotelDestination.HotelId = existingHotel.Id;
+                await _unitOfWork.Hotels.CreateHotelDestination(hotelDestination);
+            }
+        }
+
+        private async void UpdateHotelFacilities(Hotel existingHotel, ICollection<HotelFacility> newFacilities)
+        {
+            var hotelFacilityRemove = existingHotel.HotelFacility
+                .Where(f => !newFacilities.Any(nf => nf.FacilityId == f.FacilityId))
+                .ToList();
+            foreach (var hotelFacility in hotelFacilityRemove)
+            {
+                await _unitOfWork.Hotels.DeleteHotelFacility(hotelFacility);
+            }
+
+            var existingIds = existingHotel.HotelFacility.Select(f => f.FacilityId).ToList();
+            var hotelFacilityAdd = newFacilities.Where(nf => !existingIds.Contains(nf.FacilityId)).ToList();
+            foreach (var hotelFacility in hotelFacilityAdd)
+            {
+                hotelFacility.HotelId = existingHotel.Id;
+                await _unitOfWork.Hotels.CreateHotelFacility(hotelFacility);
+            }
         }
     }
 }

@@ -4,6 +4,8 @@ export default function () {
     hotel: {},
     popularFacilities: null,
     uniqueFacilities: null,
-    roomFacilities: null
+    roomFacilities: null,
+    rooms: null,
+    room: {}
   }
 }

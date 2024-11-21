@@ -13,5 +13,10 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<Hotel>> GetByDestination(int destinationId);
 
         Task CreateHotel(Hotel hotel);
+
+        Task CreateHotelDestination(HotelDestination hotelDestination);
+        Task DeleteHotelDestination(HotelDestination hotelDestination);
+        Task CreateHotelFacility(HotelFacility hotelFacility);
+        Task DeleteHotelFacility(HotelFacility hotelFacility);
     }
 }

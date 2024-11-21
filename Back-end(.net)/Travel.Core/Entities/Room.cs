@@ -14,8 +14,6 @@ namespace Travel.Core.Entities
 
         public decimal Area { get; set; }
 
-        public bool FreeWifi { get; set; }
-
         public short MaxAdultPeople { get; set; }
 
         public short MaxChildrenPeople { get; set; }

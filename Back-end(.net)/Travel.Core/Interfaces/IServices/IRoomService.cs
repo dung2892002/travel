@@ -9,6 +9,7 @@ namespace Travel.Core.Interfaces.IServices
         Task CreateRoom(Room room);
         Task<bool> UpdateRoom(Guid roomId, Room room);
         Task<bool> UploadImagesAsync(List<IFormFile> files, Guid roomId);
+        Task<Room?> GetRoomDetail(Guid id);
 
     }
 }

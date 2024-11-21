@@ -1277,6 +1277,22 @@
   },
   {
     "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "GetById",
+    "RelativePath": "api/v1/Rooms/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
     "Method": "UpdateRoom",
     "RelativePath": "api/v1/Rooms/edit",
     "HttpMethod": "PUT",
