@@ -47,6 +47,11 @@
   height: 24px;
 }
 
+.error-message {
+  font-size: 14px;
+  color: red;
+}
+
 .required {
   text-align: center;
   color: red;
@@ -236,7 +241,7 @@
   position: relative;
 }
 
-.show-select {
+.form-show-select {
   background-color: #fff;
   border-radius: 6px;
   width: 480px;

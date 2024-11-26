@@ -18,8 +18,8 @@ export function formatDate(inputDate) {
   return `${day}/${month}/${year}`
 }
 
-export function formatMoney(money) {
-  return Intl.NumberFormat('de-DE').format(money)
+export function formatNumber(value) {
+  return Intl.NumberFormat('de-DE').format(value)
 }
 
 export function getLinkImage(path) {

@@ -18,7 +18,7 @@
           </div>
           <div>
             <h3>tong so tien:</h3>
-            <h3>{{ formatMoney(booking.Price) }}</h3>
+            <h3>{{ formatNumber(booking.Price) }}</h3>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
 <script setup>
 import { useBookingStore } from '@/stores/booking'
 import { useUserStore } from '@/stores/user'
-import { formatDate, formatMoney } from '@/utils'
+import { formatDate, formatNumber } from '@/utils'
 import { computed, onMounted } from 'vue'
 
 const userStore = useUserStore()

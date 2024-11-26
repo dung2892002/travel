@@ -1,8 +1,18 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__item user-info">
-      <div class="user-info">
-        <img :src="getLinkImage(user.AvatarImage)" alt="anh_dai_dien" class="sidebar-image" />
+      <div class="user-info" @click="triggerImageInput">
+        <div class="sidebar-image">
+          <img :src="getLinkImage(user.AvatarImage)" alt="anh_dai_dien" />
+          <div class="hover-overlay">Thay ảnh</div>
+        </div>
+        <input
+          type="file"
+          accept="image/*"
+          ref="fileInput"
+          class="hidden-input"
+          @change="handleImageChange"
+        />
       </div>
       <div class="user-info">
         {{ user.DisplayName }}
@@ -56,15 +66,35 @@
 import { useUserStore } from '@/stores/user'
 import '../styles/base/button.css'
 import '../styles/layout/sidebar.css'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { getLinkImage } from '@/utils'
 
 const userStore = useUserStore()
+
+const fileInput = ref(null)
+
+function triggerImageInput() {
+  fileInput.value.click()
+}
+
+async function handleImageChange(event) {
+  const file = event.target.files[0]
+  if (file) {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await userStore.changeImage(user.value.Id, formData, token.value)
+    if (response.success) {
+      console.log('success')
+    } else {
+      console.log(response.message)
+    }
+  }
+}
 
 function checkRole(value) {
   return user.value.Roles.some((role) => role.RoleValue === value)
 }
 
 const user = computed(() => userStore.getUser)
-console.log(user)
+const token = computed(() => userStore.getToken)
 </script>

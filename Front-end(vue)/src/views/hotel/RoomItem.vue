@@ -1,8 +1,11 @@
 <template>
   <div class="content--row content-item">
     <div class="item-img">
-      <img :src="getLinkImage(room.Image[0].Path)" alt="anh ks" v-if="room.Image.length > 0" />
-      <img src="../../assets/image/hotel.jpg" alt="" v-else />
+      <div v-if="room.Image.length > 0" class="item-img--hasimage">
+        <img :src="getLinkImage(room.Image[0].Path)" alt="anh ks" class="item-img" />
+        <div class="item-hover-overlay" @click="toggleImagePopup">Xem ảnh</div>
+      </div>
+      <img src="../../assets/image/hotel.jpg" alt="" v-else class="item-img" />
     </div>
     <div class="content--column item-info">
       <div class="info-value info__name">{{ room.Name }}</div>
@@ -49,6 +52,8 @@
     <div class="item-action" v-if="mode == 1">
       <button @click="handleUpdateRoom" class="action-button action--first">Chỉnh sửa</button>
     </div>
+
+    <ImageGallery :images="room.Image" :visible="showImagePopup" @close="toggleImagePopup" />
   </div>
 </template>
 
@@ -56,10 +61,16 @@
 import { getLinkImage } from '@/utils'
 import '../../styles/main.css'
 import { ref } from 'vue'
+import ImageGallery from '@/components/ImageGallery.vue'
 
+const showImagePopup = ref(false)
 const showAllFacilities = ref(false)
 
 const emit = defineEmits(['updateRoom'])
+
+function toggleImagePopup() {
+  showImagePopup.value = !showImagePopup.value
+}
 
 function handleUpdateRoom() {
   emit('updateRoom')

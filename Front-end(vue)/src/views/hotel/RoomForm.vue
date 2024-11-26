@@ -3,7 +3,7 @@
     <div class="form__content">
       <div class="form__header">
         <h2 class="form__title">Thông tin phòng</h2>
-        <span class="error" v-if="errorMessage.length > 0"> {{ errorMessage }}</span>
+        <span class="error-message" v-if="errorMessage.length > 0"> {{ errorMessage }}</span>
         <button class="form__button" @click="closeForm">
           <img src="/src/assets/icon/close-48.png" alt="logo" />
         </button>
@@ -89,7 +89,15 @@
             </div>
           </div>
           <div class="form__footer">
-            <button class="btn btn--close" @click="closeForm">Hủy</button>
+            <button class="btn btn--add" @click="triggerFileInput">Thêm ảnh</button>
+            <input
+              type="file"
+              ref="fileInput"
+              multiple
+              accept="image/*"
+              @change="handleFileChange"
+              style="display: none"
+            />
             <button class="btn btn--add" id="submitButton" @click="submitForm">Lưu</button>
           </div>
         </div>
@@ -114,6 +122,38 @@ const room = ref({})
 const errorMessage = ref('')
 
 const submitRoom = ref({})
+
+const fileInput = ref(null)
+const selectedFiles = ref([])
+
+function triggerFileInput() {
+  fileInput.value.click()
+}
+
+function handleFileChange(event) {
+  const files = event.target.files
+  selectedFiles.value = Array.from(files)
+
+  uploadFiles()
+}
+
+async function uploadFiles() {
+  const formData = new FormData()
+
+  selectedFiles.value.forEach((file) => {
+    formData.append('files', file)
+  })
+
+  console.log(formData)
+
+  const response = await hotelStore.addImageRoom(props.id, formData, userStore.getToken)
+
+  if (response.success) {
+    closeForm()
+  } else {
+    errorMessage.value = response.message
+  }
+}
 
 const props = defineProps({
   id: {

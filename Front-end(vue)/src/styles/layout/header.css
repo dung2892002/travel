@@ -43,7 +43,7 @@ header {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 10;
+  z-index: 11;
   transition: 0.5s;
 }
 

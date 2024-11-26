@@ -6,6 +6,7 @@ export default function () {
     uniqueFacilities: null,
     roomFacilities: null,
     rooms: null,
-    room: {}
+    room: {},
+    searchHotels: null
   }
 }

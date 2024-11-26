@@ -7,13 +7,16 @@
       </button>
     </div>
     <div class="content-main">
-      <HotelItem
-        v-for="hotel in hotels"
-        :hotel="hotel"
-        :mode="1"
-        :key="hotel.Id"
-        @updateHotel="updateHotel(hotel.Id)"
-      ></HotelItem>
+      <div v-if="hotels">
+        <HotelItem
+          v-for="hotel in hotels"
+          :key="hotel.Id"
+          :hotel="hotel"
+          :mode="1"
+          @selectHotel="updateHotel(hotel.Id)"
+        ></HotelItem>
+      </div>
+      <div v-else>loading</div>
     </div>
   </div>
   <HotelForm v-if="showDetail" @closeForm="resetDefault" :id="hotelUpdateId"></HotelForm>

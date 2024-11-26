@@ -106,7 +106,7 @@
                 placeholder="Địa điểm khách sạn"
                 @focus="(showSelectLocation = 1), (showSelectDestination = 0)"
               />
-              <div v-if="showSelectLocation === 1" class="show-select">
+              <div v-if="showSelectLocation === 1" class="form-show-select">
                 <ul v-if="citiesFilter.length > 0">
                   <li
                     v-for="city in citiesFilter"
@@ -134,7 +134,10 @@
                   >
                     <span class="button--add-text">+</span>
                   </button>
-                  <div v-if="showSelectDestination === 1" class="show-select select--destination">
+                  <div
+                    v-if="showSelectDestination === 1"
+                    class="form-show-select select--destination"
+                  >
                     <div class="destination">
                       <span class="destination__label">Chọn điểm đến lân cận</span>
                       <div
@@ -211,7 +214,15 @@
             </div>
           </div>
           <div class="form__footer">
-            <button class="btn btn--close" @click="closeForm">Hủy</button>
+            <button class="btn btn--add" @click="triggerFileInput">Thêm ảnh</button>
+            <input
+              type="file"
+              ref="fileInput"
+              multiple
+              accept="image/*"
+              @change="handleFileChange"
+              style="display: none"
+            />
             <button class="btn btn--add" id="submitButton" @click="submitForm">Lưu</button>
           </div>
         </div>
@@ -242,8 +253,39 @@ const citiesFilter = ref([])
 const searchLocationRef = ref(null)
 const showDestinationRef = ref(null)
 const errorMessage = ref('')
-
 const submitHotel = ref({})
+
+const fileInput = ref(null)
+const selectedFiles = ref([])
+
+function triggerFileInput() {
+  fileInput.value.click()
+}
+
+function handleFileChange(event) {
+  const files = event.target.files
+  selectedFiles.value = Array.from(files)
+
+  uploadFiles()
+}
+
+async function uploadFiles() {
+  const formData = new FormData()
+
+  selectedFiles.value.forEach((file) => {
+    formData.append('files', file)
+  })
+
+  console.log(formData)
+
+  const response = await hotelStore.addImageHotel(props.id, formData, userStore.getToken)
+
+  if (response.success) {
+    closeForm()
+  } else {
+    errorMessage.value = response.message
+  }
+}
 
 const props = defineProps({
   id: {
@@ -380,7 +422,6 @@ async function submitForm() {
       errorMessage.value = response.message
     }
   }
-  console.log(submitHotel)
 }
 
 const locationStore = useLocationStore()

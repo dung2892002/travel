@@ -46,5 +46,58 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+
+  async updateUser(id, user, token) {
+    try {
+      console.log(token)
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Users/update-info`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          id: id
+        }
+      })
+
+      if (response.status === 200) {
+        this.user = response.data
+        localStorage.setItem('user', JSON.stringify(response.data))
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async changeImage(id, formData, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Users/change-avatar`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        },
+        params: {
+          id: id
+        }
+      })
+
+      if (response.status === 200) {
+        this.user = response.data
+        localStorage.setItem('user', JSON.stringify(response.data))
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

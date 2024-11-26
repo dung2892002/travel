@@ -90,6 +90,30 @@ export default {
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
   },
+
+  async addImageHotel(id, formData, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Hotels/edit/upload-image`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        },
+        params: {
+          hotelId: id
+        }
+      })
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
   async fetchRoomByHotel(hotelId) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
@@ -151,6 +175,44 @@ export default {
       if (response.status === 200) {
         return { success: true }
       }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async addImageRoom(id, formData, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Rooms/edit/upload-image`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        },
+        params: {
+          roomId: id
+        }
+      })
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async fetchSearchHotels(query) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Hotels/search`, query)
+      console.log(query)
+      const hotels = response.data
+      this.searchHotels = hotels
     } catch (error) {
       if (error.response) {
         return { success: false, message: error.response.data }

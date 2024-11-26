@@ -1,0 +1,133 @@
+.image-gallery-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.popup-content {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  border-radius: 8px;
+  padding: 20px;
+  z-index: 1001;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.popup-close {
+  position: absolute;
+  top: -10px;
+  right: 200px;
+  background: none;
+  width: 64px;
+  height: 64px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup-close img {
+  width: 32px;
+  height: 32px;
+}
+
+.popup-images {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 10px;
+  overflow: auto;
+  max-height: 70vh;
+  width: 1000px;
+}
+
+.primary-image {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-image {
+  max-width: 540px;
+  height: 320px;
+  flex: 1;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+.popup-action {
+  width: 64px;
+  height: auto;
+  border-radius: 50%;
+  background-color: aliceblue;
+}
+
+.popup-action img {
+  width: 64px;
+}
+
+.popup-action:hover {
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+.list-image {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+}
+
+.list-image img {
+  width: 120px;
+  height: 120px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.index {
+  color: white;
+  margin: auto;
+}
+
+.list-image::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-image::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.list-image::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.list-image::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
