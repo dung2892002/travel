@@ -32,10 +32,8 @@ namespace Travel.Core.Entities
 
         public virtual ICollection<HotelFacility> HotelFacility { get; set; } = new List<HotelFacility>();
 
-        [JsonIgnore]
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
 
-        [JsonIgnore]
         public virtual ICollection<Room> Room { get; set; } = new List<Room>();
 
         [JsonIgnore]

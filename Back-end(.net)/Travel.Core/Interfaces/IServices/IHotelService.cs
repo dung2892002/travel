@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IServices
@@ -12,5 +13,6 @@ namespace Travel.Core.Interfaces.IServices
         Task CreateHotel(Hotel hotel);    
         Task<bool> UpdateHotel(Guid id, Hotel hotel);
         Task<bool> UploadImagesAsync(List<IFormFile> files, Guid hotelId);
+        Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request);
     }
 }

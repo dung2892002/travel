@@ -89,7 +89,7 @@ namespace Travel.Api.Controllers
         }
 
         [Authorize(Policy = "HotelPartner")]
-        [HttpPut("edit/upload-image")]
+        [HttpPost("edit/upload-image")]
         public async Task<IActionResult> UploadRoomImage([FromQuery] Guid roomId, [FromForm] List<IFormFile> files)
         {
             try

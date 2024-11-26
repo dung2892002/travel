@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IRepositories
 {
@@ -18,5 +19,7 @@ namespace Travel.Core.Interfaces.IRepositories
         Task DeleteHotelDestination(HotelDestination hotelDestination);
         Task CreateHotelFacility(HotelFacility hotelFacility);
         Task DeleteHotelFacility(HotelFacility hotelFacility);
+
+        Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request);
     }
 }

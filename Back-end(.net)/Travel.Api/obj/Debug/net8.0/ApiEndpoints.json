@@ -381,6 +381,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.HotelsController",
+    "Method": "SearchHotel",
+    "RelativePath": "api/v1/Hotels/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Travel.Core.DTOs.SearchHotelRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.PaymentsController",
     "Method": "PayForRoom",
     "RelativePath": "api/v1/Payments/pay-room",
@@ -1316,7 +1332,7 @@
     "ContainingType": "Travel.Api.Controllers.RoomsController",
     "Method": "UploadRoomImage",
     "RelativePath": "api/v1/Rooms/edit/upload-image",
-    "HttpMethod": "PUT",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1415,7 +1431,7 @@
   {
     "ContainingType": "Travel.Api.Controllers.UsersController",
     "Method": "ChangeAvatar",
-    "RelativePath": "api/v1/Users/change-avatar/{id}",
+    "RelativePath": "api/v1/Users/change-avatar",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -1423,7 +1439,7 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "file",
@@ -1532,7 +1548,7 @@
   {
     "ContainingType": "Travel.Api.Controllers.UsersController",
     "Method": "UpdateInfo",
-    "RelativePath": "api/v1/Users/update-info/{id}",
+    "RelativePath": "api/v1/Users/update-info",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -1540,11 +1556,11 @@
       {
         "Name": "id",
         "Type": "System.Guid",
-        "IsRequired": true
+        "IsRequired": false
       },
       {
         "Name": "user",
-        "Type": "Travel.Core.Entities.User",
+        "Type": "Travel.Core.DTOs.UserDTO",
         "IsRequired": true
       }
     ],

@@ -45,7 +45,7 @@ namespace Travel.Api.Middleware
                         }
                     }
                 }
-
+                else 
                 if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("Post");

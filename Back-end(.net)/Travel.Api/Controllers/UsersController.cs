@@ -132,16 +132,18 @@ namespace Travel.Api.Controllers
         }
 
         [Authorize(Policy = "User")]
-        [HttpPut("update-info/{id}")]
-        public async Task<IActionResult> UpdateInfo(Guid id, [FromBody] User user)
+        [HttpPut("update-info")]
+        public async Task<IActionResult> UpdateInfo([FromQuery] Guid id, [FromBody] UserDTO user)
         {
             try
             {
-                var result = await _userService.UpdateInfo(id, user);
+                var response = await _userService.UpdateInfo(id, user);
 
-                if (!result) return StatusCode(400, "No information has been changed");
+                if (!response) return StatusCode(400, "No information has been changed");
 
-                return StatusCode(201, "Update info user successfully");
+                var userResponse = await _userService.GetDetailUser(id);
+
+                return StatusCode(200, userResponse);
             }
             catch (InvalidDataException ex)
             {
@@ -159,8 +161,8 @@ namespace Travel.Api.Controllers
 
 
         [Authorize(Policy = "User")]
-        [HttpPut("change-avatar/{id}")]
-        public async Task<IActionResult> ChangeAvatar(Guid id, IFormFile file)
+        [HttpPut("change-avatar")]
+        public async Task<IActionResult> ChangeAvatar([FromQuery] Guid id, IFormFile file)
         {
             try
             {
@@ -175,7 +177,9 @@ namespace Travel.Api.Controllers
 
                 if (!result) return StatusCode(400, "No information has been changed");
 
-                return StatusCode(201, "Change avatar user successfully");
+                var userResponse = await _userService.GetDetailUser(id);
+
+                return StatusCode(200, userResponse);
 
             }
             catch (ArgumentException ex)

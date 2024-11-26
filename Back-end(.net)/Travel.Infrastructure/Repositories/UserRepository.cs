@@ -20,11 +20,20 @@ namespace Travel.Infrastructure.Repositories
             return await _dbContext.User.SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<User?> GetDetailUser(Guid id)
+        {
+            return await _dbContext.User
+                .Include(u => u.UserRole)
+                    .ThenInclude(ur => ur.Role)
+                .SingleOrDefaultAsync(u => u.Id == id);
+        }
+
         public async Task<User?> GetUserByUsername(string username)
         {
-            return await _dbContext.User.Include(u => u.UserRole)
+            return await _dbContext.User
+                .Include(u => u.UserRole)
                     .ThenInclude(ur => ur.Role)
-                    .SingleOrDefaultAsync(x => x.Username == username);
+                .SingleOrDefaultAsync(x => x.Username == username);
         }
 
     }

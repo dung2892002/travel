@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IRepositories;
 using Travel.Infrastructure.Data;
@@ -35,17 +36,15 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<Hotel>> GetAllHotel()
         {
-            return await _dbContext.Hotel.Include(x => x.Image).Select(h => new Hotel
-            {
-                Id = h.Id,
-                Name = h.Name,
-                Description = h.Description,
-                Rating = h.Rating,
-                Email = h.Email,
-                PhoneNumber = h.PhoneNumber,
-                CheckInTime = h.CheckInTime,
-                CheckOutTime = h.CheckOutTime
-            }).ToListAsync();
+            var hotels = await _dbContext.Hotel
+                .Include(x => x.Image)
+                .Include(h => h.City)
+                    .ThenInclude(c => c.Province)
+                .Include(h => h.HotelFacility)
+                    .ThenInclude(hf => hf.Facility)
+                .ToListAsync();
+
+            return hotels;
 
 
         }
@@ -82,14 +81,107 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<Hotel>> GetByPartner(Guid partnerId)
         {
-            return await _dbContext.Hotel
+            var hotels = await _dbContext.Hotel
                 .Include(x => x.Image)
                 .Include(h => h.City)
                     .ThenInclude(c => c.Province)
                 .Include(h => h.HotelFacility)
                     .ThenInclude(hf => hf.Facility)
+                .Include(h => h.Room)
                 .Where(h => h.UserId == partnerId)
                 .ToListAsync();
+
+            return hotels;
         }
+
+        public async Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request)
+        {
+            var query = _dbContext.Hotel
+                .Include(h => h.Image)
+                .Include(h => h.City)
+                    .ThenInclude(c => c.Province)
+                .Include(h => h.HotelFacility)
+                    .ThenInclude(hf => hf.Facility)
+                .Include(h => h.Room)
+                    .ThenInclude(r => r.BookingRoom)
+                .Include(h => h.Review)
+                .AsQueryable();
+
+            if (request.CityId.HasValue)
+            {
+                query = query.Where(h => h.CityId == request.CityId);
+            }
+            else if (request.ProvinceId.HasValue)
+            {
+                query = query.Where(h => h.City.ProvinceId == request.ProvinceId);
+            }
+
+            query = query.Where(h => h.Room.Any(r =>
+                                               r.Quantity - r.BookingRoom
+                                                           .Where(b => b.Status != 2 && ((b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn)))
+                                                           .Sum(b => b.Quantity)
+                                               >= request.QuantityRoom));
+
+            query = query.Where(h => h.Room.Any(r =>
+                                                r.MaxAdultPeople >= (int)(request.QuantityAdultPeople / request.QuantityRoom)
+                                                && r.MaxChildrenPeople >= (int)(request.QuantityChildrenPeople / request.QuantityRoom)));
+            if (request.MinPrice.HasValue)
+            {
+                query = query.Where(h => h.Room.Any(r => r.Price >= request.MinPrice));
+            }
+            if (request.MaxPrice.HasValue)
+            {
+                query = query.Where(h => h.Room.Any(r => r.Price <= request.MaxPrice));
+            }
+            if (request.Types != null)
+            {
+                query = query.Where(h => request.Types.Contains(h.Type));
+            }
+            if (request.Ratings != null)
+            {
+                query = query.Where(h => request.Ratings.Contains(h.Rating));
+            }
+            if (request.HotelFacilities != null)
+            {
+                foreach (var facilityId in request.HotelFacilities)
+                {
+                    query = query.Where(h => h.HotelFacility.Any(hf => hf.FacilityId == facilityId));
+                }
+            }
+            if (request.GuestRatings != null)
+            {
+                var minGuestRating = request.GuestRatings.Min();
+                query = query.Where(h => h.Review.Count == 0 || h.Review.Average(r => r.Point) >= minGuestRating);
+            }
+            var hotels = await query
+                        .Select(h => new Hotel
+                        {
+                            Id = h.Id,
+                            Name = h.Name,
+                            CityId = h.CityId,
+                            Rating = h.Rating,
+                            Type = h.Type,
+                            City = h.City,
+                            Image = h.Image,
+                            HotelFacility = h.HotelFacility,
+                            Review = h.Review,
+                            Room = h.Room
+                                    .Where(r =>
+                                        r.Quantity - r.BookingRoom
+                                            .Where(b => b.Status != 2 && (b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn))
+                                            .Sum(b => b.Quantity) >= request.QuantityRoom &&
+                                        r.MaxAdultPeople >= (int)(request.QuantityAdultPeople / request.QuantityRoom) &&
+                                        r.MaxChildrenPeople >= (int)(request.QuantityChildrenPeople / request.QuantityRoom) &&
+                                        (!request.MinPrice.HasValue || r.Price >= request.MinPrice) &&
+                                        (!request.MaxPrice.HasValue || r.Price <= request.MaxPrice)
+                                    )
+                                    .OrderBy(r => r.Price)
+                                    .ToList() // 
+                        })
+                        .ToListAsync();
+
+            return hotels;
+        }
+
     }
 }

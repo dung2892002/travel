@@ -1,4 +1,6 @@
-﻿namespace Travel.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace Travel.Core.Entities
 {
     public class Role
     {

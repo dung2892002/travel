@@ -6,6 +6,7 @@ namespace Travel.Core.Interfaces.IRepositories
     {
         Task<User?> GetUserByUsername(string username);
         Task<User?> GetUserById(Guid id);
+        Task<User?> GetDetailUser(Guid id);
         Task Add(User user);
     }
 }

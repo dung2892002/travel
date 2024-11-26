@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
 
@@ -114,10 +115,23 @@ namespace Travel.Api.Controllers
         {
             try
             {
-
                 var result = await _hotelService.UploadImagesAsync(files, hotelId);
                 if (!result) return StatusCode(400, "Failed to upload images.");
                 return StatusCode(201, "upload image successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> SearchHotel([FromBody] SearchHotelRequest request)
+        {
+            try
+            {
+                var hotels = await _hotelService.SearchHotel(request);
+                return StatusCode(200, hotels);
             }
             catch (Exception ex)
             {

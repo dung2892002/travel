@@ -94,7 +94,7 @@ namespace Travel.Core.Services
             return result > 0;
         }
 
-        public async Task<bool> UpdateInfo( Guid id, User user)
+        public async Task<bool> UpdateInfo( Guid id, UserDTO user)
         {
             if (!ValidateEmail(user.Email))
                 throw new InvalidDataException("Please enter email in correct format");
@@ -112,7 +112,6 @@ namespace Travel.Core.Services
             var result = await _unitOfWork.CompleteAsync();
 
             return result > 0;
-
         }
 
         public async Task<bool> ChangeAvatar(Guid id, Stream fileStream, string fileName)
@@ -218,6 +217,31 @@ namespace Travel.Core.Services
             return Regex.IsMatch(phoneNumber, phonePattern);
         }
 
-        
+        public async Task<UserDTO?> GetDetailUser(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetDetailUser(id);
+            if (user == null)
+            {
+                throw new ArgumentException("user not exist");
+            }
+            var userDto = new UserDTO
+            {
+                Id = user.Id,
+                Fullname = user.Fullname,
+                Username = user.Username,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DisplayName = user.DisplayName,
+                AvatarImage = user.AvatarImage,
+                Roles = user.UserRole.Select(ur => new RoleDTO
+                {
+                    Id = ur.Role.Id,
+                    Name = ur.Role.Name,
+                    RoleValue = ur.Role.RoleValue
+                }).ToList()
+            };
+
+            return userDto;
+        }
     }
 }

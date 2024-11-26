@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
@@ -9,7 +10,6 @@ namespace Travel.Core.Services
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IFirebaseStorageService _firebaseStorageService = firebaseStorageService;
-
         
         public async Task CreateHotel(Hotel hotel)
         {
@@ -63,6 +63,11 @@ namespace Travel.Core.Services
         public async Task<IEnumerable<Hotel>> GetByPartner(Guid partnerId)
         {
             return await _unitOfWork.Hotels.GetByPartner(partnerId);
+        }
+
+        public async Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request)
+        {
+            return await _unitOfWork.Hotels.SearchHotel(request);
         }
 
         public async Task<bool> UpdateHotel(Guid id, Hotel hotel)
