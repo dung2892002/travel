@@ -1,12 +1,15 @@
 export default function () {
   return {
     hotels: null,
-    hotel: {},
+    hotel: null,
     popularFacilities: null,
     uniqueFacilities: null,
     roomFacilities: null,
     rooms: null,
-    room: {},
-    searchHotels: null
+    room: null,
+    searchHotels: null,
+    searchRooms: null,
+    totalPages: 1,
+    totalItems: 1
   }
 }

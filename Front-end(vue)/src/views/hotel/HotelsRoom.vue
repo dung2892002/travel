@@ -12,7 +12,7 @@
         :room="room"
         :mode="1"
         :key="room.Id"
-        @updateRoom="updateRoom(room.Id)"
+        @selectRoom="updateRoom(room.Id)"
       ></RoomItem>
     </div>
   </div>

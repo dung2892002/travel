@@ -10,6 +10,7 @@ import TourPage from '@/views/tour/TourPage.vue'
 import MyProfile from '@/views/user/MyProfile.vue'
 import MyHotel from '@/views/hotel/MyHotel.vue'
 import HotelsRoom from '@/views/hotel/HotelsRoom.vue'
+import HotelDetail from '@/views/hotel/HotelDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +21,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/hotel',
+      path: '/hotels',
       name: 'hotel',
       component: HotelPage
+    },
+    {
+      path: '/hotel/:id',
+      name: 'hotelDetail',
+      component: HotelDetail
     },
     {
       path: '/tour',

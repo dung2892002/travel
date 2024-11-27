@@ -42,13 +42,17 @@ const toggleMenu = () => {
 const userStore = useUserStore()
 const user = computed(() => userStore.getUser)
 const showProfile = () => {
-  router.push('profile')
+  router.push({
+    name: 'profile'
+  })
   toggleMenu()
 }
 
 const logout = () => {
   userStore.logout()
-  router.push('login')
+  router.push({
+    name: 'login'
+  })
   toggleMenu()
 }
 

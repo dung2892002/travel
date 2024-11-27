@@ -22,7 +22,6 @@ export default {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
       const response = await axios.get(`${apiServer}/Hotels/${id}`)
-
       const hotel = response.data
       this.hotel = hotel
     } catch (error) {
@@ -210,9 +209,30 @@ export default {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
       const response = await axios.post(`${apiServer}/Hotels/search`, query)
-      console.log(query)
-      const hotels = response.data
-      this.searchHotels = hotels
+      const data = response.data
+      this.searchHotels = data.Items
+      this.totalPages = data.TotalPages
+      this.totalItems = data.TotalItems
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  clearSearchHotels() {
+    this.searchHotels = null
+    this.totalPages = 1
+    this.totalItems = 1
+  },
+
+  async fetchSearchRooms(query) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Rooms/search`, query)
+      const data = response.data
+      this.searchRooms = data
     } catch (error) {
       if (error.response) {
         return { success: false, message: error.response.data }

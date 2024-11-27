@@ -6,5 +6,8 @@ export default {
   getRoomFacilities: (state) => state.roomFacilities,
   getRooms: (state) => state.rooms,
   getRoom: (state) => state.room,
-  getSearchHotels: (state) => state.searchHotels
+  getSearchHotels: (state) => state.searchHotels,
+  getTotalPages: (state) => state.totalPages,
+  getTotalItems: (state) => state.totalItems,
+  getSearchRooms: (state) => state.searchRooms
 }

@@ -7,7 +7,7 @@
       </div>
       <img src="../../assets/image/hotel.jpg" alt="" v-else class="item-img" />
     </div>
-    <div class="content--column item-info">
+    <div class="content--column item-info" @click="handleSelectHotel">
       <div class="content--row">
         <div class="info-value info__name">{{ hotel.Name }}</div>
         <div class="info-value info__review">
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="item-action" v-if="mode == 1">
-      <button @click="handleUpdateHotel" class="action-button action--first">Chỉnh sửa</button>
+      <button @click="handleSelectHotel" class="action-button action--first">Chỉnh sửa</button>
       <button @click="showRoom" class="action-button">Xem phòng</button>
     </div>
 
@@ -79,7 +79,6 @@ import ImageGallery from '@/components/ImageGallery.vue'
 const showImagePopup = ref(false)
 const showAllFacilities = ref(false)
 
-// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   hotel: {
     type: Object,
@@ -99,10 +98,9 @@ function toggleImagePopup() {
   showImagePopup.value = !showImagePopup.value
 }
 
-function handleUpdateHotel() {
+function handleSelectHotel() {
   emit('selectHotel')
 }
-
 function calculateAverageReview(reviews) {
   let sum = 0
   reviews.forEach((review) => {

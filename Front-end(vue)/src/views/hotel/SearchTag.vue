@@ -1,12 +1,13 @@
 <template>
   <div class="search">
-    <div class="search-item search-location" ref="searchLocationRef">
+    <div class="search-item search-location" ref="searchLocationRef" @click="showSearch">
       <input
+        v-if="!errorLocation"
         type="text"
         v-model="keyword"
         placeholder="Nhập từ khóa để tìm kiếm..."
-        @focus="showSelectSearch = 1"
       />
+      <span v-if="errorLocation" class="error-message"> {{ errorLocation }}</span>
       <div v-if="showSelectSearch === 1" class="show-select select-location">
         <ul v-if="provincesFilter.length > 0">
           <li
@@ -118,6 +119,7 @@ const searchRoomRef = ref(null)
 
 const errorRoom = ref(null)
 const errorTime = ref(null)
+const errorLocation = ref(null)
 
 const emit = defineEmits(['searchHotel'])
 
@@ -131,8 +133,15 @@ const query = ref({
   QuantityChildrenPeople: 1
 })
 
+function showSearch() {
+  errorLocation.value = null
+  showSelectSearch.value = 1
+}
+
 function searchHotel() {
-  emit('searchHotel', query.value)
+  if (query.value.ProvinceId == null && query.value.CityId == null) {
+    errorLocation.value = 'Vui lòng chọn địa điểm'
+  } else emit('searchHotel', query.value)
 }
 
 function filterLocation() {

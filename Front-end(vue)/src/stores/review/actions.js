@@ -1,0 +1,45 @@
+import axios from 'axios'
+
+export default {
+  async fetchHotelReviews(hotelId, pageNumber) {
+    try {
+      if (!pageNumber) return { success: false }
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Reviews/hotel`, {
+        params: {
+          id: hotelId,
+          pageNumber: pageNumber
+        }
+      })
+      const data = response.data
+      this.hotelReviews = data.Items
+      this.overallReview = data.OverallReview
+      this.totalItems = data.TotalItems
+      this.totalPages = data.TotalPages
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async createReview(formData, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Reviews`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if (response.status === 201) {
+        console.log('Review created successfully:', response)
+        return { success: true }
+      }
+    } catch (error) {
+      console.error('Error in createReview:', error)
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  }
+}

@@ -34,3 +34,7 @@ export function calculateDay(start, end) {
   const daysDifference = timeDifference / (1000 * 3600 * 24) // Chuyển đổi từ mili giây sang ngày
   return daysDifference
 }
+
+export function formatText(text) {
+  return text.replace(/\/n/g, '<br>')
+}
