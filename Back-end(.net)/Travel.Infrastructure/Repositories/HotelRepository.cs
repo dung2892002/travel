@@ -94,7 +94,7 @@ namespace Travel.Infrastructure.Repositories
             return hotels;
         }
 
-        public async Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request)
+        public async Task<PagedResult<Hotel>> SearchHotel(SearchHotelRequest request)
         {
             var query = _dbContext.Hotel
                 .Include(h => h.Image)
@@ -153,6 +153,9 @@ namespace Travel.Infrastructure.Repositories
                 var minGuestRating = request.GuestRatings.Min();
                 query = query.Where(h => h.Review.Count == 0 || h.Review.Average(r => r.Point) >= minGuestRating);
             }
+
+            var totalCount = await query.CountAsync();
+
             var hotels = await query
                         .Select(h => new Hotel
                         {
@@ -160,6 +163,7 @@ namespace Travel.Infrastructure.Repositories
                             Name = h.Name,
                             CityId = h.CityId,
                             Rating = h.Rating,
+                            Description = h.Description,
                             Type = h.Type,
                             City = h.City,
                             Image = h.Image,
@@ -176,11 +180,18 @@ namespace Travel.Infrastructure.Repositories
                                         (!request.MaxPrice.HasValue || r.Price <= request.MaxPrice)
                                     )
                                     .OrderBy(r => r.Price)
-                                    .ToList() // 
+                                    .ToList() 
                         })
+                        .Skip((request.PageNumber - 1) * 10)
+                        .Take(10)
                         .ToListAsync();
 
-            return hotels;
+            return new PagedResult<Hotel>
+            {
+                Items = hotels,
+                TotalItems = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / 10.0)
+            };  
         }
 
     }

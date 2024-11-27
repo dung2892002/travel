@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
 
@@ -13,11 +12,11 @@ namespace Travel.Api.Controllers
         private readonly IReviewService _reviewService = reviewService;
 
         [HttpGet("hotel")]
-        public async Task<IActionResult> GetByHotel([FromQuery] Guid id)
+        public async Task<IActionResult> GetByHotel([FromQuery] Guid id, [FromQuery] int pageNumber)
         {
             try
             {
-                var reviews = await _reviewService.GetByHotel(id);
+                var reviews = await _reviewService.GetByHotel(id, pageNumber);
                 return StatusCode(200, reviews);
             }
             catch (ArgumentException ex)
@@ -31,11 +30,11 @@ namespace Travel.Api.Controllers
         }
 
         [HttpGet("tour")]
-        public async Task<IActionResult> GetByTour([FromQuery] Guid id)
+        public async Task<IActionResult> GetByTour([FromQuery] Guid id, [FromQuery] int pageNumber)
         {
             try
             {
-                var reviews = await _reviewService.GetByTour(id);
+                var reviews = await _reviewService.GetByTour(id, pageNumber);
                 return StatusCode(200, reviews);
             }
             catch (ArgumentException ex)

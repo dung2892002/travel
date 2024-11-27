@@ -46,7 +46,7 @@ namespace Travel.Api.Middleware
                     }
                 }
                 else 
-                if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
+                if (context.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) && !context.Request.Path.ToString().Contains("search"))
                 {
                     Console.WriteLine("Post");
                     context.Request.EnableBuffering();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
@@ -63,7 +64,7 @@ namespace Travel.Core.Services
             return reviews;
         }
 
-        public async Task<IEnumerable<Review>> GetByHotel(Guid hoteId)
+        public async Task<PagedResult<Review>> GetByHotel(Guid hoteId, int pageNumber)
         {
             var hotel = await _unitOfWork.Hotels.GetById(hoteId);
             if (hotel == null)
@@ -71,17 +72,17 @@ namespace Travel.Core.Services
                 throw new ArgumentException("hotel not exist");
             }
 
-            return await _unitOfWork.Reviews.GetByHotel(hoteId);
+            return await _unitOfWork.Reviews.GetByHotel(hoteId, pageNumber);
         }
 
-        public async Task<IEnumerable<Review>> GetByTour(Guid tourId)
+        public async Task<PagedResult<Review>> GetByTour(Guid tourId, int pageNumber)
         {
             var tour = await _unitOfWork.Tours.GetById(tourId);
             if(tour == null)
             {
                 throw new ArgumentException("tour not exist");
             }    
-            return await _unitOfWork.Reviews.GetByTour(tourId);
+            return await _unitOfWork.Reviews.GetByTour(tourId, pageNumber);
         }
     }
 }

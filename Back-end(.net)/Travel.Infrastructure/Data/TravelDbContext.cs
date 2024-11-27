@@ -458,7 +458,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.HasIndex(e => e.UserId, "FK_Review_UserId");
 
-            entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Description).HasMaxLength(1500);
 
             entity.HasOne(d => d.Destination).WithMany(p => p.Review)
                 .HasForeignKey(d => d.DestinationId)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
@@ -52,6 +53,38 @@ namespace Travel.Core.Services
                 throw new ArgumentException("Room not exits");
             }
             return room;
+        }
+
+        public async Task<IEnumerable<SearchRoomResponse>> SearchRoom(SearchRoomRequest request)
+        {
+            var rooms = await _unitOfWork.Rooms.SearchRoom(request);
+            var respones = new List<SearchRoomResponse>();
+            foreach (var room in rooms)
+            {
+                var availableRoom = room.Quantity - room.BookingRoom.Where(b => b.Status != 2 && ((b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn)))
+                                                      .Sum(b => b.Quantity);
+
+                var roomResponse = new SearchRoomResponse
+                {
+                    Id = room.Id,
+                    Name = room.Name,
+                    Price = room.Price,
+                    Quantity = room.Quantity,
+                    Area = room.Area,
+                    MaxAdultPeople = room.MaxAdultPeople,
+                    MaxChildrenPeople = room.MaxChildrenPeople,
+                    SingleBed = room.SingleBed,
+                    DoubleBed = room.DoubleBed,
+                    Dirention = room.Dirention,
+                    HotelId = room.HotelId,
+                    Image = room.Image,
+                    RoomFacility = room.RoomFacility,
+                    AvailableQuantity = (short)availableRoom,
+                };
+
+                respones.Add(roomResponse);
+            }
+            return respones;
         }
 
         public async Task<bool> UpdateRoom(Guid roomId, Room room)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
 using Travel.Core.Services;
@@ -38,6 +39,24 @@ namespace Travel.Api.Controllers
             {
                 var room = await _roomService.GetRoomDetail(id);
                 return StatusCode(200, room);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> SearchRoom([FromBody] SearchRoomRequest request)
+        {
+            try
+            {
+                var response = await _roomService.SearchRoom(request);
+                return StatusCode(200, response);
             }
             catch (ArgumentException ex)
             {

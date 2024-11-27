@@ -1239,6 +1239,11 @@
         "Name": "id",
         "Type": "System.Guid",
         "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1254,6 +1259,11 @@
       {
         "Name": "id",
         "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -1345,6 +1355,22 @@
         "Name": "files",
         "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.RoomsController",
+    "Method": "SearchRoom",
+    "RelativePath": "api/v1/Rooms/search",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Travel.Core.DTOs.SearchRoomRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

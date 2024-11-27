@@ -20,6 +20,6 @@ namespace Travel.Core.Interfaces.IRepositories
         Task CreateHotelFacility(HotelFacility hotelFacility);
         Task DeleteHotelFacility(HotelFacility hotelFacility);
 
-        Task<IEnumerable<Hotel>> SearchHotel(SearchHotelRequest request);
+        Task<PagedResult<Hotel>> SearchHotel(SearchHotelRequest request);
     }
 }

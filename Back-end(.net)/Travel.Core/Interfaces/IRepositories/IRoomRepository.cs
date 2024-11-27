@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IRepositories
 {
@@ -10,6 +11,7 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<Room?> GetDetail(Guid id);
         Task CreateRoomFacility(RoomFacility roomFacility);
         Task DeleteRoomFacility(RoomFacility roomFacility);
+        Task<IEnumerable<Room>> SearchRoom(SearchRoomRequest request);
     }
 }
  
