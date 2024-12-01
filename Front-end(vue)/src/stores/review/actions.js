@@ -35,7 +35,6 @@ export default {
         return { success: true }
       }
     } catch (error) {
-      console.error('Error in createReview:', error)
       if (error.response) {
         return { success: false, message: error.response.data }
       }

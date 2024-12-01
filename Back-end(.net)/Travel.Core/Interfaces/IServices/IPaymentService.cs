@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Travel.Core.DTOs;
 
-namespace Travel.Core.Interfaces
+namespace Travel.Core.Interfaces.IServices
 {
     public interface IPaymentService
     {

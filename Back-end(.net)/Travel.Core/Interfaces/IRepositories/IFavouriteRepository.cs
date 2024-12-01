@@ -8,5 +8,9 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<Favourite>> GetByUser(Guid userId);
         Task Delete(Favourite favourite);
         Task<Favourite?> GetById(int id);
+        Task<int> GetQuantityByHotel(Guid hotelId);
+        Task<int> GetQuantityByTour(Guid tourId);
+        Task<Favourite?> GetUserFavouriteHotel(Guid userId, Guid hotelId);
+        Task<Favourite?> GetUserFavouriteTour(Guid userId, Guid tourId);
     }
 }

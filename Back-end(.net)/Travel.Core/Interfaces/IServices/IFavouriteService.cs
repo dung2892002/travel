@@ -12,5 +12,10 @@ namespace Travel.Core.Interfaces.IServices
         Task Create(Favourite favourite);
         Task<IEnumerable<Favourite>> GetByUser(Guid userId);
         Task<bool> Delete(int favouriteId);
+        Task<int> GetQuantityByHotel(Guid hotelId);
+        Task<int> GetQuantityByTour(Guid tourId);
+        Task<Favourite?> GetUserFavouriteHotel(Guid userId, Guid hotelId);
+        Task<Favourite?> GetUserFavouriteTour(Guid userId, Guid tourId);
+
     }
 }

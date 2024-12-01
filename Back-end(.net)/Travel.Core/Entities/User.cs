@@ -46,5 +46,8 @@ namespace Travel.Core.Entities
 
         [JsonIgnore]
         public virtual ICollection<UserRole> UserRole { get; set; } = new List<UserRole>();
+
+        [JsonIgnore]
+        public virtual ICollection<Discount> Discount { get; set; } = new List<Discount>();
     }
 }

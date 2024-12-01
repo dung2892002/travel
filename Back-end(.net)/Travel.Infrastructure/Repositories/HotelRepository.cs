@@ -94,7 +94,7 @@ namespace Travel.Infrastructure.Repositories
             return hotels;
         }
 
-        public async Task<PagedResult<Hotel>> SearchHotel(SearchHotelRequest request)
+        public async Task<PagedResult<SearchHotelResponse>> SearchHotel(SearchHotelRequest request)
         {
             var query = _dbContext.Hotel
                 .Include(h => h.Image)
@@ -117,14 +117,15 @@ namespace Travel.Infrastructure.Repositories
             }
 
             query = query.Where(h => h.Room.Any(r =>
-                                               r.Quantity - r.BookingRoom
-                                                           .Where(b => b.Status != 2 && ((b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn)))
-                                                           .Sum(b => b.Quantity)
-                                               >= request.QuantityRoom));
+                                                r.Quantity - r.BookingRoom
+                                                            .Where(b => b.Status != 2 && ((b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn)))
+                                                            .Sum(b => b.Quantity)
+                                                >= request.QuantityRoom));
 
             query = query.Where(h => h.Room.Any(r =>
                                                 r.MaxAdultPeople >= (int)(request.QuantityAdultPeople / request.QuantityRoom)
                                                 && r.MaxChildrenPeople >= (int)(request.QuantityChildrenPeople / request.QuantityRoom)));
+
             if (request.MinPrice.HasValue)
             {
                 query = query.Where(h => h.Room.Any(r => r.Price >= request.MinPrice));
@@ -157,42 +158,40 @@ namespace Travel.Infrastructure.Repositories
             var totalCount = await query.CountAsync();
 
             var hotels = await query
-                        .Select(h => new Hotel
+                        .Select(h => new SearchHotelResponse
                         {
                             Id = h.Id,
                             Name = h.Name,
-                            CityId = h.CityId,
                             Rating = h.Rating,
-                            Description = h.Description,
                             Type = h.Type,
-                            City = h.City,
-                            Image = h.Image,
+                            AverageReview = h.Review.Any() ? Math.Round(h.Review.Average(r => r.Point), 1) : 0,
+                            QuantityReview = h.Review.Count,
+                            MinPrice = h.Room
+                                        .Where(r =>
+                                            r.Quantity - r.BookingRoom
+                                                .Where(b => b.Status != 2 && (b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn))
+                                                .Sum(b => b.Quantity) >= request.QuantityRoom &&
+                                            r.MaxAdultPeople >= (int)(request.QuantityAdultPeople / request.QuantityRoom) &&
+                                            r.MaxChildrenPeople >= (int)(request.QuantityChildrenPeople / request.QuantityRoom) &&
+                                            (!request.MinPrice.HasValue || r.Price >= request.MinPrice) &&
+                                            (!request.MaxPrice.HasValue || r.Price <= request.MaxPrice)
+                                        )
+                                        .Min(r => r.Price),
+                            CityName = h.City.Name,
+                            ProvinceName = h.City.Province.Name,
                             HotelFacility = h.HotelFacility,
-                            Review = h.Review,
-                            Room = h.Room
-                                    .Where(r =>
-                                        r.Quantity - r.BookingRoom
-                                            .Where(b => b.Status != 2 && (b.CheckInDate < request.CheckOut && b.CheckOutDate > request.CheckIn))
-                                            .Sum(b => b.Quantity) >= request.QuantityRoom &&
-                                        r.MaxAdultPeople >= (int)(request.QuantityAdultPeople / request.QuantityRoom) &&
-                                        r.MaxChildrenPeople >= (int)(request.QuantityChildrenPeople / request.QuantityRoom) &&
-                                        (!request.MinPrice.HasValue || r.Price >= request.MinPrice) &&
-                                        (!request.MaxPrice.HasValue || r.Price <= request.MaxPrice)
-                                    )
-                                    .OrderBy(r => r.Price)
-                                    .ToList() 
+                            Image = h.Image
                         })
                         .Skip((request.PageNumber - 1) * 10)
                         .Take(10)
                         .ToListAsync();
 
-            return new PagedResult<Hotel>
+            return new PagedResult<SearchHotelResponse>
             {
                 Items = hotels,
                 TotalItems = totalCount,
                 TotalPages = (int)Math.Ceiling(totalCount / 10.0)
-            };  
+            };
         }
-
     }
 }

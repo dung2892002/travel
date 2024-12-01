@@ -10,6 +10,6 @@ namespace Travel.Core.Interfaces.IServices
         Task<IEnumerable<BookingRoom>> GetByUser(Guid userId);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings();
         Task Create(BookingRoom booking);
-        Task<bool> CancelBooking(Guid id, BookingRoom booking);
+        Task<bool> CancelBooking(Guid id, string reason);
     }
 }

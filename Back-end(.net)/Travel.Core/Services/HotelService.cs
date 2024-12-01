@@ -65,7 +65,7 @@ namespace Travel.Core.Services
             return await _unitOfWork.Hotels.GetByPartner(partnerId);
         }
 
-        public async Task<PagedResult<Hotel>> SearchHotel(SearchHotelRequest request)
+        public async Task<PagedResult<SearchHotelResponse>> SearchHotel(SearchHotelRequest request)
         {
             return await _unitOfWork.Hotels.SearchHotel(request);
         }

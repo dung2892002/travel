@@ -8,6 +8,6 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<BookingTour>> GetByUser(Guid userId);
         Task<IEnumerable<BookingTour>> GetByTour(Guid tourId);
         Task<IEnumerable<BookingTour>> GetExpiredBookings(DateTime expirationTime);
-        Task<BookingTour?> GetById(Guid id);
+        Task<BookingTour?> GetById(Guid? id);
     }
 }

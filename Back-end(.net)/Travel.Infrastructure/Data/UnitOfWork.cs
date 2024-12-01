@@ -25,7 +25,9 @@ namespace Travel.Infrastructure.Data
                       IBookingTourRepository bookingTourRepository,
                       IReviewRepository reviewRepository,
                       IFavouriteRepository favouriteRepository,
-                      IFacilityRepository facilityRepository) : IUnitOfWork, IRepository, IDisposable
+                      IFacilityRepository facilityRepository,
+                      IDiscountRepository discountRepository,
+                      IPaymentRepository paymentRepository) : IUnitOfWork, IRepository, IDisposable
     {
         private readonly TravelDbContext _dbContext = dbContext;
         private IDbContextTransaction? _transaction;
@@ -50,6 +52,8 @@ namespace Travel.Infrastructure.Data
         public IReviewRepository Reviews { get; } = reviewRepository;
         public IFavouriteRepository Favorites { get; } = favouriteRepository;
         public IFacilityRepository Facilities { get; } = facilityRepository;
+        public IDiscountRepository Discounts { get; } = discountRepository;
+        public IPaymentRepository Payments { get; } = paymentRepository;
 
         public async Task BeginTransaction()
         {

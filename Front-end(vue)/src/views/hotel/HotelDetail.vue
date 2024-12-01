@@ -111,11 +111,42 @@
         :room="room"
         :mode="0"
         :key="room.Id"
-        @selectRoom="handleSelectRoom(room.Id)"
+        @selectRoom="handleSelectRoom(room)"
       ></RoomItem>
     </div>
     <div class="detail-section detail-review">
-      <h2>Các đánh giá từ khách hàng với {{ hotel.Name }}</h2>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2>Các đánh giá từ khách hàng với {{ hotel.Name }}</h2>
+        <div style="display: flex; flex-direction: row; align-items: center">
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              margin-right: 10px;
+            "
+          >
+            <img src="../../assets/icon/love.png" alt="" style="width: 24px; height: 24px" />
+            <span style="font-size: 14px; font-weight: 400; color: #808080">{{
+              quantityFavourites
+            }}</span>
+          </div>
+          <div v-if="user && token">
+            <button v-if="userFavourite" @click="deleteHotelFavourite" class="btn btn--add">
+              Xóa
+            </button>
+            <button v-else @click="addHotelFavourite" class="btn btn--remove">Thêm</button>
+          </div>
+        </div>
+      </div>
       <ListReview :hotelId="id" />
     </div>
 
@@ -126,18 +157,23 @@
 
 <script setup>
 import ImageGallery from '@/components/ImageGallery.vue'
-import { formatText, getLinkImage } from '@/utils'
+import { calculateDay, formatText, getLinkImage } from '@/utils'
 import { computed, onMounted, ref } from 'vue'
 import RoomItem from './RoomItem.vue'
 import { useHotelStore } from '@/stores/hotel'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useReviewStore } from '@/stores/review'
 import ListReview from '../review/ListReview.vue'
+import { useFavouriteStore } from '@/stores/favourite'
+import { useUserStore } from '@/stores/user'
 
 const hotelStore = useHotelStore()
 const reviewStore = useReviewStore()
+const favouriteStore = useFavouriteStore()
+const userStore = useUserStore()
 
 const route = useRoute()
+const router = useRouter()
 
 const id = ref(route.params.id)
 const showAllFacilities = ref(false)
@@ -160,8 +196,27 @@ function getTypeHotel(type) {
   return types[type]
 }
 
-function handleSelectRoom(id) {
-  console.log(id)
+async function handleSelectRoom(room) {
+  const booking = {
+    Room: room,
+    Hotel: hotel.value,
+    CheckInDate: queryRoom.CheckIn,
+    CheckOutDate: queryRoom.CheckOut,
+    Quantity: queryRoom.QuantityRoom,
+    ContactName: user.value.Fullname,
+    ContactEmail: user.value.Email,
+    ContactPhone: user.value.PhoneNumber,
+    Price:
+      room.Price * queryRoom.QuantityRoom * calculateDay(queryRoom.CheckIn, queryRoom.CheckOut),
+    DiscountValue: 0
+  }
+
+  sessionStorage.setItem('bookingRoom', JSON.stringify(booking))
+
+  console.log(booking)
+  router.push({
+    name: 'createBookingRoom'
+  })
 }
 
 function renderRating(rating) {
@@ -169,6 +224,32 @@ function renderRating(rating) {
   const emptyStar = '☆'
 
   return fullStar.repeat(rating) + emptyStar.repeat(5 - rating)
+}
+
+async function addHotelFavourite() {
+  const favourite = {
+    UserId: user.value.Id,
+    HotelId: id.value,
+    TourId: null,
+    CityId: null,
+    DestinationId: null
+  }
+  await favouriteStore.createFavourite(favourite, token.value)
+
+  await fetchFavourites()
+}
+
+async function deleteHotelFavourite() {
+  await favouriteStore.deleteFavourite(userFavourite.value.Id, token.value)
+
+  await fetchFavourites()
+}
+
+async function fetchFavourites() {
+  await favouriteStore.fetchHotelFavourites(id.value)
+  if (user.value && token.value) {
+    await favouriteStore.fetchUserFavouriteHotel(user.value.Id, token.value, id.value)
+  }
 }
 
 const queryRoom = JSON.parse(sessionStorage.getItem('queryRoom'))
@@ -181,8 +262,13 @@ onMounted(() => {
   hotelStore.fetchHotel(id.value)
   reviewStore.fetchHotelReviews(id.value)
   hotelStore.fetchSearchRooms(queryRoom)
+  fetchFavourites()
 })
 
 const hotel = computed(() => hotelStore.getHotel)
 const rooms = computed(() => hotelStore.getSearchRooms)
+const quantityFavourites = computed(() => favouriteStore.getHotelFavourites)
+const token = computed(() => userStore.getToken)
+const user = computed(() => userStore.getUser)
+const userFavourite = computed(() => favouriteStore.getUserFavouriteHotel)
 </script>

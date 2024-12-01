@@ -24,6 +24,8 @@ namespace Travel.Core.Interfaces
         IReviewRepository Reviews { get; }
         IFavouriteRepository Favorites { get; }
         IFacilityRepository Facilities { get; }
+        IDiscountRepository Discounts { get; }
+        IPaymentRepository Payments { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitTransaction();

@@ -45,6 +45,9 @@ namespace Travel.Core.Entities
         [JsonIgnore]
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
 
+        [JsonIgnore]
+        public virtual ICollection<DiscountTour> DiscountTour { get; set; } = new List<DiscountTour>();
+
         public virtual ICollection<Image> Image { get; set; } = new List<Image>();
 
         public virtual ICollection<TourDay> TourDay { get; set; } = new List<TourDay>();

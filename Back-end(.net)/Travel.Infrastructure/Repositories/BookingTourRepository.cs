@@ -14,7 +14,7 @@ namespace Travel.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<BookingTour?> GetById(Guid id)
+        public async Task<BookingTour?> GetById(Guid? id)
         {
             return await _dbContext.BookingTour.SingleOrDefaultAsync(b => b.Id == id);
         }

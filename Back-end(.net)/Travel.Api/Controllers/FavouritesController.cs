@@ -68,6 +68,80 @@ namespace Travel.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        
+
+        [HttpGet("hotel")]
+        public async Task<IActionResult> GetByHotel([FromQuery] Guid id)
+        {
+            try
+            {
+                var favourites = await _favouriteService.GetQuantityByHotel(id);
+                return StatusCode(200, favourites);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "User")]
+        [HttpGet("hotel/check")]
+        public async Task<IActionResult> GetUserFavouriteHotel([FromQuery] Guid userId, [FromQuery] Guid hotelId)
+        {
+            try
+            {
+                var check = await _favouriteService.GetUserFavouriteHotel(userId, hotelId);
+                Console.WriteLine("user co thich hotel khoong: ", check);
+                return StatusCode(200, check);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("tour")]
+        public async Task<IActionResult> GetByTour([FromQuery] Guid id)
+        {
+            try
+            {
+                var favourite = await _favouriteService.GetQuantityByTour(id);
+                return StatusCode(200, favourite);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "User")]
+        [HttpGet("tour/check")]
+        public async Task<IActionResult> GetUserFavouriteTour([FromQuery] Guid userId, [FromQuery] Guid tourId)
+        {
+            try
+            {
+                var favourite = await _favouriteService.GetUserFavouriteTour(userId, tourId);
+                return StatusCode(200, favourite);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

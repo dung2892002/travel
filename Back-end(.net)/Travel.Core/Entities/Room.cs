@@ -29,7 +29,6 @@ namespace Travel.Core.Entities
         [JsonIgnore]
         public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();
 
-        [JsonIgnore]
         public virtual Hotel? Hotel { get; set; } 
 
         public virtual ICollection<Image> Image { get; set; } = new List<Image>();

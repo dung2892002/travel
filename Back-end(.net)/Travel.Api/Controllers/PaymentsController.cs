@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.DTOs;
-using Travel.Core.Interfaces;
+using Travel.Core.Interfaces.IServices;
 
 namespace Travel.Api.Controllers
 {
@@ -14,27 +14,47 @@ namespace Travel.Api.Controllers
         [HttpPost("pay-room")]
         public async Task<IActionResult> PayForRoom([FromBody] PaymentRequest request)
         {
-            if (request == null)
+            try
             {
-                return BadRequest("Invalid payment request.");
-            }
+                if (request == null)
+                {
+                    return BadRequest("Invalid payment request.");
+                }
 
-            request.BookingType = "Room";
-            var paymentUrl = await _paymentService.ProcessPaymentForRoom(request);
-            return Ok(new { Url = paymentUrl });
+                var paymentUrl = await _paymentService.ProcessPaymentForRoom(request);
+                return Ok(new { Url = paymentUrl });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPost("pay-tour")]
         public async Task<IActionResult> PayForTour([FromBody] PaymentRequest request)
         {
-            if (request == null)
+            try
             {
-                return BadRequest("Invalid payment request.");
-            }
+                if (request == null)
+                {
+                    return BadRequest("Invalid payment request.");
+                }
 
-            request.BookingType = "Tour";
-            var paymentUrl = await _paymentService.ProcessPaymentForTour(request);
-            return Ok(new { Url = paymentUrl });
+                var paymentUrl = await _paymentService.ProcessPaymentForTour(request);
+                return Ok(new { Url = paymentUrl });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("payment-response/room")]

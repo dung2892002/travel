@@ -9,6 +9,7 @@ namespace Travel.Core.Entities
         public Guid UserId { get; set; }
 
         public Guid RoomId { get; set; }
+        public Guid? DiscountId { get; set; }
 
         public DateTime CheckInDate { get; set; }
 
@@ -16,20 +17,26 @@ namespace Travel.Core.Entities
 
         public short Quantity { get; set; }
 
-        public string CustomerName { get; set; } = null!;
+        public string ContactName { get; set; } = null!;
+        public string ContactEmail { get; set; } = null!;
+        public string ContactPhone { get; set; } = null!;
 
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; } = 0;
 
-        public int? Status { get; set; }
+        public int Status { get; set; } = 0;
 
         public string? CancelReason { get; set; }
 
         public DateTime? CreatedAt { get; set; } 
 
-        [JsonIgnore]
         public virtual Room? Room { get; set; }
 
         [JsonIgnore]
-        public virtual User? User { get; set; } 
+        public virtual User? User { get; set; }
+
+        public virtual Discount? Discount { get; set; }
+
+        [JsonIgnore]
+        public virtual List<Payment> Payment { get; set; } = new List<Payment>();
     }
 }

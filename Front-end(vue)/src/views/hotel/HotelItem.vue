@@ -11,8 +11,8 @@
       <div class="content--row">
         <div class="info-value info__name">{{ hotel.Name }}</div>
         <div class="info-value info__review">
-          <span v-if="hotel.Review.length > 0"> {{ calculateAverageReview(hotel.Review) }}</span>
-          <span v-if="hotel.Review.length > 0"> ({{ hotel.Review.length }} đánh giá)</span>
+          <span v-if="hotel.QuantityReview > 0"> {{ hotel.AverageReview }}</span>
+          <span v-if="hotel.QuantityReview > 0"> ({{ hotel.QuantityReview }} đánh giá)</span>
         </div>
       </div>
       <div class="content--row">
@@ -25,9 +25,11 @@
         </div>
       </div>
       <div class="info-value info__location">
-        <img src="../../assets/icon/location.png" alt="icon" class="info__icon" />{{
-          hotel.City.Name
-        }}, {{ hotel.City.Province.Name }}
+        <img src="../../assets/icon/location.png" alt="icon" class="info__icon" /><span
+          v-if="!hotel.City"
+          >{{ hotel.CityName }}, {{ hotel.ProvinceName }}</span
+        >
+        <span v-else>{{ hotel.City.Name }}, {{ hotel.City.Province.Name }}</span>
       </div>
       <div class="info-value">
         <div
@@ -57,7 +59,7 @@
       </div>
       <div v-if="mode === 0" class="info-value info__room">
         <span>Giá mỗi phòng / đêm chỉ từ</span>
-        <span>{{ formatNumber(hotel.Room[0].Price) }} VND</span>
+        <span>{{ formatNumber(hotel.MinPrice) }} VND</span>
       </div>
     </div>
     <div class="item-action" v-if="mode == 1">
@@ -100,13 +102,6 @@ function toggleImagePopup() {
 
 function handleSelectHotel() {
   emit('selectHotel')
-}
-function calculateAverageReview(reviews) {
-  let sum = 0
-  reviews.forEach((review) => {
-    sum += review.Point
-  })
-  return sum / reviews.length
 }
 
 function showRoom() {

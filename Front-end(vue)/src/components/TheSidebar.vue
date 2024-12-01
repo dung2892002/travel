@@ -27,6 +27,10 @@
         <img src="../assets/icon/user.png" alt="icon" class="link-icon" />
         <p>Thông tin</p>
       </RouterLink>
+      <RouterLink :to="{ name: 'profile' }" class="sidebar__link">
+        <img src="../assets/icon/love.png" alt="icon" class="link-icon" />
+        <p>Yêu thích</p>
+      </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(5)">
       <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
@@ -50,12 +54,18 @@
     </div>
     <div class="sidebar__item" v-if="checkRole(10)">
       <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
-        <img src="../assets/icon/booking.svg" alt="icon" class="link-icon" />
-        <p>Booking</p></RouterLink
+        <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
+        <p>Thống kê</p></RouterLink
       >
       <RouterLink :to="{ name: 'profile' }" class="sidebar__link">
-        <img src="../assets/icon/booking.svg" alt="icon" class="link-icon" />
-        <p>Booking</p></RouterLink
+        <img src="../assets/icon/dic-employee.png" alt="icon" class="link-icon" />
+        <p>Quản lý tài khoản</p></RouterLink
+      >
+    </div>
+    <div class="sidebar__item" v-if="checkRole(5) || checkRole(6) || checkRole(10)">
+      <RouterLink :to="{ name: 'myDiscount' }" class="sidebar__link">
+        <img src="../assets/icon/discount.png" alt="icon" class="link-icon" />
+        <p>Khuyến mãi</p></RouterLink
       >
     </div>
     <button @click="logout" class="sidebar__button">Đăng xuất</button>

@@ -1,26 +1,9 @@
 <template>
   <div class="content content--column">
     <div class="content--column">
-      <h1>dat phong</h1>
-      <div>
-        <div v-for="booking in myBookingsRoom" :key="booking.Id">
-          <div>
-            <h3>ngay dat:</h3>
-            <h3>{{ formatDate(booking.CreatedAt) }}</h3>
-          </div>
-          <div>
-            <h3>nhan phong:</h3>
-            <h3>{{ formatDate(booking.CheckInDate) }}</h3>
-          </div>
-          <div>
-            <h3>tra phong:</h3>
-            <h3>{{ formatDate(booking.CheckOutDate) }}</h3>
-          </div>
-          <div>
-            <h3>tong so tien:</h3>
-            <h3>{{ formatNumber(booking.Price) }}</h3>
-          </div>
-        </div>
+      <h3>Các phòng đã đặt</h3>
+      <div v-for="booking in myBookingsRoom" :key="booking.Id">
+        <BookingRoomItem :booking="booking" @cancelBooking="cancelBooking"></BookingRoomItem>
       </div>
     </div>
     <div class="content--column">
@@ -31,14 +14,23 @@
 <script setup>
 import { useBookingStore } from '@/stores/booking'
 import { useUserStore } from '@/stores/user'
-import { formatDate, formatNumber } from '@/utils'
 import { computed, onMounted } from 'vue'
+import BookingRoomItem from './BookingRoomItem.vue'
 
 const userStore = useUserStore()
 const user = computed(() => userStore.getUser)
 const token = computed(() => userStore.getToken)
 
 const bookingStore = useBookingStore()
+
+async function cancelBooking(id, reason) {
+  var response = await bookingStore.cancelBookingRoom(id, reason, token.value)
+  if (response.success) {
+    bookingStore.fetchMyBooking(user.value.Id, token.value)
+  } else {
+    console.log(response.message)
+  }
+}
 
 const myBookingsRoom = computed(() => bookingStore.getMyBookingsRoom)
 // const myBookingsTour = computed(() => bookingStore.getMyBookingsTour)

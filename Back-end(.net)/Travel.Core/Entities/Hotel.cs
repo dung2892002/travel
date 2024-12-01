@@ -28,12 +28,17 @@ namespace Travel.Core.Entities
         [JsonIgnore]
         public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
 
+        [JsonIgnore]
+        public virtual ICollection<DiscountHotel> DiscountHotel { get; set; } = new List<DiscountHotel>();
+
         public virtual ICollection<HotelDestination> HotelDestination { get; set; } = new List<HotelDestination>();
 
         public virtual ICollection<HotelFacility> HotelFacility { get; set; } = new List<HotelFacility>();
 
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
 
+
+        [JsonIgnore]
         public virtual ICollection<Room> Room { get; set; } = new List<Room>();
 
         [JsonIgnore]

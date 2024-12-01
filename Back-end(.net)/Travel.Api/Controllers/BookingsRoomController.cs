@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Google.Apis.Storage.v1.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
@@ -24,11 +24,11 @@ namespace Travel.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400,ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500,ex.Message);
             }
         }
 
@@ -42,11 +42,11 @@ namespace Travel.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400,ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -61,11 +61,11 @@ namespace Travel.Api.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400,ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500,ex.Message);
             }
         }
 
@@ -76,16 +76,43 @@ namespace Travel.Api.Controllers
             try
             {
                 await _bookingRoomService.Create(booking);
-                return StatusCode(200, "creat booking room successfull");
+                return StatusCode(201, "creat booking room successfull");
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(409, ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
+        [Authorize(Policy = "User")]
+        [HttpPatch("cancel")]
+        public async Task<IActionResult> CancelBooking([FromQuery] Guid id, [FromBody] string reason)
+        {
+            try
+            {
+                await _bookingRoomService.CancelBooking(id, reason);
+                return StatusCode(200, "cancel room successfull");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (InvalidCastException ex)
+            {
+                return StatusCode(409, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
     }
 }

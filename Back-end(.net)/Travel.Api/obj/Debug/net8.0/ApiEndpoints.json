@@ -17,6 +17,27 @@
   },
   {
     "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
+    "Method": "CancelBooking",
+    "RelativePath": "api/v1/BookingsRoom/cancel",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "reason",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.BookingsRoomController",
     "Method": "GetByHotel",
     "RelativePath": "api/v1/BookingsRoom/hotel",
     "HttpMethod": "GET",
@@ -201,6 +222,112 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "AdminCreateDiscount",
+    "RelativePath": "api/v1/Discounts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "discount",
+        "Type": "Travel.Core.Entities.Discount",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "GetDiscountByHotel",
+    "RelativePath": "api/v1/Discounts/hotel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hotelId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "price",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "CreateHotelDiscount",
+    "RelativePath": "api/v1/Discounts/hotel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "discount",
+        "Type": "Travel.Core.Entities.Discount",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "GetDiscountByTour",
+    "RelativePath": "api/v1/Discounts/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tourId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "price",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "CreateTourDiscount",
+    "RelativePath": "api/v1/Discounts/tour",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "discount",
+        "Type": "Travel.Core.Entities.Discount",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.DiscountsController",
+    "Method": "GetDiscountByHotel",
+    "RelativePath": "api/v1/Discounts/user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.FacilitiesController",
     "Method": "GetFacilities",
     "RelativePath": "api/v1/Facilities",
@@ -243,6 +370,80 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "GetByHotel",
+    "RelativePath": "api/v1/Favourites/hotel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "GetUserFavouriteHotel",
+    "RelativePath": "api/v1/Favourites/hotel/check",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "hotelId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "GetByTour",
+    "RelativePath": "api/v1/Favourites/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.FavouritesController",
+    "Method": "GetUserFavouriteTour",
+    "RelativePath": "api/v1/Favourites/tour/check",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "tourId",
+        "Type": "System.Guid",
         "IsRequired": false
       }
     ],
@@ -693,6 +894,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Hotel.DiscountHotel",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.DiscountHotel, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Hotel.HotelDestination",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.HotelDestination, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
@@ -795,6 +1001,11 @@
       {
         "Name": "Hotel.User.UserRole",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.UserRole, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Hotel.User.Discount",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Discount, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {
@@ -998,6 +1209,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Tour.DiscountTour",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.DiscountTour, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Tour.Image",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Image, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
@@ -1098,6 +1314,11 @@
         "IsRequired": false
       },
       {
+        "Name": "Tour.User.Discount",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Discount, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
         "Name": "User.Id",
         "Type": "System.Guid",
         "IsRequired": false
@@ -1180,6 +1401,11 @@
       {
         "Name": "User.UserRole",
         "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.UserRole, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "User.Discount",
+        "Type": "System.Collections.Generic.ICollection\u00601[[Travel.Core.Entities.Discount, Travel.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": false
       },
       {

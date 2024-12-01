@@ -7,7 +7,7 @@ namespace Travel.Core.Services
     public class BookingRoomService(IUnitOfWork unitOfWork) : IBookingRoomService, IService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        public async Task<bool> CancelBooking(Guid id, BookingRoom booking)
+        public async Task<bool> CancelBooking(Guid id, string reason)
         {
             var bookingExisting = await _unitOfWork.BookingsRoom.GetById(id);
             if (bookingExisting == null)
@@ -20,7 +20,7 @@ namespace Travel.Core.Services
                 throw new InvalidCastException("Can only cancel unpaid bookings");
             }
             bookingExisting.Status = 2;
-            bookingExisting.CancelReason = booking.CancelReason;
+            bookingExisting.CancelReason = reason;
 
             var result = await _unitOfWork.CompleteAsync();
             return result > 0;
@@ -28,6 +28,10 @@ namespace Travel.Core.Services
 
         public async Task Create(BookingRoom booking)
         {
+            if (booking.CheckInDate.Date < DateTime.Now.Date || booking.CheckOutDate.Date <= booking.CheckInDate.Date)
+            {
+                throw new ArgumentException("Invalid check-in or check-out date");
+            }
             var roomExisting = await _unitOfWork.Rooms.GetById(booking.RoomId);
             if (roomExisting == null)
             {
@@ -39,13 +43,14 @@ namespace Travel.Core.Services
             var totalRoomAvailabel = roomExisting.Quantity - totalBooking;
             if (totalRoomAvailabel < booking.Quantity)
             {
-                throw new InvalidCastException($"Can only booking maximum {totalRoomAvailabel} room");
+                throw new InvalidOperationException($"Can only booking maximum {totalRoomAvailabel} room");
             }
             booking.Id = Guid.NewGuid();
             booking.CreatedAt = DateTime.Now;
             booking.Status = 0;
-
             booking.Price = roomExisting.Price * booking.Quantity * (booking.CheckOutDate - booking.CheckInDate).Days;
+            var discount = await _unitOfWork.Discounts.GetById(booking.DiscountId);
+            if (discount == null || discount.Start > DateTime.Now || discount.End < DateTime.Now) booking.DiscountId = null;
             await _unitOfWork.BookingsRoom.Create(booking);
         }
 

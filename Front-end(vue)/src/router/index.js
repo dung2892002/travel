@@ -11,6 +11,8 @@ import MyProfile from '@/views/user/MyProfile.vue'
 import MyHotel from '@/views/hotel/MyHotel.vue'
 import HotelsRoom from '@/views/hotel/HotelsRoom.vue'
 import HotelDetail from '@/views/hotel/HotelDetail.vue'
+import MyDiscount from '@/views/discount/MyDiscount.vue'
+import BookingRoomForm from '@/views/booking/BookingRoomForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +31,11 @@ const router = createRouter({
       path: '/hotel/:id',
       name: 'hotelDetail',
       component: HotelDetail
+    },
+    {
+      path: '/create-booking-room',
+      name: 'createBookingRoom',
+      component: BookingRoomForm
     },
     {
       path: '/tour',
@@ -59,6 +66,11 @@ const router = createRouter({
           path: 'rooms/hotel/:hotelId',
           name: 'RoomsList',
           component: HotelsRoom
+        },
+        {
+          path: '/discount',
+          name: 'myDiscount',
+          component: MyDiscount
         }
       ]
     },

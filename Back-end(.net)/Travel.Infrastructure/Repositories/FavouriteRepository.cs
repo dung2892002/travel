@@ -21,10 +21,28 @@ namespace Travel.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
+        public async Task<int> GetQuantityByHotel(Guid hotelId)
+        {
+            var quantity = await _dbContext.Favourite
+                                    .Where(f => f.HotelId == hotelId)
+                                    .CountAsync();
+
+            return quantity;
+        }
+
         public async Task<Favourite?> GetById(int id)
         {
             var favourite = await _dbContext.Favourite.SingleOrDefaultAsync(f => f.Id == id);
             return favourite;
+        }
+
+        public async Task<int> GetQuantityByTour(Guid tourId)
+        {
+            var quantity = await _dbContext.Favourite
+                                    .Where(f => f.TourId == tourId)
+                                    .CountAsync();
+
+            return quantity;
         }
 
         public async Task<IEnumerable<Favourite>> GetByUser(Guid userId)
@@ -38,6 +56,18 @@ namespace Travel.Infrastructure.Repositories
                 .ToListAsync();
 
             return favourites;
+        }
+
+        public async Task<Favourite?> GetUserFavouriteHotel(Guid userId, Guid hotelId)
+        {
+            var favourite = await _dbContext.Favourite.Where(f => f.UserId == userId && f.HotelId == hotelId).FirstOrDefaultAsync();
+            return favourite;
+        }
+
+        public async Task<Favourite?> GetUserFavouriteTour(Guid userId, Guid tourId)
+        {
+            var favourite = await _dbContext.Favourite.Where(f => f.UserId == userId && f.TourId == tourId).FirstOrDefaultAsync();
+            return favourite;
         }
     }
 }

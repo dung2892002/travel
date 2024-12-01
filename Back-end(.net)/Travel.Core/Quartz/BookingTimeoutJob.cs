@@ -14,8 +14,8 @@ namespace Travel.Core.Quartz
             var expiredBookingsRoom = await _bookingRoomService.GetExpiredBookings();
             foreach (var booking in expiredBookingsRoom)
             {
-                booking.CancelReason = "Timeout";
-                await _bookingRoomService.CancelBooking(booking.Id ,booking);
+                var CancelReason = "Timeout";
+                await _bookingRoomService.CancelBooking(booking.Id, CancelReason);
             }
 
             var expiredBookingsTour = await _bookingTourService.GetExpiredBookings();

@@ -31,7 +31,7 @@ namespace Travel.Infrastructure.Repositories
             return bookings;
         }
 
-        public async Task<BookingRoom?> GetById(Guid id)
+        public async Task<BookingRoom?> GetById(Guid? id)
         {
             var booking = await _dbContext.BookingRoom.SingleOrDefaultAsync(b => b.Id == id);
             return booking;
@@ -46,7 +46,15 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<BookingRoom>> GetByUser(Guid userId)
         {
-            var bookings = await _dbContext.BookingRoom.Where(b => b.UserId == userId).ToListAsync();
+            var bookings = await _dbContext.BookingRoom
+                                            .Include(b => b.Room)
+                                                .ThenInclude(r => r.Image)
+                                            .Include(b => b.Room)
+                                                .ThenInclude(r => r.Hotel)
+                                            .Include(b => b.Discount)
+                                            .Where(b => b.UserId == userId)
+                                            .OrderByDescending(b => b.CreatedAt)
+                                            .ToListAsync();
             return bookings;
         }
 

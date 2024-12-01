@@ -63,6 +63,11 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
     public virtual DbSet<UserRole> UserRole { get; set; }
 
+    public virtual DbSet<Discount> Discount { get; set; }
+    public virtual DbSet<DiscountHotel> DiscountHotel {  get; set; }
+    public virtual DbSet<DiscountTour> DiscountTour {  get; set; }
+    public virtual DbSet<Payment> Payment { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -152,10 +157,12 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasIndex(e => e.UserId, "FK_booking_room_UserId");
 
             entity.Property(e => e.CancelReason).HasMaxLength(255);
+            entity.Property(e => e.ContactName).HasMaxLength(255);
+            entity.Property(e => e.ContactEmail).HasMaxLength(100);
             entity.Property(e => e.CheckInDate).HasColumnType("datetime");
             entity.Property(e => e.CheckOutDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.CustomerName).HasMaxLength(255);
+            entity.Property(e => e.ContactPhone).HasMaxLength(45);
             entity.Property(e => e.Price).HasPrecision(19, 2);
 
             entity.HasOne(d => d.Room).WithMany(p => p.BookingRoom)
@@ -167,6 +174,11 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_booking_room_UserId");
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.BookingRoom)
+                .HasForeignKey(d => d.DiscountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_booking_room_DiscountId");
         });
 
         modelBuilder.Entity<BookingTour>(entity =>
@@ -180,7 +192,12 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
             entity.HasIndex(e => e.UserId, "FK_booking_tour_UserId");
 
             entity.Property(e => e.CancelReason).HasMaxLength(255);
+            entity.Property(e => e.ContactName).HasMaxLength(255);
+            entity.Property(e => e.ContactEmail).HasMaxLength(100);
+            entity.Property(e => e.ContactPhone).HasMaxLength(45);
+
             entity.Property(e => e.Price).HasPrecision(19, 2);
+            
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Tour).WithMany(p => p.BookingTour)
@@ -192,6 +209,11 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_booking_tour_UserId");
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.BookingTour)
+                .HasForeignKey(d => d.DiscountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_booking_tour_DiscountId");
         });
 
         modelBuilder.Entity<BookingTrain>(entity =>
@@ -701,6 +723,86 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_user");
+        });
+
+        modelBuilder.Entity<Discount>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("discount");
+            entity.Property(e => e.MinPrice).HasPrecision(19, 2);
+            entity.Property(e => e.MaxDiscount).HasPrecision(19, 2);
+            entity.Property(e => e.Start).HasColumnType("datetime");
+            entity.Property(e => e.End).HasColumnType("datetime");
+
+            entity.HasIndex(e => e.UserId, "FK_discount_UserId_idx");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Discount)
+              .HasForeignKey(d => d.UserId)
+              .OnDelete(DeleteBehavior.ClientSetNull)
+              .HasConstraintName("FK_discount_UserId");
+        });
+
+        modelBuilder.Entity<DiscountHotel>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("discount_hotel");
+
+            entity.HasIndex(e => e.DiscountId, "FK_discount_hotel_DiscountId_idx");
+
+            entity.HasIndex(e => e.HotelId, "FK_discount_hotel_HotelId_idx");
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.DiscountHotel)
+               .HasForeignKey(d => d.DiscountId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_discount_hotel_DiscountId");
+
+            entity.HasOne(d => d.Hotel).WithMany(p => p.DiscountHotel)
+              .HasForeignKey(d => d.HotelId)
+              .OnDelete(DeleteBehavior.ClientSetNull)
+              .HasConstraintName("FK_discount_hotel_HotelId");
+        });
+
+        modelBuilder.Entity<DiscountTour>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("discount_tour");
+
+            entity.HasIndex(e => e.DiscountId, "FK_discount_tour_DiscountId_idx");
+
+            entity.HasIndex(e => e.TourId, "FK_discount_tour_TourId_idx");
+
+            entity.HasOne(d => d.Discount).WithMany(p => p.DiscountTour)
+               .HasForeignKey(d => d.DiscountId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_discount_tour_DiscountId");
+
+            entity.HasOne(d => d.Tour).WithMany(p => p.DiscountTour)
+              .HasForeignKey(d => d.TourId)
+              .OnDelete(DeleteBehavior.ClientSetNull)
+              .HasConstraintName("FK_discount_tour_TourId");
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("payment");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Amount).HasPrecision(19, 2);
+
+            entity.HasIndex(e => e.BookingRoomId, "FK_payment_BookingRoomId_idx");
+
+            entity.HasIndex(e => e.BookingTourId, "FK_payment_BookingTourId_idx");
+
+            entity.HasOne(d => d.BookingRoom).WithMany(p => p.Payment)
+               .HasForeignKey(d => d.BookingRoomId)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("FK_payment_BookingRoomId");
+
+            entity.HasOne(d => d.BookingTour).WithMany(p => p.Payment)
+              .HasForeignKey(d => d.BookingTourId)
+              .OnDelete(DeleteBehavior.ClientSetNull)
+              .HasConstraintName("FK_payment_BookingTourId");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -9,8 +9,13 @@ namespace Travel.Core.Entities
         public Guid UserId { get; set; }
 
         public Guid TourId { get; set; }
+        public Guid? DiscountId { get; set; }
 
         public DateOnly StartDate { get; set; }
+
+        public string ContactName { get; set; } = null!;
+        public string ContactEmail { get; set; } = null!;
+        public string ContactPhone { get; set; } = null!;
 
         public short NumberToddler { get; set; }
 
@@ -31,5 +36,11 @@ namespace Travel.Core.Entities
 
         [JsonIgnore]
         public virtual User? User { get; set; } = null!;
+
+        [JsonIgnore]
+        public virtual Discount? Discount { get; set; }
+
+        [JsonIgnore]
+        public virtual List<Payment> Payment { get; set; } = new List<Payment>();
     }
 }
