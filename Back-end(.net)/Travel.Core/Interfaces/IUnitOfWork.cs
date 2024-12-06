@@ -16,10 +16,6 @@ namespace Travel.Core.Interfaces
         IRoomRepository Rooms { get; }
         IBookingRoomRepository BookingsRoom { get; }
         ITourRepository Tours { get; }
-        ITourDayRepository ToursDay { get; }
-        ITimeSlotRepository TimeSlots { get; }
-        IActivityRepository Activitys { get; }
-        ITourDestinationRepository ToursDestination { get; }
         IBookingTourRepository BookingsTour { get; }
         IReviewRepository Reviews { get; }
         IFavouriteRepository Favorites { get; }

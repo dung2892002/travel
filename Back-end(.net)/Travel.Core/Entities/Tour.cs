@@ -36,7 +36,6 @@ namespace Travel.Core.Entities
         [JsonIgnore]
         public virtual ICollection<BookingTour> BookingTour { get; set; } = new List<BookingTour>();
 
-        [JsonIgnore]
         public virtual City? DepartureCity { get; set; }
 
         [JsonIgnore]
@@ -52,7 +51,7 @@ namespace Travel.Core.Entities
 
         public virtual ICollection<TourDay> TourDay { get; set; } = new List<TourDay>();
 
-        public virtual ICollection<TourDestination> TourDestination { get; set; } = new List<TourDestination>();
+        public virtual ICollection<TourCity> TourCity { get; set; } = new List<TourCity>();
 
         [JsonIgnore]
         public virtual User? User { get; set; }

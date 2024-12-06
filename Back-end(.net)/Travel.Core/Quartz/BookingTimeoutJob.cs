@@ -14,14 +14,14 @@ namespace Travel.Core.Quartz
             var expiredBookingsRoom = await _bookingRoomService.GetExpiredBookings();
             foreach (var booking in expiredBookingsRoom)
             {
-                var CancelReason = "Timeout";
+                var CancelReason = "Hết thời gian thanh toán";
                 await _bookingRoomService.CancelBooking(booking.Id, CancelReason);
             }
 
             var expiredBookingsTour = await _bookingTourService.GetExpiredBookings();
             foreach (var booking in expiredBookingsTour)
             {
-                booking.CancelReason = "Timeout";
+                booking.CancelReason = "Hết thời gian thanh toán";
                 await _bookingTourService.CancelBooking(booking.Id,booking);
             }
         }

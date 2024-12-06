@@ -155,7 +155,7 @@ namespace Travel.Infrastructure.Repositories
                 query = query.Where(h => h.Review.Count == 0 || h.Review.Average(r => r.Point) >= minGuestRating);
             }
 
-            var totalCount = await query.CountAsync();
+            var totalItems = await query.CountAsync();
 
             var hotels = await query
                         .Select(h => new SearchHotelResponse
@@ -189,8 +189,8 @@ namespace Travel.Infrastructure.Repositories
             return new PagedResult<SearchHotelResponse>
             {
                 Items = hotels,
-                TotalItems = totalCount,
-                TotalPages = (int)Math.Ceiling(totalCount / 10.0)
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / 10.0)
             };
         }
     }

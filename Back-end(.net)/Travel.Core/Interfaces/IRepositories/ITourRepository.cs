@@ -9,6 +9,7 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<Tour>> GetAll();
         Task<IEnumerable<Tour>> GetByPartner(Guid partnerId);
         Task<IEnumerable<Tour>> GetByCity(int cityId);
-        Task<IEnumerable<Tour>> GetByDestination(int destinationId);
+
+        Task<IEnumerable<Tour>> GetByDepartureCity(int cityId);
     }
 }

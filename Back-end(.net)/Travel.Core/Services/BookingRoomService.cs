@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
 
@@ -78,7 +79,7 @@ namespace Travel.Core.Services
             return bookings;
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByUser(Guid userId)
+        public async Task<PagedResult<BookingRoom>> GetByUser(Guid userId, int? status, int pageNumber)
         {
             var user = await _unitOfWork.Users.GetUserById(userId);
             if (user == null)
@@ -86,7 +87,7 @@ namespace Travel.Core.Services
                 throw new ArgumentException("user not exist");
             }
 
-            var bookings = await _unitOfWork.BookingsRoom.GetByUser(userId);
+            var bookings = await _unitOfWork.BookingsRoom.GetByUser(userId, status, pageNumber);
             return bookings;
         }
 

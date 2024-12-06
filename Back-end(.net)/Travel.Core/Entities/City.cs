@@ -15,9 +15,6 @@ namespace Travel.Core.Entities
         public virtual Province Province { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ICollection<Airport> Airport { get; set; } = new List<Airport>();
-
-        [JsonIgnore]
         public virtual ICollection<Destination> Destination { get; set; } = new List<Destination>();
 
         [JsonIgnore]
@@ -27,9 +24,9 @@ namespace Travel.Core.Entities
         public virtual ICollection<Tour> Tour { get; set; } = new List<Tour>();
 
         [JsonIgnore]
-        public virtual ICollection<Hotel> Hotel { get; set; } = new List<Hotel>();
+        public virtual ICollection<TourCity> TourCity { get; set; } = new List<TourCity>();
 
         [JsonIgnore]
-        public virtual ICollection<TrainStation> TrainStation { get; set; } = new List<TrainStation>();
+        public virtual ICollection<Hotel> Hotel { get; set; } = new List<Hotel>();
     }
 }

@@ -8,17 +8,9 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 {
     public virtual DbSet<Activity> Activity { get; set; }
 
-    public virtual DbSet<Airline> Airline { get; set; }
-
-    public virtual DbSet<Airport> Airport { get; set; }
-
-    public virtual DbSet<BookingFlight> BookingFlight { get; set; }
-
     public virtual DbSet<BookingRoom> BookingRoom { get; set; }
 
     public virtual DbSet<BookingTour> BookingTour { get; set; }
-
-    public virtual DbSet<BookingTrain> BookingTrain { get; set; }
 
     public virtual DbSet<City> City { get; set; }
 
@@ -29,8 +21,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
     public virtual DbSet<Facility> Facility {  get; set; }
 
     public virtual DbSet<Favourite> Favourite { get; set; }
-
-    public virtual DbSet<Flight> Flight { get; set; }
 
     public virtual DbSet<Hotel> Hotel { get; set; }
 
@@ -45,19 +35,12 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
     public virtual DbSet<Room> Room { get; set; }
     public virtual DbSet<RoomFacility> RoomFacility { get; set; }
-    public virtual DbSet<TimeSlot> TimeSlot { get; set; }
 
     public virtual DbSet<Tour> Tour { get; set; }
 
     public virtual DbSet<TourDay> TourDay { get; set; }
 
-    public virtual DbSet<TourDestination> TourDestination { get; set; }
-
-    public virtual DbSet<Train> Train { get; set; }
-
-    public virtual DbSet<TrainOperator> TrainOperator { get; set; }
-
-    public virtual DbSet<TrainStation> TrainStation { get; set; }
+    public virtual DbSet<TourCity> TourCity { get; set; }
 
     public virtual DbSet<User> User { get; set; }
 
@@ -80,70 +63,16 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
 
             entity.ToTable("activity");
 
-            entity.HasIndex(e => e.TimeSlotId, "FK_activity_TimeSlotId");
+            entity.HasIndex(e => e.TourDayId, "FK_activity_TourDayId_idx");
 
             entity.Property(e => e.Description).HasMaxLength(1500);
             entity.Property(e => e.Location).HasMaxLength(255);
             entity.Property(e => e.Name).HasMaxLength(50);
 
-            entity.HasOne(d => d.TimeSlot).WithMany(p => p.Activity)
-                .HasForeignKey(d => d.TimeSlotId)
+            entity.HasOne(d => d.TourDay).WithMany(p => p.Activity)
+                .HasForeignKey(d => d.TourDayId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_activity_TimeSlotId");
-        });
-
-        modelBuilder.Entity<Airline>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("airline");
-
-            entity.Property(e => e.Code).HasMaxLength(255);
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<Airport>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("airport");
-
-            entity.HasIndex(e => e.CityId, "FK_airport_CityId");
-
-            entity.Property(e => e.Description).HasMaxLength(255);
-            entity.Property(e => e.Name).HasMaxLength(50);
-
-            entity.HasOne(d => d.City).WithMany(p => p.Airport)
-                .HasForeignKey(d => d.CityId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_airport_CityId");
-        });
-
-        modelBuilder.Entity<BookingFlight>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("booking_flight");
-
-            entity.HasIndex(e => e.FlightId, "FK_booking_flight_FlightId");
-
-            entity.HasIndex(e => e.UserId, "FK_booking_flight_UserId");
-
-            entity.Property(e => e.CancelReason).HasMaxLength(255);
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.CustomerIdentityNumber).HasMaxLength(255);
-            entity.Property(e => e.CustomerName).HasMaxLength(255);
-            entity.Property(e => e.Price).HasPrecision(19, 2);
-
-            entity.HasOne(d => d.Flight).WithMany(p => p.BookingFlight)
-                .HasForeignKey(d => d.FlightId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_booking_flight_FlightId");
-
-            entity.HasOne(d => d.User).WithMany(p => p.BookingFlight)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_booking_flight_UserId");
+                .HasConstraintName("FK_activity_TourDayId");
         });
 
         modelBuilder.Entity<BookingRoom>(entity =>
@@ -216,31 +145,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasConstraintName("FK_booking_tour_DiscountId");
         });
 
-        modelBuilder.Entity<BookingTrain>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("booking_train");
-
-            entity.HasIndex(e => e.TrainId, "FK_booking_train_TrainId");
-
-            entity.HasIndex(e => e.UserId, "FK_booking_train_UserId");
-
-            entity.Property(e => e.CancelReason).HasMaxLength(255);
-            entity.Property(e => e.CustomerIdentityNumber).HasMaxLength(255);
-            entity.Property(e => e.CustomerName).HasMaxLength(255);
-            entity.Property(e => e.Price).HasPrecision(19, 2);
-
-            entity.HasOne(d => d.Train).WithMany(p => p.BookingTrain)
-                .HasForeignKey(d => d.TrainId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_booking_train_TrainId");
-
-            entity.HasOne(d => d.User).WithMany(p => p.BookingTrain)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_booking_train_UserId");
-        });
 
         modelBuilder.Entity<City>(entity =>
         {
@@ -330,37 +234,7 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasConstraintName("FK_favourite_UserId");
         });
 
-        modelBuilder.Entity<Flight>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("flight");
-
-            entity.HasIndex(e => e.AirlineId, "FK_Flight_AirlineId");
-
-            entity.HasIndex(e => e.ArrivalAirportId, "FK_Flight_ArrivalAirportId");
-
-            entity.HasIndex(e => e.DepartureAirportId, "FK_Flight_DepartureAirportId");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Code).HasMaxLength(255);
-            entity.Property(e => e.DepartureTime).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Airline).WithMany(p => p.Flight)
-                .HasForeignKey(d => d.AirlineId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Flight_AirlineId");
-
-            entity.HasOne(d => d.ArrivalAirport).WithMany(p => p.FlightArrivalAirport)
-                .HasForeignKey(d => d.ArrivalAirportId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Flight_ArrivalAirportId");
-
-            entity.HasOne(d => d.DepartureAirport).WithMany(p => p.FlightDepartureAirport)
-                .HasForeignKey(d => d.DepartureAirportId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Flight_DepartureAirportId");
-        });
+        
 
         modelBuilder.Entity<Hotel>(entity =>
         {
@@ -547,22 +421,6 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasConstraintName("FK_room_facility_RoomId");
         });
 
-        modelBuilder.Entity<TimeSlot>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("time_slot");
-
-            entity.HasIndex(e => e.TourDayId, "FK_time_slot_TourDayId");
-
-            entity.Property(e => e.Description).HasMaxLength(1500);
-
-            entity.HasOne(d => d.TourDay).WithMany(p => p.TimeSlot)
-                .HasForeignKey(d => d.TourDayId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_time_slot_TourDayId");
-        });
-
         modelBuilder.Entity<Tour>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -610,83 +468,25 @@ public partial class TravelDbContext(DbContextOptions<TravelDbContext> options) 
                 .HasConstraintName("FK_tour_day_TourId");
         });
 
-        modelBuilder.Entity<TourDestination>(entity =>
+        modelBuilder.Entity<TourCity>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("tour_destination");
+            entity.ToTable("tour_city");
 
-            entity.HasIndex(e => e.DestinationId, "FK_tour_destination_DestinationId");
+            entity.HasIndex(e => e.CityId, "FK_tour_city_CityId_idx");
 
-            entity.HasIndex(e => e.TourId, "FK_tour_destination_TourId");
+            entity.HasIndex(e => e.TourId, "FK_tour_city_TourId_idx");
 
-            entity.HasOne(d => d.Destination).WithMany(p => p.TourDestination)
-                .HasForeignKey(d => d.DestinationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tour_destination_DestinationId");
-
-            entity.HasOne(d => d.Tour).WithMany(p => p.TourDestination)
-                .HasForeignKey(d => d.TourId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tour_destination_TourId");
-        });
-
-        modelBuilder.Entity<Train>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("train");
-
-            entity.HasIndex(e => e.ArrivalTrainStationId, "FK_train_ArrivalTrainStationId");
-
-            entity.HasIndex(e => e.DepartureTrainStationId, "FK_train_DepartureTrainStationId");
-
-            entity.HasIndex(e => e.TrainOperatorId, "FK_train_TrainOperatorId");
-
-            entity.Property(e => e.Code).HasMaxLength(255);
-            entity.Property(e => e.DepartureTime).HasColumnType("datetime");
-
-            entity.HasOne(d => d.ArrivalTrainStation).WithMany(p => p.TrainArrivalTrainStation)
-                .HasForeignKey(d => d.ArrivalTrainStationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_train_ArrivalTrainStationId");
-
-            entity.HasOne(d => d.DepartureTrainStation).WithMany(p => p.TrainDepartureTrainStation)
-                .HasForeignKey(d => d.DepartureTrainStationId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_train_DepartureTrainStationId");
-
-            entity.HasOne(d => d.TrainOperator).WithMany(p => p.Train)
-                .HasForeignKey(d => d.TrainOperatorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_train_TrainOperatorId");
-        });
-
-        modelBuilder.Entity<TrainOperator>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("train_operator");
-
-            entity.Property(e => e.Code).HasMaxLength(255);
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<TrainStation>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("train_station");
-
-            entity.HasIndex(e => e.CityId, "FK_train_station_CityId");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Name).HasMaxLength(50);
-
-            entity.HasOne(d => d.City).WithMany(p => p.TrainStation)
+            entity.HasOne(d => d.City).WithMany(p => p.TourCity)
                 .HasForeignKey(d => d.CityId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_train_station_CityId");
+                .HasConstraintName("FK_tour_city_CityId");
+
+            entity.HasOne(d => d.Tour).WithMany(p => p.TourCity)
+                .HasForeignKey(d => d.TourId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tour_city_TourId");
         });
 
         modelBuilder.Entity<User>(entity =>

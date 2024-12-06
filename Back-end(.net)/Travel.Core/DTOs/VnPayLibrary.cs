@@ -8,8 +8,8 @@ namespace Travel.Core.DTOs
 {
     public class VnPayLibrary
     {
-        private SortedList<String, String> _requestData = new SortedList<String, String>(new VnPayCompare());
-        private SortedList<String, String> _responseData = new SortedList<String, String>(new VnPayCompare());
+        private SortedList<String, String> _requestData = new(new VnPayCompare());
+        private SortedList<String, String> _responseData = new(new VnPayCompare());
 
         public void AddRequestData(string key, string value)
         {
@@ -29,8 +29,7 @@ namespace Travel.Core.DTOs
 
         public string GetResponseData(string key)
         {
-            string retValue;
-            if (_responseData.TryGetValue(key, out retValue))
+            if (_responseData.TryGetValue(key, out var retValue))
             {
                 return retValue;
             }
@@ -43,7 +42,7 @@ namespace Travel.Core.DTOs
 
         public string CreateRequestUrl(string baseUrl, string vnp_HashSecret)
         {
-            StringBuilder data = new StringBuilder();
+            StringBuilder data = new();
             foreach (KeyValuePair<string, string> kv in _requestData)
             {
                 if (!String.IsNullOrEmpty(kv.Value))
@@ -76,7 +75,7 @@ namespace Travel.Core.DTOs
         private string GetResponseData()
         {
 
-            StringBuilder data = new StringBuilder();
+            StringBuilder data = new();
             if (_responseData.ContainsKey("vnp_SecureHashType"))
             {
                 _responseData.Remove("vnp_SecureHashType");

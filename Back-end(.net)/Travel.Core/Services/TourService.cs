@@ -34,9 +34,9 @@ namespace Travel.Core.Services
             return await _unitOfWork.Tours.GetByCity(cityId);
         }
 
-        public async Task<IEnumerable<Tour>> GetByDestination(int destinationId)
+        public async Task<IEnumerable<Tour>> GetByDepartureCity(int cityId)
         {
-            return await _unitOfWork.Tours.GetByDestination(destinationId);
+            return await _unitOfWork.Tours.GetByDepartureCity(cityId);
         }
 
         public async Task<Tour?> GetById(Guid id)

@@ -12,7 +12,7 @@ namespace Travel.Core.Entities
 
         public string Description { get; set; } = null!;
 
-        public virtual ICollection<TimeSlot> TimeSlot { get; set; } = new List<TimeSlot>();
+        public virtual ICollection<Activity> Activity { get; set; } = new List<Activity>();
 
         [JsonIgnore]
         public virtual Tour? Tour { get; set; }

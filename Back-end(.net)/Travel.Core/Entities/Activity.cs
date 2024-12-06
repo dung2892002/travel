@@ -6,7 +6,7 @@ namespace Travel.Core.Entities
     {
         public Guid Id { get; set; }
 
-        public Guid TimeSlotId { get; set; }
+        public Guid TourDayId { get; set; }
 
         public string Name { get; set; } = null!;
 
@@ -15,6 +15,6 @@ namespace Travel.Core.Entities
         public string Location { get; set; } = null!;
                 
         [JsonIgnore]
-        public virtual TimeSlot? TimeSlot { get; set; } 
+        public virtual TourDay? TourDay { get; set; } 
     }
 }

@@ -47,15 +47,16 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<Favourite>> GetByUser(Guid userId)
         {
-            var favourites = await _dbContext.Favourite
+            var query = _dbContext.Favourite
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Hotel).ThenInclude(h => h.Image)
+                .Include(f => f.Hotel).ThenInclude(h => h.City).ThenInclude(c => c.Province)
+                .Include(f => f.Hotel).ThenInclude(h => h.HotelFacility).ThenInclude(hf => hf.Facility)
                 .Include(f => f.City)
                 .Include(f => f.Tour).ThenInclude(t => t.Image)
-                .Include(f => f.Destination).ThenInclude(d => d.Image)
-                .ToListAsync();
+                .Include(f => f.Destination).ThenInclude(d => d.Image);
 
-            return favourites;
+            return await query.ToListAsync();
         }
 
         public async Task<Favourite?> GetUserFavouriteHotel(Guid userId, Guid hotelId)

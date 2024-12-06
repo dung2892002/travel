@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IServices
@@ -7,7 +8,7 @@ namespace Travel.Core.Interfaces.IServices
     {
         Task<IEnumerable<BookingRoom>> GetByHotel(Guid hotelId);
         Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId);
-        Task<IEnumerable<BookingRoom>> GetByUser(Guid userId);
+        Task<PagedResult<BookingRoom>> GetByUser(Guid userId, int? status, int pageNumber);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings();
         Task Create(BookingRoom booking);
         Task<bool> CancelBooking(Guid id, string reason);

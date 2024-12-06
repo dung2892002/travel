@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IRepositories;
 using Travel.Infrastructure.Data;
@@ -44,18 +45,33 @@ namespace Travel.Infrastructure.Repositories
             return bookings;
         }
 
-        public async Task<IEnumerable<BookingRoom>> GetByUser(Guid userId)
+        public async Task<PagedResult<BookingRoom>> GetByUser(Guid userId, int? status, int pageNumber)
         {
-            var bookings = await _dbContext.BookingRoom
+            var query = _dbContext.BookingRoom
                                             .Include(b => b.Room)
                                                 .ThenInclude(r => r.Image)
                                             .Include(b => b.Room)
                                                 .ThenInclude(r => r.Hotel)
                                             .Include(b => b.Discount)
                                             .Where(b => b.UserId == userId)
-                                            .OrderByDescending(b => b.CreatedAt)
-                                            .ToListAsync();
-            return bookings;
+                                            .AsQueryable();
+
+            if (status != null) query = query.Where(b => b.Status == status);
+
+            var totalItems = await query.CountAsync();
+
+            var bookings = await query
+                                .Skip((pageNumber -1) * 10)
+                                .OrderByDescending(b => b.CreatedAt)
+                                .Take(10)
+                                .ToListAsync();
+
+            return new PagedResult<BookingRoom>
+            {
+                Items = bookings,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / 10.0)
+            };
         }
 
         public async Task<IEnumerable<BookingRoom>> GetExpiredBookings(DateTime expirationTime)

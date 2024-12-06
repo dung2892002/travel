@@ -18,10 +18,6 @@ namespace Travel.Infrastructure.Data
                       IRoomRepository roomRepository,
                       IBookingRoomRepository bookingRoomRepository,
                       ITourRepository tourRepository,
-                      ITourDayRepository tourDayRepository,
-                      ITimeSlotRepository timeSlotRepository,
-                      IActivityRepository activityRepository,
-                      ITourDestinationRepository tourDestinationRepository,
                       IBookingTourRepository bookingTourRepository,
                       IReviewRepository reviewRepository,
                       IFavouriteRepository favouriteRepository,
@@ -44,10 +40,6 @@ namespace Travel.Infrastructure.Data
         public IRoomRepository Rooms { get; } = roomRepository;
         public IBookingRoomRepository BookingsRoom { get; } = bookingRoomRepository;
         public ITourRepository Tours { get; } = tourRepository;
-        public ITourDayRepository ToursDay { get; } = tourDayRepository;
-        public ITimeSlotRepository TimeSlots { get; } = timeSlotRepository;
-        public IActivityRepository Activitys { get; } = activityRepository;
-        public ITourDestinationRepository ToursDestination { get; } = tourDestinationRepository;
         public IBookingTourRepository BookingsTour { get; }  = bookingTourRepository;
         public IReviewRepository Reviews { get; } = reviewRepository;
         public IFavouriteRepository Favorites { get; } = favouriteRepository;

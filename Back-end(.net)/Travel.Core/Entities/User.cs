@@ -21,16 +21,11 @@ namespace Travel.Core.Entities
         public string AvatarImage { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public virtual ICollection<BookingFlight> BookingFlight { get; set; } = new List<BookingFlight>();
-
-        [JsonIgnore]
         public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();
 
         [JsonIgnore]
         public virtual ICollection<BookingTour> BookingTour { get; set; } = new List<BookingTour>();
 
-        [JsonIgnore]
-        public virtual ICollection<BookingTrain> BookingTrain { get; set; } = new List<BookingTrain>();
 
         [JsonIgnore]
         public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();

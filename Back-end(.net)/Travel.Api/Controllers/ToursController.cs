@@ -25,12 +25,12 @@ namespace Travel.Api.Controllers
             }
         }
 
-        [HttpGet("destination/{id}")]
-        public async Task<IActionResult> GetByDestination(int id)
+        [HttpGet("city")]
+        public async Task<IActionResult> GetByCity([FromQuery] int id)
         {
             try
             {
-                var hotels = await _tourService.GetByDestination(id);
+                var hotels = await _tourService.GetByCity(id);
                 return StatusCode(200, hotels);
             }
             catch (Exception ex)
@@ -40,8 +40,8 @@ namespace Travel.Api.Controllers
         }
 
         [Authorize(Policy = "TourPartner")]
-        [HttpGet("partner/{id}")]
-        public async Task<IActionResult> GetByPartner(Guid id)
+        [HttpGet("partner")]
+        public async Task<IActionResult> GetByPartner([FromQuery] Guid id)
         {
             try
             {

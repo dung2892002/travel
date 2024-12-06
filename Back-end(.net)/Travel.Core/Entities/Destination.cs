@@ -25,8 +25,5 @@ namespace Travel.Core.Entities
 
         [JsonIgnore]
         public virtual ICollection<Review> Review { get; set; } = new List<Review>();
-
-        [JsonIgnore]
-        public virtual ICollection<TourDestination> TourDestination { get; set; } = new List<TourDestination>();
     }
 }

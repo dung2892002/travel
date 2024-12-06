@@ -15,11 +15,11 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "User")]
         [HttpGet("user")]
-        public async Task<IActionResult> GetByUser([FromQuery] Guid id)
+        public async Task<IActionResult> GetByUser([FromQuery] Guid id, [FromQuery] int? status, [FromQuery] int pageNumber)
         {
             try
             {
-                var bookings = await _bookingRoomService.GetByUser(id);
+                var bookings = await _bookingRoomService.GetByUser(id, status, pageNumber);
                 return StatusCode(200, bookings);
             }
             catch (ArgumentException ex)

@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IRepositories
 {
@@ -6,7 +7,7 @@ namespace Travel.Core.Interfaces.IRepositories
     {
         Task Create(BookingRoom bookingRoom);
 
-        Task<IEnumerable<BookingRoom>> GetByUser(Guid userId);
+        Task<PagedResult<BookingRoom>> GetByUser(Guid userId, int? status, int pageNumber);
         Task<IEnumerable<BookingRoom>> GetByHotel(Guid hotelId);
         Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings(DateTime expirationTime);
