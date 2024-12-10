@@ -31,6 +31,13 @@ namespace Travel.Core.Services
                     hotelFacility.Facility = null;
                     await _unitOfWork.Hotels.CreateHotelFacility(hotelFacility);
                 }
+                foreach (var refund in hotel.Refund)
+                {
+                    refund.HotelId = hotel.Id;
+                    refund.Hotel = null;
+                    refund.Tour = null;
+                    await _unitOfWork.Hotels.CreateHotelRefund(refund);
+                }
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
@@ -75,12 +82,7 @@ namespace Travel.Core.Services
             await _unitOfWork.BeginTransaction();
             try
             {
-                var hotelExisting = await _unitOfWork.Hotels.GetById(id);
-                if (hotelExisting == null)
-                {
-                    throw new ArgumentException("Hotel not exist");
-                }
-
+                var hotelExisting = await _unitOfWork.Hotels.GetById(id) ?? throw new ArgumentException("Hotel not exist");
                 hotelExisting.Name = hotel.Name;
                 hotelExisting.Description = hotel.Description;
                 hotelExisting.Rating = hotel.Rating;
@@ -93,11 +95,12 @@ namespace Travel.Core.Services
 
                 UpdateHotelDestinations(hotelExisting, hotel.HotelDestination);
                 UpdateHotelFacilities(hotelExisting, hotel.HotelFacility);
+                UpdateHotelRefund(hotelExisting, hotel.Refund);
 
                 var result = await _unitOfWork.CompleteAsync();
                 await _unitOfWork.CommitTransaction();
 
-                return result > 0;
+                return true;
             }
 
 
@@ -155,6 +158,27 @@ namespace Travel.Core.Services
             }
         }
 
+        private async void UpdateHotelRefund(Hotel existingHotel, ICollection<Refund> newRefunds)
+        {
+            var refundsToRemove = existingHotel.Refund
+                                .Where(r => !newRefunds.Any(newRefund => IsSameRefund(r, newRefund)))
+                                .ToList();
+
+            foreach (var refund in refundsToRemove)
+            {
+                await _unitOfWork.Hotels.DeleteHotelRefund(refund);
+            }
+
+            var refundsToAdd = newRefunds
+                               .Where(newRefund => !existingHotel.Refund.Any(existingRefund => IsSameRefund(existingRefund, newRefund)))
+                               .ToList();
+
+            foreach (var refund in refundsToAdd)
+            {
+                refund.HotelId = existingHotel.Id;
+                await _unitOfWork.Hotels.CreateHotelRefund(refund);
+            }
+        }
         private async void UpdateHotelFacilities(Hotel existingHotel, ICollection<HotelFacility> newFacilities)
         {
             var hotelFacilityRemove = existingHotel.HotelFacility
@@ -172,6 +196,12 @@ namespace Travel.Core.Services
                 hotelFacility.HotelId = existingHotel.Id;
                 await _unitOfWork.Hotels.CreateHotelFacility(hotelFacility);
             }
+        }
+
+        private bool IsSameRefund(Refund r1, Refund r2)
+        {
+            return r1.DayBefore == r2.DayBefore &&
+                   r1.RefundPercent == r2.RefundPercent;
         }
     }
 }

@@ -1,46 +1,42 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Travel.Core.Entities
+namespace Travel.Core.Entities;
+
+public class BookingTour
 {
-    public class BookingTour
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+    public Guid UserId { get; set; }
 
-        public Guid TourId { get; set; }
-        public Guid? DiscountId { get; set; }
+    public Guid TourScheduleId { get; set; }
 
-        public DateOnly StartDate { get; set; }
+    public Guid? DiscountId { get; set; }
 
-        public string ContactName { get; set; } = null!;
-        public string ContactEmail { get; set; } = null!;
-        public string ContactPhone { get; set; } = null!;
+    public DateOnly StartDate { get; set; }
 
-        public short NumberToddler { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-        public short NumberPrimaryChildren { get; set; }
+    public decimal Price { get; set; }
 
-        public short NumberAdultPeople { get; set; }
+    public int Status { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+    public string? CancelReason { get; set; }
 
-        public decimal Price { get; set; }
+    public string ContactName { get; set; } = null!;
 
-        public int Status { get; set; }
+    public string ContactEmail { get; set; } = null!;
 
-        public string? CancelReason { get; set; } = null!;
+    public string ContactPhone { get; set; } = null!;
 
-        [JsonIgnore]
-        public virtual Tour? Tour { get; set; } = null!;
+    public virtual ICollection<BookingTourPeople> BookingTourPeople { get; set; } = new List<BookingTourPeople>();
 
-        [JsonIgnore]
-        public virtual User? User { get; set; } = null!;
+    public virtual Discount? Discount { get; set; }
 
-        [JsonIgnore]
-        public virtual Discount? Discount { get; set; }
+    [JsonIgnore]
+    public virtual ICollection<Payment> Payment { get; set; } = new List<Payment>();
 
-        [JsonIgnore]
-        public virtual List<Payment> Payment { get; set; } = new List<Payment>();
-    }
+    public virtual TourSchedule? TourSchedule { get; set; } = null!;
+
+    [JsonIgnore]
+    public virtual User? User { get; set; } = null!;
 }

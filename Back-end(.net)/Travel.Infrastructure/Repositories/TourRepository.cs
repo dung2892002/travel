@@ -14,6 +14,90 @@ namespace Travel.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task CreateActitity(Activity activity)
+        {
+            await _dbContext.Activity.AddAsync(activity);
+        }
+
+        public async Task CreateTourCity(TourCity tourCity)
+        {
+            await _dbContext.TourCity.AddAsync(tourCity);
+        }
+
+        public async Task CreateTourDay(TourDay tourDay)
+        {
+            await _dbContext.TourDay.AddAsync(tourDay);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task CreateTourDetail(TourDetail tourDetail)
+        {
+            await _dbContext.TourDetail.AddAsync(tourDetail);
+        }
+
+        public async Task CreateTourNotice(TourNotice tourNotice)
+        {
+            await _dbContext.TourNotice.AddAsync(tourNotice);
+        }
+
+        public async Task CreateTourPrice(TourPrice tourPrice)
+        {
+            await _dbContext.TourPrice.AddAsync(tourPrice);
+        }
+
+        public async Task CreateTourRefund(Refund tourRefund)
+        {
+            await _dbContext.Refund.AddAsync(tourRefund);
+        }
+
+        public async Task CreateTourSchedule(TourSchedule tourSchedule)
+        {
+            await _dbContext.TourSchedule.AddAsync(tourSchedule);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteActitity(Activity activity)
+        {
+            _dbContext.Activity.Remove(activity);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourCity(TourCity tourCity)
+        {
+            _dbContext.TourCity.Remove(tourCity);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourDay(TourDay tourDay)
+        {
+            _dbContext.TourDay.Remove(tourDay);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourDetail(TourDetail tourDetail)
+        {
+            _dbContext.TourDetail.Remove(tourDetail);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourNotice(TourNotice tourNotice)
+        {
+            _dbContext.TourNotice.Remove(tourNotice);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourPrice(TourPrice tourPrice)
+        {
+            _dbContext.TourPrice.Remove(tourPrice);
+            await Task.CompletedTask;
+        }
+
+        public async Task DeleteTourRefund(Refund tourRefund)
+        {
+            _dbContext.Refund.Remove(tourRefund);
+            await Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Tour>> GetAll()
         {
             return await _dbContext.Tour.ToListAsync();
@@ -34,6 +118,21 @@ namespace Travel.Infrastructure.Repositories
             return await _dbContext.Tour.SingleOrDefaultAsync(b => b.Id == id);
         }
 
+        public async Task<Tour?> GetDetail(Guid id)
+        {
+            return await _dbContext.Tour
+                .AsSplitQuery()
+                .Include(t => t.Image)
+                .Include(t => t.TourDetail)
+                .Include(t => t.DepartureCity)
+                .Include(t => t.TourDay).ThenInclude(td => td.Activity)
+                .Include(t => t.TourCity).ThenInclude(tc => tc.City)
+                .Include(t => t.TourPrice)
+                .Include(t => t.Refund)
+                .Include(t => t.TourNotice)
+                .SingleOrDefaultAsync(b => b.Id == id);
+        }
+
         public async Task<IEnumerable<Tour>> GetByPartner(Guid partnerId)
         {
             return await _dbContext.Tour
@@ -41,6 +140,86 @@ namespace Travel.Infrastructure.Repositories
                     .ThenInclude(dc => dc.Province)
                 .Where(t => t.UserId == partnerId)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourSchedule>> GetScheduleByTour(Guid tourId)
+        {
+            return await _dbContext.TourSchedule.Where(ts => ts.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourSchedule>> GetScheduleAvailableByTour(Guid tourId)
+        {
+            return await _dbContext.TourSchedule.Where(ts => ts.TourId == tourId && ts.DateStart.Date > DateTime.Now.Date ).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourDay>> GetTourDaysByTour(Guid tourId)
+        {
+            return await _dbContext.TourDay.Where(td => td.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Activity>> GetActivitiesByTourDay(Guid tourDayId)
+        {
+            return await _dbContext.Activity.Where(a => a.TourDayId == tourDayId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourCity>> GetTourCityByTour(Guid tourId)
+        {
+            return await _dbContext.TourCity.Where(tc => tc.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourDetail>> GetTourDetailByTour(Guid tourId)
+        {
+            return await _dbContext.TourDetail.Where(td => td.TourId==tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourNotice>> GetTourNoticeByTour(Guid tourId)
+        {
+            return await _dbContext.TourNotice.Where(tn => tn.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TourPrice>> GetTourPriceByTour(Guid tourId)
+        {
+            return await _dbContext.TourPrice.Where(p => p.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Refund>> GetTourRefundByTour(Guid tourId)
+        {
+            return await _dbContext.Refund.Where(r => r.TourId == tourId).ToListAsync();
+        }
+
+        public async Task<TourDetail?> GetTourDetailById(int id)
+        {
+            return await _dbContext.TourDetail.SingleOrDefaultAsync(td => td.Id==id); 
+        }
+
+        public async Task<TourPrice?> GetTourPriceById(Guid id)
+        {
+            return await _dbContext.TourPrice.SingleOrDefaultAsync(_ => _.Id==id);
+        }
+
+        public async Task<TourNotice?> GetTourNoticeById(int id)
+        {
+            return await _dbContext.TourNotice.SingleOrDefaultAsync(_ => _.Id==id); 
+        }
+
+        public async Task<Refund?> GetTourRefundById(int id)
+        {
+            return await _dbContext.Refund.SingleOrDefaultAsync(r => r.Id==id);
+        }
+
+        public async Task<TourCity?> GetTourCityById(int id)
+        {
+            return await _dbContext.TourCity.SingleOrDefaultAsync(tc => tc.Id==id);
+        }
+
+        public async Task<Activity?> GetActivityById(Guid id)
+        {
+            return await _dbContext.Activity.SingleOrDefaultAsync(a => a.Id==id);
+        }
+
+        public async Task<TourDay?> GetTourDayById(Guid id)
+        {
+            return await _dbContext.TourDay.SingleOrDefaultAsync(td => td.Id==id);
         }
     }
 }

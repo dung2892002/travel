@@ -17,6 +17,21 @@ export default {
     }
   },
 
+  async fetchUserFavourite(id) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Favourites/user`, {
+        params: {
+          id: id
+        }
+      })
+      const favourites = response.data
+      this.userFavourites = favourites
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
   async fetchUserFavouriteHotel(userId, token, hotelId) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST

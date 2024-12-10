@@ -50,7 +50,6 @@ export default {
 
   async updateUser(id, user, token) {
     try {
-      console.log(token)
       const apiServer = import.meta.env.VITE_API_HOST
       const response = await axios.put(`${apiServer}/Users/update-info`, user, {
         headers: {

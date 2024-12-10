@@ -52,12 +52,13 @@
             <span>Ngày trả phòng:</span> <span>{{ formatDate(booking.CheckOutDate) }}</span>
           </div>
         </div>
-        <div class="info-value info--discount" v-if="booking.Discount">
+        <div class="info-value info--discount">
           <span>Khuyến mãi áp dụng: </span>
-          <span>
+          <span v-if="booking.Discount">
             Giảm {{ booking.Discount.Percent }}%, tối đa
             {{ formatNumber(booking.Discount.MaxDiscount) }}vnd</span
           >
+          <span v-else>Không</span>
         </div>
         <div class="info-value info--discount" v-if="booking.CancelReason">
           <span>Lý do hủy: </span>
@@ -78,7 +79,7 @@
           </div>
           <div class="action" v-if="booking.Status === 0">
             <div class="btn btn--remove" @click="toggleCancelPopup">Hủy</div>
-            <div class="btn btn--add" @click="paymentBooking">Thanh toán</div>
+            <div class="btn btn--add" @click="handlePaymentBooking(booking.Id)">Thanh toán</div>
             <div class="popup-cancel" v-if="showCancelBooking">
               <div
                 @click="toggleCancelPopup"
@@ -138,7 +139,8 @@ function canculatePrice(booking) {
   return Math.round(booking.Price - discount)
 }
 
-const cancelReason = ref('thich thi huy')
+const cancelReason = ref('')
+
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   booking: {
@@ -147,7 +149,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['cancelBooking'])
+const emit = defineEmits(['cancelBooking', 'paymentBooking'])
 
 function toggleCancelPopup() {
   showCancelBooking.value = !showCancelBooking.value
@@ -168,8 +170,8 @@ function handleCancelBooking(id) {
   emit('cancelBooking', id, cancelReason.value)
 }
 
-function paymentBooking() {
-  console.log('Thanh toan')
+function handlePaymentBooking(id) {
+  emit('paymentBooking', id)
 }
 </script>
 

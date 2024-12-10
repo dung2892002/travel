@@ -1,15 +1,20 @@
-﻿using System.Text.Json.Serialization;
+﻿
+using System.Text.Json.Serialization;
 
-namespace Travel.Core.Entities
+namespace Travel.Core.Entities;
+
+public class DiscountTour
 {
-    public class DiscountTour
-    {
-        public int Id { get; set; }
-        public Guid DiscountId { get; set; }
-        public Guid TourId { get; set; }
-        [JsonIgnore]
-        public Discount? Discount { get; set; }
-        [JsonIgnore]
-        public Tour? Tour { get; set; }
-    }
+    public int Id { get; set; }
+
+    public Guid DiscountId { get; set; }
+
+    public Guid TourId { get; set; }
+
+    [JsonIgnore]
+    public virtual Discount? Discount { get; set; } = null!;
+
+
+    [JsonIgnore]
+    public virtual Tour? Tour { get; set; } = null!;
 }

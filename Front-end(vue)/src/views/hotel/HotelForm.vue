@@ -179,18 +179,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="form__section--right content--column">
-              <div class="form__item form__item--1">
-                <p class="form__label">Loại hình<span class="required">*</span></p>
-                <select v-model="hotel.Type" class="form__input">
-                  <option value="1">Khu nghỉ dưỡng (Resort)</option>
-                  <option value="2">Biệt thự (Villa)</option>
-                  <option value="3">Khách sạn (Hotel)</option>
-                  <option value="4">Căn hộ (Apartment)</option>
-                  <option value="5">Nhà nghỉ (Guesthouse)</option>
-                </select>
-              </div>
               <div class="form__item form__item--1 form-facility">
                 <p class="form__label">Tiện nghi phổ biến</p>
                 <div class="multichoice">
@@ -209,6 +197,52 @@
                       <span>{{ facility.Facility.Name }}</span>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="form__section--right content--column">
+              <div class="form__item form__item--1">
+                <p class="form__label">Loại hình<span class="required">*</span></p>
+                <select v-model="hotel.Type" class="form__input">
+                  <option value="1">Khu nghỉ dưỡng (Resort)</option>
+                  <option value="2">Biệt thự (Villa)</option>
+                  <option value="3">Khách sạn (Hotel)</option>
+                  <option value="4">Căn hộ (Apartment)</option>
+                  <option value="5">Nhà nghỉ (Guesthouse)</option>
+                </select>
+              </div>
+              <div class="form__item form__item--1 form-facility">
+                <div class="content--row">
+                  <p class="form__label">Chính sách hoàn tiền</p>
+                  <button class="destination__button btn--add" @click="addRefund">
+                    <span class="button--add-text">+</span>
+                  </button>
+                </div>
+                <div
+                  v-for="(refund, index) in hotel.Refund"
+                  :key="index"
+                  style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    margin-bottom: 6px;
+                  "
+                >
+                  <div>
+                    Hủy trước ngày CheckIn
+                    <input v-model="refund.DayBefore" type="number" required style="width: 60px" />
+                    ngày, hoàn
+                    <input
+                      v-model="refund.RefundPercent"
+                      type="number"
+                      required
+                      style="width: 60px"
+                    />
+                    %
+                  </div>
+                  <button type="button" @click="removeRefund(index)" class="btn btn--remove">
+                    Xoá
+                  </button>
                 </div>
               </div>
             </div>
@@ -353,6 +387,17 @@ function addDestination(destination) {
   })
 }
 
+function removeRefund(index) {
+  hotel.value.Refund.splice(index, 1)
+}
+
+function addRefund() {
+  hotel.value.Refund.push({
+    DayBefore: 0,
+    RefundPercent: 0
+  })
+}
+
 function checkContainFacility(id) {
   return (
     hotel.value &&
@@ -376,7 +421,7 @@ async function fetchHotelData() {
     await locationStore.fetchDestinations(hotel.value.CityId)
     keyword.value = `${hotel.value.City.Name}, ${hotel.value.City.Province.Name}`
   } else {
-    hotel.value = { HotelFacility: [], HotelDestination: [] }
+    hotel.value = { HotelFacility: [], HotelDestination: [], Refund: [] }
   }
 }
 
@@ -403,6 +448,8 @@ function formatHotelData() {
   submitHotel.value.HotelFacility = hotel.value.HotelFacility.map((hotelFacility) => ({
     FacilityId: hotelFacility.Facility.Id
   }))
+
+  submitHotel.value.Refund = hotel.value.Refund
 }
 
 async function submitForm() {

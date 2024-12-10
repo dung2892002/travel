@@ -97,8 +97,8 @@
         </div>
       </div>
     </div>
-    <div class="search-item search-button">
-      <button @click="searchHotel">Tìm kiếm</button>
+    <div class="search-item search-button" @click="searchHotel">
+      <button>Tìm kiếm</button>
     </div>
   </div>
 </template>

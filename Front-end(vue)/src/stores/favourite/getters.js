@@ -3,5 +3,6 @@ export default {
   getTotalItems: (state) => state.totalItems,
   getHotelFavourites: (state) => state.hotelFavourites,
   getUserFavouriteHotel: (state) => state.userFavouriteHotel,
-  getUserFavouriteTour: (state) => state.userFavouriteTour
+  getUserFavouriteTour: (state) => state.userFavouriteTour,
+  getUserFavourites: (state) => state.userFavourites
 }

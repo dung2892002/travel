@@ -19,6 +19,8 @@ namespace Travel.Core.Interfaces.IRepositories
         Task DeleteHotelDestination(HotelDestination hotelDestination);
         Task CreateHotelFacility(HotelFacility hotelFacility);
         Task DeleteHotelFacility(HotelFacility hotelFacility);
+        Task CreateHotelRefund(Refund refund);
+        Task DeleteHotelRefund(Refund refund);
 
         Task<PagedResult<SearchHotelResponse>> SearchHotel(SearchHotelRequest request);
     }

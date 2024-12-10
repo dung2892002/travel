@@ -1,31 +1,24 @@
 import axios from 'axios'
 
 export default {
-  async fetchMyBooking(userId, token) {
+  async fetchMyBookingRoom(userId, status, pageNumber, token) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
-      const response1 = await axios.get(`${apiServer}/BookingsRoom/user`, {
+      const response = await axios.get(`${apiServer}/BookingsRoom/user`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
         params: {
-          id: userId
+          id: userId,
+          status: status,
+          pageNumber: pageNumber
         }
       })
-      const bookingsRoom = response1.data
+      const data = response.data
 
-      const response2 = await axios.get(`${apiServer}/BookingsTour/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          id: userId
-        }
-      })
-      const bookingsTour = response2.data
-
-      this.myBookingsRoom = bookingsRoom
-      this.myBookingsTour = bookingsTour
+      this.myBookingsRoom = data.Items
+      this.totalPages = data.TotalPages
+      this.totalItems = data.TotalItems
     } catch (error) {
       return { success: false, message: error.response.data }
     }
@@ -61,6 +54,81 @@ export default {
       })
 
       if (response.status === 200) return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  resetBookingRooms() {
+    this.myBookingsRoom = null
+  },
+  async fetchMyBookingTour(userId, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/BookingsTour/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          id: userId
+        }
+      })
+      const bookingsTour = response.data
+
+      this.myBookingsTour = bookingsTour
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async createBookingTour(booking, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/BookingsTour`, booking, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status === 201) return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async cancelBookingTour(id, reason, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.patch(`${apiServer}/BookingsTour/cancel`, reason, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          id: id
+        }
+      })
+
+      if (response.status === 200) return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async paymentForBookingRoom(request, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const returnUrl = import.meta.env.VITE_RETURN_PAYMENT_BOOKINGROOM_URL
+      request.ReturnUrl = returnUrl
+      const response = await axios.post(`${apiServer}/Payments/pay-room`, request, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status === 200) return { success: true, url: response.data.Url }
     } catch (error) {
       return { success: false, message: error.response.data }
     }

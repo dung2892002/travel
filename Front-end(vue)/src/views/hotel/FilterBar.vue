@@ -1,8 +1,5 @@
 <template>
   <div class="filter-travel">
-    <button @click="filterHotel" class="filter-button">
-      <img src="../../assets/icon/filter.png" alt="filter" />
-    </button>
     <div class="filter-item">
       <span class="filter__label">Khoảng giá (phòng/đêm)</span>
       <div class="filter-range" ref="rangeSlider">
@@ -66,18 +63,20 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import '../../styles/layout/filterbar.css'
 import { formatNumber } from '@/utils'
 import { useHotelStore } from '@/stores/hotel'
+import { debounce } from 'lodash'
 
 const minPrice = 100000
 const maxPrice = 20000000
-const currentMin = ref(minPrice)
-const currentMax = ref(maxPrice)
 const sliderWidth = ref(0)
 
 const emit = defineEmits(['filterHotel'])
+
+const currentMin = ref(minPrice)
+const currentMax = ref(maxPrice)
 
 const ratings = ref([])
 const guestRatings = ref([])
@@ -90,6 +89,42 @@ const rightThumb = ref(null)
 const range = ref(null)
 
 const hotelStore = useHotelStore()
+
+const props = defineProps({
+  resetFilters: Boolean
+})
+
+watch(
+  () => props.resetFilters,
+  (newVal) => {
+    if (newVal) {
+      resetAllFilters()
+    }
+  }
+)
+
+function resetAllFilters() {
+  ratings.value = []
+  guestRatings.value = []
+  types.value = []
+  selectedHotelFacilities.value = []
+  currentMin.value = minPrice
+  currentMax.value = maxPrice
+}
+
+watch(
+  [ratings, guestRatings, types, selectedHotelFacilities],
+  () => {
+    filterHotel()
+  },
+  { deep: true }
+)
+
+watch([currentMin, currentMax], () => {
+  debounceFilterHotel()
+})
+
+const debounceFilterHotel = debounce(filterHotel, 300)
 
 function filterHotel() {
   emit('filterHotel', {

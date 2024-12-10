@@ -21,7 +21,7 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<BookingTour>> GetByTour(Guid tourId)
         {
-            return await _dbContext.BookingTour.Where(b => b.TourId == tourId).ToListAsync();
+            return await _dbContext.BookingTour.ToListAsync();
         }
 
         public async Task<IEnumerable<BookingTour>> GetByUser(Guid userId)

@@ -125,6 +125,9 @@
 .form__item--4 {
   width: 24%;
 }
+.form__item--5 {
+  width: 19%;
+}
 .stars {
   display: flex;
 }
@@ -359,4 +362,13 @@ form label {
 
 .form-group--column ul::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+.group-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }

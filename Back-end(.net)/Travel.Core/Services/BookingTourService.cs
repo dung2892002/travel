@@ -28,17 +28,17 @@ namespace Travel.Core.Services
 
         public async Task Create(BookingTour booking)
         {
-            var tourExisting = await _unitOfWork.Tours.GetById(booking.TourId);
-            if (tourExisting == null)
-            {
-                throw new ArgumentException("room not exist");
-            }
+            //var tourExisting = await _unitOfWork.Tours.GetById(booking.TourScheduleId);
+            //if (tourExisting == null)
+            //{
+            //    throw new ArgumentException("room not exist");
+            //}
 
             booking.Id = Guid.NewGuid();
             booking.CreatedAt = DateTime.Now;
             booking.Status = 0;
 
-            booking.Price = tourExisting.PriceToddler * booking.NumberToddler + tourExisting.PricePrimaryChildren * booking.NumberPrimaryChildren + tourExisting.PriceAdultPeople * booking.NumberAdultPeople;
+            booking.Price = 0;
             await _unitOfWork.BookingsTour.Create(booking);
         }
 

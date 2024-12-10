@@ -66,6 +66,9 @@
       <button @click="handleSelectHotel" class="action-button action--first">Chỉnh sửa</button>
       <button @click="showRoom" class="action-button">Xem phòng</button>
     </div>
+    <div class="item-action" v-if="mode == 3">
+      <button @click="handleSelectHotel" class="action-button action--first">Xóa</button>
+    </div>
 
     <ImageGallery :images="hotel.Image" :visible="showImagePopup" @close="toggleImagePopup" />
   </div>

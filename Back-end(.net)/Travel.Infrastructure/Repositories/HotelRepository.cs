@@ -34,6 +34,17 @@ namespace Travel.Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
+        public async Task CreateHotelRefund(Refund refund)
+        {
+            await _dbContext.Refund.AddAsync(refund);
+        }
+
+        public async Task DeleteHotelRefund(Refund refund)
+        {
+            _dbContext.Refund.Remove(refund);
+            await Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<Hotel>> GetAllHotel()
         {
             var hotels = await _dbContext.Hotel
@@ -75,6 +86,7 @@ namespace Travel.Infrastructure.Repositories
                     .ThenInclude(hd => hd.Destination)
                 .Include(h => h.HotelFacility)
                     .ThenInclude(hf => hf.Facility)
+                .Include(h => h.Refund)
                 .SingleOrDefaultAsync(h => h.Id == id);
             return hotel;
         }

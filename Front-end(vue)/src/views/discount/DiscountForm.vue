@@ -146,12 +146,12 @@
               <div class="content--column form-location" v-if="checkRole(6)">
                 <div class="form__item form__item--1 form-destination">
                   <div class="multichoice content--column">
-                    <div v-for="hotel in discount.DiscountHotel" :key="hotel.Id">
+                    <div v-for="tour in discount.DiscountTour" :key="tour.Id">
                       <div class="destination__hotel">
-                        {{ hotel.Hotel.Name }}
+                        {{ tour.Tour.Name }}
                         <button
                           class="destination__button btn--remove"
-                          @click="removeHotel(hotel.Hotel)"
+                          @click="removeTour(tour.Tour)"
                         >
                           -
                         </button>
@@ -159,29 +159,29 @@
                     </div>
                   </div>
                   <div class="content--row">
-                    <p class="form__label">Danh sách khách sạn áp dụng</p>
+                    <p class="form__label">Danh sách tour áp dụng</p>
                     <button class="destination__button btn--add" @click="showSelectHotel = 1">
                       <span class="button--add-text">+</span>
                     </button>
                     <div v-if="showSelectHotel === 1" class="form-show-select select--destination">
                       <div class="destination">
-                        <span class="destination__label">Chọn khách sạn</span>
-                        <div v-for="hotel in hotels" :key="hotel.Id" class="destination__item">
+                        <span class="destination__label">Chọn tour</span>
+                        <div v-for="tour in tours" :key="tour.Id" class="destination__item">
                           <button
                             class="destination__button btn--remove"
-                            v-if="checkContainHotel(hotel.Id)"
-                            @click="removeHotel(hotel)"
+                            v-if="checkContainTour(tour.Id)"
+                            @click="removeTour(tour)"
                           >
                             -
                           </button>
                           <button
                             class="destination__button btn--add"
                             v-else
-                            @click="addHotel(hotel)"
+                            @click="addTour(tour)"
                           >
                             +
                           </button>
-                          <span class="destination__name">{{ hotel.Name }}</span>
+                          <span class="destination__name">{{ tour.Name }}</span>
                         </div>
                       </div>
                       <button class="btn btn--close w-4" @click="closeSelect">Ok</button>
@@ -212,8 +212,10 @@ import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useDiscountStore } from '@/stores/discount'
 import { formatDateForm, getLinkImage } from '@/utils'
+import { useTourStore } from '@/stores/tour'
 
 const hotelStore = useHotelStore()
+const tourStore = useTourStore()
 const userStore = useUserStore()
 const discountStore = useDiscountStore()
 
@@ -274,6 +276,27 @@ function checkContainHotel(id) {
   )
 }
 
+function removeTour(tour) {
+  const newDiscountTour = discount.value.DiscountTour.filter(
+    (DiscountTour) => DiscountTour.Tour.Id != tour.Id
+  )
+  discount.value.DiscountTour = newDiscountTour
+}
+
+function addTour(tour) {
+  discount.value.DiscountTour.push({
+    Tour: tour
+  })
+}
+
+function checkContainTour(id) {
+  return (
+    discount.value &&
+    Array.isArray(discount.value.DiscountTour) &&
+    discount.value.DiscountTour.some((tour) => tour.Tour.Id === id)
+  )
+}
+
 function formatDiscountData() {
   submitDiscount.value.Percent = discount.value.Percent
   submitDiscount.value.MinPrice = discount.value.MinPrice
@@ -322,10 +345,14 @@ async function submitForm() {
 const user = computed(() => userStore.getUser)
 const token = computed(() => userStore.getToken)
 const hotels = computed(() => hotelStore.getHotels)
+const tours = computed(() => tourStore.getTours)
 
 onMounted(() => {
   if (checkRole(5)) {
     hotelStore.fetchHotelByPartner(userStore.getUser.Id, userStore.getToken)
+  }
+  if (checkRole(6)) {
+    tourStore.fetchTourByPartner(userStore.getUser.Id, userStore.getToken)
   }
 })
 </script>

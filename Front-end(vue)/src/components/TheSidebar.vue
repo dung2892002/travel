@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" v-if="user">
     <div class="sidebar__item user-info">
       <div class="user-info" @click="triggerImageInput">
         <div class="sidebar-image">
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="sidebar__item" v-if="checkRole(1)">
-      <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
         <img src="../assets/icon/booking.png" alt="icon" class="link-icon" />
         <p>Booking</p>
       </RouterLink>
@@ -27,13 +27,13 @@
         <img src="../assets/icon/user.png" alt="icon" class="link-icon" />
         <p>Thông tin</p>
       </RouterLink>
-      <RouterLink :to="{ name: 'profile' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'myFavourite' }" class="sidebar__link">
         <img src="../assets/icon/love.png" alt="icon" class="link-icon" />
         <p>Yêu thích</p>
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(5)">
-      <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê khách sạn</p></RouterLink
       >
@@ -43,11 +43,11 @@
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(6)">
-      <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê tour</p></RouterLink
       >
-      <RouterLink :to="{ name: 'profile' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'myTour' }" class="sidebar__link">
         <img src="../assets/icon/tour.png" alt="icon" class="link-icon" />
         <p>Quản lý tour</p>
       </RouterLink>
@@ -78,13 +78,22 @@ import '../styles/base/button.css'
 import '../styles/layout/sidebar.css'
 import { computed, ref } from 'vue'
 import { getLinkImage } from '@/utils'
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const fileInput = ref(null)
 
 function triggerImageInput() {
   fileInput.value.click()
+}
+
+const logout = () => {
+  userStore.logout()
+  router.push({
+    name: 'login'
+  })
 }
 
 async function handleImageChange(event) {

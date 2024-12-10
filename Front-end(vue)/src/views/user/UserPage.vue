@@ -13,6 +13,7 @@ import TheSidebar from '@/components/TheSidebar.vue'
 .user-page {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   padding: 20px 200px;
 }
 </style>

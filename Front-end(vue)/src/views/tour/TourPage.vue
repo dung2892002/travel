@@ -1,3 +1,3 @@
 <template>
-  <div>danh sach tour</div>
+  <div>trang tim kiem tour</div>
 </template>
