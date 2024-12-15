@@ -16,15 +16,54 @@ namespace Travel.Core.Services
                 throw new ArgumentException("booking not exist");
             }
 
-            if (bookingExisting.Status != 0)
+            if (bookingExisting.Status == 2 || bookingExisting.Status == 3)
             {
-                throw new InvalidCastException("Can only cancel unpaid bookings");
+                throw new InvalidCastException("Booking has  been canceled");
             }
-            bookingExisting.Status = 2;
-            bookingExisting.CancelReason = reason;
 
-            var result = await _unitOfWork.CompleteAsync();
-            return result > 0;
+            if (bookingExisting.Status == 0)
+            {
+                bookingExisting.Status = 2;
+                bookingExisting.CancelReason = reason;
+                return await _unitOfWork.CompleteAsync() > 0 ;
+            }
+
+            var beforeCheckinDate = (bookingExisting.CheckInDate.Date - DateTime.Now.Date).Days;
+
+            if (beforeCheckinDate <= 0)
+            {
+                throw new InvalidCastException("Cannot cancel booking");
+            }
+
+            var refund = await _unitOfWork.BookingsRoom.GetHotelRefundByBookingRoom(id, beforeCheckinDate);
+
+            if (refund == null)
+            {
+                bookingExisting.Status = 2;
+                bookingExisting.CancelReason = reason;
+                return await _unitOfWork.CompleteAsync() > 0;
+            }
+
+
+            var payment = await _unitOfWork.Payments.GetByBookingRoom(id);
+            var refundValue = Math.Round(payment.Amount * refund.RefundPercent / 100, 0);
+
+            var refundPayment = new Payment
+            {
+                Id = Guid.NewGuid(),
+                BookingRoomId = id,
+                Amount = refundValue,
+                CreatedAt = DateTime.Now,
+                Type = false,
+                TransactionId = 0,
+            };
+
+            await _unitOfWork.Payments.Create(refundPayment);
+
+
+            bookingExisting.Status = 3;
+            bookingExisting.CancelReason = reason;
+            return await _unitOfWork.CompleteAsync() > 0;
         }
 
         public async Task Create(BookingRoom booking)
@@ -98,6 +137,19 @@ namespace Travel.Core.Services
             var expirationTime = currentTime.AddMinutes(-10);
 
             return await _unitOfWork.BookingsRoom.GetExpiredBookings(expirationTime);
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetRefundBookings()
+        {
+            return await _unitOfWork.BookingsRoom.GetRefundBookings();
+        }
+
+        public async Task<bool> Refund(Guid id)
+        {
+            var booking = await _unitOfWork.BookingsRoom.GetById(id) ?? throw new ArgumentException("booking not exist");
+            booking.Status = 4;
+
+            return await _unitOfWork.CompleteAsync() > 0;
         }
     }
 }

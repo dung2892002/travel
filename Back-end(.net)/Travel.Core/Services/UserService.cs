@@ -15,7 +15,7 @@ namespace Travel.Core.Services
         {
             var user = await _unitOfWork.Users.GetUserByUsername(loginRequest.Username);
             if (user == null || !VerifyPassword(user.Password, loginRequest.Password)) throw new UnauthorizedAccessException("Invalid username or password.");
-
+            if (user.IsLocked) throw new UnauthorizedAccessException("The account is locked");
             var userDto = new UserDTO
             {
                 Id = user.Id,
@@ -242,6 +242,29 @@ namespace Travel.Core.Services
             };
 
             return userDto;
+        }
+
+        public async Task<bool> LockUser(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetUserById(id) ?? throw new ArgumentException("user not exist");
+            user.IsLocked = true;
+
+            var result = await _unitOfWork.CompleteAsync();
+            return result > 0;
+        }
+
+        public async Task<bool> UnlockUser(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetUserById(id) ?? throw new ArgumentException("user not exist");
+            user.IsLocked = false;
+
+            var result = await _unitOfWork.CompleteAsync();
+            return result > 0;
+        }
+
+        public async Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber)
+        {
+            return await _unitOfWork.Users.GetUser(keyword, pageSize, pageNumber);
         }
     }
 }

@@ -20,6 +20,8 @@ public class User
 
     public string AvatarImage { get; set; } = null!;
 
+    public bool IsLocked { get; set; }
+
     [JsonIgnore]
     public virtual ICollection<BookingRoom> BookingRoom { get; set; } = new List<BookingRoom>();
 

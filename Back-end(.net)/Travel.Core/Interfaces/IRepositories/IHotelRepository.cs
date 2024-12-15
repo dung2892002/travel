@@ -22,6 +22,9 @@ namespace Travel.Core.Interfaces.IRepositories
         Task CreateHotelRefund(Refund refund);
         Task DeleteHotelRefund(Refund refund);
 
+        Task<IEnumerable<Refund>> GetHotelRefundByHotel(Guid hotelId);
+        Task<Refund?> GetHotelRefundById(int id);
+
         Task<PagedResult<SearchHotelResponse>> SearchHotel(SearchHotelRequest request);
     }
 }

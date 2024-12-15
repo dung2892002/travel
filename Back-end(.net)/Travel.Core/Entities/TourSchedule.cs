@@ -15,6 +15,5 @@ public class TourSchedule
     [JsonIgnore]
     public virtual ICollection<BookingTour> BookingTour { get; set; } = new List<BookingTour>();
 
-    [JsonIgnore]
     public virtual Tour? Tour { get; set; } = null!;
 }

@@ -22,6 +22,27 @@ export default {
     }
   },
 
+  async fetchTourReviews(tourId, pageNumber) {
+    try {
+      if (!pageNumber) return { success: false }
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Reviews/tour`, {
+        params: {
+          id: tourId,
+          pageNumber: pageNumber
+        }
+      })
+      const data = response.data
+      this.tourReviews = data.Items
+      this.overallReview = data.OverallReview
+      this.totalItems = data.TotalItems
+      this.totalPages = data.TotalPages
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
   async createReview(formData, token) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST

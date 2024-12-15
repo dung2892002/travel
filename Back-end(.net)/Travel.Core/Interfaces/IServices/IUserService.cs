@@ -14,5 +14,9 @@ namespace Travel.Core.Interfaces.IServices
         Task<bool> ChangePassword(ChangePasswordRequest changePasswordRequest);
         Task<bool> UpdateInfo(Guid id, UserDTO user);
         Task<bool> ChangeAvatar(Guid id, Stream fileStream, string fileName);
+        Task<bool> LockUser(Guid id);
+        Task<bool> UnlockUser(Guid id);
+
+        Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber);
     }
 }

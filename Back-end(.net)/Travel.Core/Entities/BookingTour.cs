@@ -12,8 +12,6 @@ public class BookingTour
 
     public Guid? DiscountId { get; set; }
 
-    public DateOnly StartDate { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public decimal Price { get; set; }

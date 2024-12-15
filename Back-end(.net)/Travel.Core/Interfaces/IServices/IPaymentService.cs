@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IServices
 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IRepositories;
 using Travel.Infrastructure.Data;
@@ -127,8 +128,8 @@ namespace Travel.Infrastructure.Repositories
                 .Include(t => t.DepartureCity)
                 .Include(t => t.TourDay).ThenInclude(td => td.Activity)
                 .Include(t => t.TourCity).ThenInclude(tc => tc.City)
-                .Include(t => t.TourPrice)
-                .Include(t => t.Refund)
+                .Include(t => t.TourPrice.Where(tp => tp.State == true))
+                .Include(t => t.Refund.Where(r => r.State == true))
                 .Include(t => t.TourNotice)
                 .SingleOrDefaultAsync(b => b.Id == id);
         }
@@ -136,6 +137,7 @@ namespace Travel.Infrastructure.Repositories
         public async Task<IEnumerable<Tour>> GetByPartner(Guid partnerId)
         {
             return await _dbContext.Tour
+                .Include(t => t.Image)
                 .Include(t => t.DepartureCity)
                     .ThenInclude(dc => dc.Province)
                 .Where(t => t.UserId == partnerId)
@@ -220,6 +222,85 @@ namespace Travel.Infrastructure.Repositories
         public async Task<TourDay?> GetTourDayById(Guid id)
         {
             return await _dbContext.TourDay.SingleOrDefaultAsync(td => td.Id==id);
+        }
+
+        public async Task<TourSchedule?> GetTourScheduleById(Guid id)
+        {
+            return await _dbContext.TourSchedule.SingleOrDefaultAsync(s => s.Id==id);
+        }
+
+        public async Task<PagedResult<SearchTourResponse>> SearchTour(SearchTourRequest request)
+        {
+            var query = _dbContext.Tour.AsQueryable();
+
+            query = query.Where(t => t.TourCity.Any(tc => tc.CityId==request.CityId));
+
+            if (request.DateStart.HasValue) query = query.Where(t => t.TourSchedule.Any(ts => ts.DateStart >= request.DateStart));
+
+            if (request.MinPrice.HasValue) query = query.Where(t => t.TourSchedule.Any(ts => ts.Price >= request.MinPrice));
+
+            if (request.MaxPrice.HasValue) query = query.Where(t => t.TourSchedule.Any(ts => ts.Price <= request.MaxPrice));
+
+            if (request.Ratings != null) query = query.Where(t => request.Ratings.Contains(t.Rating));
+
+            if (request.GuestRatings != null)
+                query = query.Where(t => t.Review.Count == 0 || t.Review.Average(r => r.Point) >= request.GuestRatings.Min());
+
+            var totalItems = await query.CountAsync();
+
+            var tours = await query
+                        .Skip((request.PageNumber - 1) * 10)
+                        .Take(10)
+                        .Include(t => t.Image)
+                        .Include(t => t.DepartureCity)
+                            .ThenInclude(dc => dc.Province)
+                        .Select(t => new SearchTourResponse
+                        {
+                            Id = t.Id,
+                            Name = t.Name,
+                            Rating = t.Rating,
+                            Transport = t.Transport,
+                            NumberOfDay = t.NumberOfDay,
+                            NumberOfNight = t.NumberOfNight,
+                            AverageReview = t.Review.Count != 0 ? Math.Round(t.Review.Average(r => r.Point), 2) : 0,
+                            QuantityReview = t.Review.Count,
+                            Image = t.Image,
+                            DepartureCity = t.DepartureCity,
+                            MinPrice = t.TourSchedule
+                                        .Where(
+                                                s => (!request.MinPrice.HasValue || s.Price >= request.MinPrice) &&
+                                                (!request.MaxPrice.HasValue || s.Price <= request.MaxPrice) &&
+                                                (!request.DateStart.HasValue || s.DateStart >= request.DateStart)
+                                        )
+                                        .Min(ts => ts.Price),
+
+                        })
+                        .ToListAsync();
+            return new PagedResult<SearchTourResponse>
+            {
+                Items = tours,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / 10.0)
+            };
+        }
+
+        public async Task<IEnumerable<TourSchedule>> SearchSchedule(SearchScheduleRequest request)
+        {
+           var query = _dbContext.TourSchedule.AsQueryable();
+            query = query.Where(s => s.TourId == request.TourId).Where(s => s.DateStart >= request.DateStart);
+
+            if (request.MinPrice.HasValue) query = query.Where(s => s.Price >= request.MinPrice);
+            if (request.MaxPrice.HasValue) query = query.Where(s => s.Price <= request.MaxPrice);
+
+            var schedules = await query.ToListAsync();
+
+            return schedules;
+        }
+
+        public async Task<TourSchedule?> GetScheduleDetail(Guid id)
+        {
+            return await _dbContext.TourSchedule
+                .SingleOrDefaultAsync(ts => ts.Id == id);
         }
     }
 }

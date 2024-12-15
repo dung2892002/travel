@@ -13,6 +13,7 @@ public class Refund
     public int DayBefore { get; set; }
 
     public int RefundPercent { get; set; }
+    public bool State { get; set; }
 
     [JsonIgnore]
     public virtual Hotel? Hotel { get; set; }

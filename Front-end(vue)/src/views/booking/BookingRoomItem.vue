@@ -36,6 +36,12 @@
             <span v-if="booking.Status === 2" class="booking-status booking-status--cancel">
               Đã hủy</span
             >
+            <span v-if="booking.Status === 3" class="booking-status booking-status--cancel">
+              Chờ hoàn tiền</span
+            >
+            <span v-if="booking.Status === 4" class="booking-status booking-status--cancel">
+              Đã hoàn tiền</span
+            >
           </div>
         </div>
         <div class="info-value info__rating">
@@ -77,9 +83,26 @@
               <span>{{ formatNumber(canculatePrice(booking)) }} vnd</span>
             </div>
           </div>
-          <div class="action" v-if="booking.Status === 0">
-            <div class="btn btn--remove" @click="toggleCancelPopup">Hủy</div>
-            <div class="btn btn--add" @click="handlePaymentBooking(booking.Id)">Thanh toán</div>
+          <div class="action">
+            <div
+              class="btn btn--remove"
+              @click="toggleCancelPopup"
+              v-if="
+                booking.Status == 0 ||
+                (booking.Status == 1 &&
+                  new Date(booking.CheckInDate) >= new Date().setHours(0, 0, 0, 0))
+              "
+            >
+              Hủy
+            </div>
+            <div
+              class="btn btn--add"
+              @click="handlePaymentBooking(booking.Id)"
+              v-if="booking.Status === 0"
+            >
+              Thanh toán
+            </div>
+
             <div class="popup-cancel" v-if="showCancelBooking">
               <div
                 @click="toggleCancelPopup"

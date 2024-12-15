@@ -33,10 +33,8 @@ namespace Travel.Infrastructure.Repositories
         public async Task<PagedResult<Review>> GetByHotel(Guid hoteId, int pageNumber)
         {
             var query = _dbcontext.Review
-                .Include(r => r.Image)
-                .Include(r => r.User)
-                .Where(r => r.HotelId == hoteId)
-                .OrderByDescending(r => r.CreatedAt);
+                        .Where(r => r.HotelId == hoteId)
+                        .OrderByDescending(r => r.CreatedAt);
 
             var averagePoint = await query.AverageAsync(r => r.Point);
             var quantityFantastic = await query.Where(r => r.Point == 10).CountAsync();
@@ -58,6 +56,8 @@ namespace Travel.Infrastructure.Repositories
             var reviews = await query
                                 .Skip((pageNumber - 1) * 10)
                                 .Take(10)
+                                .Include(r => r.Image)
+                                .Include(r => r.User)
                                 .ToListAsync();
             return new PagedResult<Review>
             {

@@ -3,6 +3,7 @@ export default function () {
     totalPages: 1,
     totalItems: 1,
     overallReview: null,
-    hotelReviews: null
+    hotelReviews: null,
+    tourReviews: null
   }
 }

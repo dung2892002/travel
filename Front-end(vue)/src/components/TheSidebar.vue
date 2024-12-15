@@ -53,11 +53,11 @@
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(10)">
-      <RouterLink :to="{ name: 'my-booking' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê</p></RouterLink
       >
-      <RouterLink :to="{ name: 'profile' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'userList' }" class="sidebar__link">
         <img src="../assets/icon/dic-employee.png" alt="icon" class="link-icon" />
         <p>Quản lý tài khoản</p></RouterLink
       >

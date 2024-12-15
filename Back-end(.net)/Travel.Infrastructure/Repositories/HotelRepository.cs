@@ -86,7 +86,7 @@ namespace Travel.Infrastructure.Repositories
                     .ThenInclude(hd => hd.Destination)
                 .Include(h => h.HotelFacility)
                     .ThenInclude(hf => hf.Facility)
-                .Include(h => h.Refund)
+                .Include(h => h.Refund.Where(r => r.State == true))
                 .SingleOrDefaultAsync(h => h.Id == id);
             return hotel;
         }
@@ -108,16 +108,7 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<PagedResult<SearchHotelResponse>> SearchHotel(SearchHotelRequest request)
         {
-            var query = _dbContext.Hotel
-                .Include(h => h.Image)
-                .Include(h => h.City)
-                    .ThenInclude(c => c.Province)
-                .Include(h => h.HotelFacility)
-                    .ThenInclude(hf => hf.Facility)
-                .Include(h => h.Room)
-                    .ThenInclude(r => r.BookingRoom)
-                .Include(h => h.Review)
-                .AsQueryable();
+            var query = _dbContext.Hotel.AsQueryable();
 
             if (request.CityId.HasValue)
             {
@@ -170,6 +161,13 @@ namespace Travel.Infrastructure.Repositories
             var totalItems = await query.CountAsync();
 
             var hotels = await query
+                        .Skip((request.PageNumber - 1) * 10)
+                        .Take(10)
+                        .Include(h => h.Image)
+                        .Include(h => h.City)
+                            .ThenInclude(c => c.Province)
+                        .Include(h => h.HotelFacility)
+                            .ThenInclude(hf => hf.Facility)
                         .Select(h => new SearchHotelResponse
                         {
                             Id = h.Id,
@@ -194,8 +192,6 @@ namespace Travel.Infrastructure.Repositories
                             HotelFacility = h.HotelFacility,
                             Image = h.Image
                         })
-                        .Skip((request.PageNumber - 1) * 10)
-                        .Take(10)
                         .ToListAsync();
 
             return new PagedResult<SearchHotelResponse>
@@ -204,6 +200,16 @@ namespace Travel.Infrastructure.Repositories
                 TotalItems = totalItems,
                 TotalPages = (int)Math.Ceiling(totalItems / 10.0)
             };
+        }
+
+        public async Task<IEnumerable<Refund>> GetHotelRefundByHotel(Guid hotelId)
+        {
+            return await _dbContext.Refund.Where(r => r.HotelId == hotelId).ToListAsync();
+        }
+
+        public async Task<Refund?> GetHotelRefundById(int id)
+        {
+            return await _dbContext.Refund.SingleOrDefaultAsync(r => r.Id == id);
         }
     }
 }

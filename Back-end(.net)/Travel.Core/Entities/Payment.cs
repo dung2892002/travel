@@ -13,6 +13,7 @@ public class Payment
     public DateTime CreatedAt { get; set; }
 
     public long TransactionId { get; set; }
+    public bool Type { get; set; }
 
     public virtual BookingRoom? BookingRoom { get; set; }
 

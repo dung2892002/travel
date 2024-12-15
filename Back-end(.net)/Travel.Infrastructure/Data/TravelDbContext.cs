@@ -173,8 +173,6 @@ public partial class TravelDbContext : DbContext
 
             entity.HasIndex(e => e.BookingTourId, "FK_booking_tour_people_BookingTourId_idx");
 
-            entity.HasIndex(e => e.TourPriceId, "FK_booking_tour_people_TourPriceId_idx");
-
             entity.HasOne(d => d.BookingTour).WithMany(p => p.BookingTourPeople)
                 .HasForeignKey(d => d.BookingTourId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -677,6 +675,9 @@ public partial class TravelDbContext : DbContext
             entity.ToTable("tour_price");
 
             entity.HasIndex(e => e.TourId, "FK_tour_child_price_TourId_idx");
+
+            entity.Property(e => e.State)
+                  .HasDefaultValue(true);
 
             entity.HasOne(d => d.Tour).WithMany(p => p.TourPrice)
                 .HasForeignKey(d => d.TourId)

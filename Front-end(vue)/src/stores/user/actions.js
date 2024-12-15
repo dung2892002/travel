@@ -98,5 +98,68 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+
+  async fetchUsers(keyword, pageSize, pageNumber, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          keyword: keyword,
+          pageSize: pageSize,
+          pageNumber: pageNumber
+        }
+      })
+
+      const data = response.data
+      this.users = data.Items
+      this.totalItems = data.TotalItems
+      this.totalPages = data.TotalPages
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async lockUsers(id, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.patch(`${apiServer}/Users/lock`, id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status === 200) return { success: true }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async unlockUsers(id, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.patch(`${apiServer}/Users/unlock`, id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status === 200) return { success: true }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

@@ -92,10 +92,10 @@ namespace Travel.Core.Services
                 hotelExisting.PhoneNumber = hotel.PhoneNumber;
                 hotelExisting.CityId = hotel.CityId;
                 hotelExisting.Type = hotel.Type;
-
-                UpdateHotelDestinations(hotelExisting, hotel.HotelDestination);
-                UpdateHotelFacilities(hotelExisting, hotel.HotelFacility);
-                UpdateHotelRefund(hotelExisting, hotel.Refund);
+                hotel.Id = hotelExisting.Id;
+                await UpdateHotelDestinations(hotelExisting, hotel.HotelDestination);
+                await UpdateHotelFacilities(hotelExisting, hotel.HotelFacility);
+                await UpdateHotelRefunds(hotel);
 
                 var result = await _unitOfWork.CompleteAsync();
                 await _unitOfWork.CommitTransaction();
@@ -139,7 +139,7 @@ namespace Travel.Core.Services
             return true;
         }
 
-        private async void UpdateHotelDestinations(Hotel existingHotel, ICollection<HotelDestination> newDestinations)
+        private async Task UpdateHotelDestinations(Hotel existingHotel, ICollection<HotelDestination> newDestinations)
         {
             var hotelDestinationRemove = existingHotel.HotelDestination
                 .Where(d => !newDestinations.Any(nd => nd.DestinationId == d.DestinationId))
@@ -158,28 +158,36 @@ namespace Travel.Core.Services
             }
         }
 
-        private async void UpdateHotelRefund(Hotel existingHotel, ICollection<Refund> newRefunds)
+        private async Task UpdateHotelRefunds(Hotel hotel)
         {
-            var refundsToRemove = existingHotel.Refund
-                                .Where(r => !newRefunds.Any(newRefund => IsSameRefund(r, newRefund)))
-                                .ToList();
+            var existingRefunds = await _unitOfWork.Hotels.GetHotelRefundByHotel(hotel.Id);
+
+            var refundsToRemove = existingRefunds
+                .Where(existing => !hotel.Refund.Any(newRefund => newRefund.Id == existing.Id));
 
             foreach (var refund in refundsToRemove)
             {
-                await _unitOfWork.Hotels.DeleteHotelRefund(refund);
+                refund.State = false;
             }
 
-            var refundsToAdd = newRefunds
-                               .Where(newRefund => !existingHotel.Refund.Any(existingRefund => IsSameRefund(existingRefund, newRefund)))
-                               .ToList();
-
-            foreach (var refund in refundsToAdd)
+            foreach (var refund in hotel.Refund)
             {
-                refund.HotelId = existingHotel.Id;
-                await _unitOfWork.Hotels.CreateHotelRefund(refund);
+                if (refund.Id == 0)
+                {
+                    refund.HotelId = hotel.Id;
+                    await _unitOfWork.Hotels.CreateHotelRefund(refund);
+                }
+                else
+                {
+                    var existingRefund = await _unitOfWork.Hotels.GetHotelRefundById(refund.Id);
+                    existingRefund.DayBefore = refund.DayBefore;
+                    existingRefund.RefundPercent = refund.RefundPercent;
+
+                    //var result = await _unitOfWork.CompleteAsync();
+                }
             }
         }
-        private async void UpdateHotelFacilities(Hotel existingHotel, ICollection<HotelFacility> newFacilities)
+        private async Task UpdateHotelFacilities(Hotel existingHotel, ICollection<HotelFacility> newFacilities)
         {
             var hotelFacilityRemove = existingHotel.HotelFacility
                 .Where(f => !newFacilities.Any(nf => nf.FacilityId == f.FacilityId))

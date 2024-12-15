@@ -76,6 +76,18 @@ builder.Services.AddQuartz(q =>
             .WithInterval(TimeSpan.FromMinutes(1)) 
             .RepeatForever())
     );
+
+    var bookingRefundJobKey = new JobKey("BookingRefundJob");
+    q.AddJob<BookingRefundJob>(opts => opts.WithIdentity(bookingRefundJobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(bookingRefundJobKey)
+        .WithIdentity("BookingRefundJobTrigger")
+        .StartNow()
+        .WithSimpleSchedule(x => x
+            .WithInterval(TimeSpan.FromMinutes(3)) 
+            .RepeatForever())
+    );
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 

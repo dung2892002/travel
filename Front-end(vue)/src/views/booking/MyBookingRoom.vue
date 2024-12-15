@@ -54,7 +54,12 @@ function handlePageChange(value) {
 async function cancelBooking(id, reason) {
   const response = await bookingStore.cancelBookingRoom(id, reason, token.value)
   if (response.success) {
-    bookingStore.fetchMyBookingRoom(user.value.Id, token.value)
+    bookingStore.fetchMyBookingRoom(
+      user.value.Id,
+      statusBooking.value,
+      pageNumber.value,
+      token.value
+    )
   } else {
     console.log(response.message)
   }

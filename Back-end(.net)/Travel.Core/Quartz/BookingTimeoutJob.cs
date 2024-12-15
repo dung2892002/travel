@@ -21,8 +21,8 @@ namespace Travel.Core.Quartz
             var expiredBookingsTour = await _bookingTourService.GetExpiredBookings();
             foreach (var booking in expiredBookingsTour)
             {
-                booking.CancelReason = "Hết thời gian thanh toán";
-                await _bookingTourService.CancelBooking(booking.Id,booking);
+                var CancelReason = "Hết thời gian thanh toán";
+                await _bookingTourService.CancelBooking(booking.Id,CancelReason);
             }
         }
     }

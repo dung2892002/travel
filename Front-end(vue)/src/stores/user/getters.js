@@ -1,4 +1,7 @@
 export default {
   getUser: (state) => state.user,
-  getToken: (state) => state.token
+  getToken: (state) => state.token,
+  getUsers: (state) => state.users,
+  getTotalPages: (state) => state.totalPages,
+  getTotalItems: (state) => state.totalItems
 }

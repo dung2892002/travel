@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IRepositories
 {
@@ -46,5 +47,13 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<TourCity?> GetTourCityById(int id);
         Task<Activity?> GetActivityById(Guid id);
         Task<TourDay?> GetTourDayById(Guid id);
+
+        Task<TourSchedule?> GetTourScheduleById(Guid id);
+
+        Task<PagedResult<SearchTourResponse>> SearchTour(SearchTourRequest request);
+        Task<IEnumerable<TourSchedule>> SearchSchedule(SearchScheduleRequest request);
+
+        Task<TourSchedule?> GetScheduleDetail(Guid id);
+
     }
 }

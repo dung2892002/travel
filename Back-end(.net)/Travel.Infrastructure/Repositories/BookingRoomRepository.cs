@@ -56,7 +56,9 @@ namespace Travel.Infrastructure.Repositories
                                             .Where(b => b.UserId == userId)
                                             .AsQueryable();
 
-            if (status != null) query = query.Where(b => b.Status == status);
+            if (status == 0) query = query.Where(b => b.Status == 0);
+            if (status == 1) query = query.Where(b => b.Status == 1);
+            if (status == 2) query = query.Where(b => b.Status == 2 || b.Status == 3 || b.Status == 4);
 
             var totalItems = await query.CountAsync();
 
@@ -78,6 +80,23 @@ namespace Travel.Infrastructure.Repositories
         {
             var bookings = await _dbContext.BookingRoom.Where(b => b.CreatedAt <= expirationTime && b.Status == 0).ToListAsync();
             return bookings;
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetRefundBookings()
+        {
+            var bookings = await _dbContext.BookingRoom.Where(b => b.Status == 3).ToListAsync();
+            return bookings;
+        }
+
+        public async Task<Refund?> GetHotelRefundByBookingRoom(Guid bookingRoomId, int numberDay)
+        {
+            var refund = await _dbContext.BookingRoom
+                        .Where(br => br.Id == bookingRoomId) 
+                        .SelectMany(br => br.Room.Hotel.Refund
+                            .Where(r => r.State && r.DayBefore <= numberDay) 
+                            .OrderByDescending(r => r.DayBefore)) 
+                        .FirstOrDefaultAsync();
+            return refund;
         }
     }
 }

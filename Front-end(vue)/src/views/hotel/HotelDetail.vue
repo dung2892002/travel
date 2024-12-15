@@ -213,7 +213,6 @@ async function handleSelectRoom(room) {
 
   sessionStorage.setItem('bookingRoom', JSON.stringify(booking))
 
-  console.log(booking)
   router.push({
     name: 'createBookingRoom'
   })

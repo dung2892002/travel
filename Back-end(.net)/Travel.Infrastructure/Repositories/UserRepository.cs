@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quartz.Util;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IRepositories;
 using Travel.Infrastructure.Data;
@@ -36,5 +38,22 @@ namespace Travel.Infrastructure.Repositories
                 .SingleOrDefaultAsync(x => x.Username == username);
         }
 
+        public async Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber)
+        {
+            var query = _dbContext.User.AsQueryable();
+
+            if (keyword != null) query = query.Where(u => u.Email.Contains(keyword));
+
+            var totalItems = await query.CountAsync();
+
+            var users = await query.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToListAsync();
+
+            return new PagedResult<User>
+            {
+                Items = users,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (decimal)pageSize)
+            };
+        }
     }
 }

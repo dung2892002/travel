@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.DTOs;
-using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
 
 namespace Travel.Api.Controllers
@@ -185,6 +184,68 @@ namespace Travel.Api.Controllers
             catch (ArgumentException ex)
             {
                 return StatusCode(404, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetUser([FromQuery] string? keyword, [FromQuery] int pageSize, [FromQuery] int pageNumber )
+        {
+            try
+            {
+                var result = await _userService.GetUser(keyword, pageSize, pageNumber);
+
+                return StatusCode(200, result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpPatch("lock")]
+        public async Task<IActionResult> LockUserAccount([FromBody] Guid id)
+        {
+            try
+            {
+                var response = await _userService.LockUser(id);
+
+                if (!response) return StatusCode(400, "No information has been changed");
+
+                return StatusCode(200, "Lock account successfully");
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [Authorize(Policy = "Admin")]
+        [HttpPatch("unlock")]
+        public async Task<IActionResult> UnlockUserAccount([FromBody] Guid id)
+        {
+            try
+            {
+                var response = await _userService.UnlockUser(id);
+                if (!response) return StatusCode(400, "No information has been changed");
+
+                return StatusCode(200, "Unlock account successfully");
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(400, ex.Message);
             }
             catch (Exception ex)
             {

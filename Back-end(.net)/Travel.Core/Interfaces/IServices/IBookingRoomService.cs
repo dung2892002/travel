@@ -10,7 +10,9 @@ namespace Travel.Core.Interfaces.IServices
         Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId);
         Task<PagedResult<BookingRoom>> GetByUser(Guid userId, int? status, int pageNumber);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings();
+        Task<IEnumerable<BookingRoom>> GetRefundBookings();
         Task Create(BookingRoom booking);
         Task<bool> CancelBooking(Guid id, string reason);
+        Task<bool> Refund(Guid id);
     }
 }

@@ -252,6 +252,12 @@ button {
   font-weight: bold;
 }
 
+.detail--time,
+.detail--transport {
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .detail--type {
   padding: 4px;
   border-radius: 12px;

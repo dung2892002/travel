@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
+using Travel.Core.Services;
 
 namespace Travel.Api.Controllers
 {
@@ -13,11 +14,11 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "User")]
         [HttpGet("user")]
-        public async Task<IActionResult> GetByUser([FromQuery] Guid id)
+        public async Task<IActionResult> GetByUser([FromQuery] Guid id, [FromQuery] int? status, [FromQuery] int pageNumber)
         {
             try
             {
-                var bookings = await _bookingTourService.GetByUser(id);
+                var bookings = await _bookingTourService.GetByUser(id, status, pageNumber);
                 return StatusCode(200, bookings);
             }
             catch (ArgumentException ex)
@@ -55,11 +56,34 @@ namespace Travel.Api.Controllers
             try
             {
                 await _bookingTourService.Create(booking);
-                return StatusCode(200, "creat booking tour successfull");
+                return StatusCode(201, "creat booking tour successfull");
             }
             catch (ArgumentException ex)
             {
                 return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "User")]
+        [HttpPatch("cancel")]
+        public async Task<IActionResult> CancelBooking([FromQuery] Guid id, [FromBody] string reason)
+        {
+            try
+            {
+                await _bookingTourService.CancelBooking(id, reason);
+                return StatusCode(200, "cancel room successfull");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (InvalidCastException ex)
+            {
+                return StatusCode(409, ex.Message);
             }
             catch (Exception ex)
             {

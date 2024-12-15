@@ -32,12 +32,13 @@
         <span>Thời gian: {{ tour.NumberOfDay }} ngày, {{ tour.NumberOfNight }} đêm</span>
       </div>
       <div v-if="mode === 0" class="info-value info__room">
-        <span>Giá tour</span>
-        <span>{{ formatNumber(hotel.MinPrice) }} VND</span>
+        <span>Giá khách/tour từ</span>
+        <span>{{ formatNumber(tour.MinPrice) }} VND</span>
       </div>
     </div>
     <div class="item-action" v-if="mode === 1">
       <button @click="handleSelectTour" class="action-button action--first">Chỉnh sửa</button>
+      <button @click="showSchedule" class="action-button action--first">Lịch khởi hành</button>
     </div>
     <div class="item-action" v-if="mode === 3">
       <button @click="handleSelectTour" class="action-button action--first">Xóa</button>
@@ -52,9 +53,10 @@ import { formatNumber, getLinkImage } from '@/utils'
 import '../../styles/main.css'
 import { ref } from 'vue'
 import ImageGallery from '@/components/ImageGallery.vue'
+import { useRouter } from 'vue-router'
 
 const showImagePopup = ref(false)
-
+const router = useRouter()
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   tour: {
@@ -66,6 +68,15 @@ const props = defineProps({
     required: true
   }
 })
+
+function showSchedule() {
+  router.push({
+    name: 'ScheduleList',
+    params: {
+      tourId: props.tour.Id
+    }
+  })
+}
 
 const emit = defineEmits(['selectTour'])
 

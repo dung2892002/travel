@@ -55,6 +55,7 @@ export default {
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
   },
+
   async updateTour(id, tour, token) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST
@@ -121,5 +122,97 @@ export default {
     this.searchTours = null
     this.totalPages = 1
     this.totalItems = 1
+  },
+
+  async fetchScheduleByTour(tourId) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Tours/schedule/search`, {
+        params: {
+          tourId: tourId
+        }
+      })
+      const data = response.data
+      this.schedules = data
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async createSchedule(schedule, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Tours/schedule`, schedule, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async updatePriceSchedule(schedule, id, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.patch(`${apiServer}/Tours/schedule`, schedule, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        params: {
+          id: id
+        }
+      })
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async fetchSearchSchedule(request) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Tours/schedule/search`, request)
+      const data = response.data
+      this.searchSchedules = data
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async fetchScheduleDetail(id) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Tours/schedule/detail`, {
+        params: {
+          id: id
+        }
+      })
+      const data = response.data
+      this.schedule = data
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

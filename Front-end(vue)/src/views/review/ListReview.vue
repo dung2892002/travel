@@ -175,11 +175,14 @@ async function fetchReviews() {
   if (props.hotelId) {
     await reviewStore.fetchHotelReviews(props.hotelId, pageNumber.value)
   }
+  if (props.tourId) {
+    await reviewStore.fetchTourReviews(props.tourId, pageNumber.value)
+  }
 }
 
 const reviews = computed(() => {
   if (props.hotelId) return reviewStore.getHotelReviews
-  else return reviewStore.getTotalItems
+  else return reviewStore.getTourReviews
 })
 
 const totalPages = computed(() => reviewStore.getTotalPages)

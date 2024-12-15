@@ -46,6 +46,7 @@ public class Tour
 
     public virtual ICollection<TourPrice> TourPrice { get; set; } = new List<TourPrice>();
 
+    [JsonIgnore]
     public virtual ICollection<TourSchedule> TourSchedule { get; set; } = new List<TourSchedule>();
 
     [JsonIgnore]

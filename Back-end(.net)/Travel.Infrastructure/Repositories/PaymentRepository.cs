@@ -14,6 +14,16 @@ namespace Travel.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<Payment?> GetByBookingRoom(Guid bookingRoomId)
+        {
+            return await _dbContext.Payment.FirstOrDefaultAsync(p => p.BookingRoomId == bookingRoomId && p.Type);
+        }
+
+        public async Task<Payment?> GetByBookingTour(Guid bookingTourId)
+        {
+            return await _dbContext.Payment.FirstOrDefaultAsync(p => p.BookingTourId == bookingTourId && p.Type);
+        }
+
         public async Task<Payment?> GetById(Guid id)
         {
             return await _dbContext.Payment.Where(p => p.Id == id).FirstOrDefaultAsync();

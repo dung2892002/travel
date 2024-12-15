@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
 using Travel.Core.Interfaces.IServices;
@@ -175,6 +176,7 @@ namespace Travel.Core.Services
             var tasks = tour.TourPrice.Select(async tourPrice =>
             {
                 tourPrice.TourId = tour.Id;
+                tourPrice.State = true;
                 await _unitOfWork.Tours.CreateTourPrice(tourPrice);
             });
 
@@ -235,16 +237,6 @@ namespace Travel.Core.Services
                 existingTour.Transport = tour.Transport;
                 existingTour.Description = tour.Description;
 
-                //var tasks = new List<Task>
-                //{
-                //    HandleTourCitiesForUpdate(tour),
-                //    HandleTourDetailsForUpdate(tour),
-                //    HandleTourNoticesForUpdate(tour),
-                //    HandleTourPricesForUpdate(tour),
-                //    HandleTourRefundsForUpdate(tour)
-                //};
-
-                //await Task.WhenAll(tasks);
                 await HandleTourDaysForUpdate(tour);
                 await HandleTourCitiesForUpdate(tour);
                 await HandleTourDetailsForUpdate(tour);
@@ -425,7 +417,7 @@ namespace Travel.Core.Services
 
             foreach (var tourPrice in tourPricesToRemove)
             {
-                await _unitOfWork.Tours.DeleteTourPrice(tourPrice);
+                tourPrice.State = false;  
             }
 
             foreach (var tourPrice in tour.TourPrice)
@@ -434,6 +426,7 @@ namespace Travel.Core.Services
                 {
                     tourPrice.Id = Guid.NewGuid();
                     tourPrice.TourId = tour.Id;
+                    tourPrice.State = true;
                     await _unitOfWork.Tours.CreateTourPrice(tourPrice);
                 }
                 else
@@ -457,7 +450,7 @@ namespace Travel.Core.Services
 
             foreach (var refund in refundsToRemove)
             {
-                await _unitOfWork.Tours.DeleteTourRefund(refund);
+                refund.State = false;
             }
 
             foreach (var refund in tour.Refund)
@@ -465,6 +458,7 @@ namespace Travel.Core.Services
                 if (refund.Id == 0)
                 {
                     refund.TourId = tour.Id;
+                    refund.State = true;
                     await _unitOfWork.Tours.CreateTourRefund(refund);
                 }
                 else
@@ -476,6 +470,35 @@ namespace Travel.Core.Services
                     //var result = await _unitOfWork.CompleteAsync();
                 }
             }
+        }
+
+        public async Task<bool> UpdatePriceSchedule(TourSchedule schedule, Guid id)
+        {
+            var existingSchedule = await _unitOfWork.Tours.GetTourScheduleById(id) ?? throw new ArgumentException("schedule not exist");
+
+            existingSchedule.Price = schedule.Price;
+
+            var result = await _unitOfWork.CompleteAsync();
+
+            return result > 0;
+
+        }
+
+        public async Task<PagedResult<SearchTourResponse>> SearchTour(SearchTourRequest request)
+        {
+            return await _unitOfWork.Tours.SearchTour(request);
+        }
+
+        public async Task<IEnumerable<TourSchedule>> SearchSchedule(SearchScheduleRequest request)
+        {
+            return await _unitOfWork.Tours.SearchSchedule(request);
+        }
+
+        public async Task<TourSchedule?> GetScheduleDetail(Guid id)
+        {
+            var schedule = await _unitOfWork.Tours.GetScheduleDetail(id) ?? throw new ArgumentException("schedule not exist"); ;
+
+            return schedule;
         }
     }
 }

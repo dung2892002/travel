@@ -15,6 +15,11 @@ import BookingRoomForm from '@/views/booking/BookingRoomForm.vue'
 import MyBookingRoom from '@/views/booking/MyBookingRoom.vue'
 import MyFavourite from '@/views/user/MyFavourite.vue'
 import MyTour from '@/views/tour/MyTour.vue'
+import TourSchedules from '@/views/tour/TourSchedules.vue'
+import TourDetail from '@/views/tour/TourDetail.vue'
+import BookingTourForm from '@/views/booking/BookingTourForm.vue'
+import MyBookingTour from '@/views/booking/MyBookingTour.vue'
+import UserList from '@/views/user/UserList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,9 +45,19 @@ const router = createRouter({
       component: BookingRoomForm
     },
     {
-      path: '/tour',
+      path: '/tours',
       name: 'tour',
       component: TourPage
+    },
+    {
+      path: '/tour/:id',
+      name: 'tourDetail',
+      component: TourDetail
+    },
+    {
+      path: '/create-booking-tour',
+      name: 'createBookingTour',
+      component: BookingTourForm
     },
     {
       path: '/user',
@@ -58,6 +73,11 @@ const router = createRouter({
           path: '/my-booking-room',
           name: 'my-booking-room',
           component: MyBookingRoom
+        },
+        {
+          path: '/my-booking-tour',
+          name: 'my-booking-tour',
+          component: MyBookingTour
         },
         {
           path: '/my-hotel',
@@ -83,6 +103,16 @@ const router = createRouter({
           path: '/my-tour',
           name: 'myTour',
           component: MyTour
+        },
+        {
+          path: 'schedules/tour/:tourId',
+          name: 'ScheduleList',
+          component: TourSchedules
+        },
+        {
+          path: 'users',
+          name: 'userList',
+          component: UserList
         }
       ]
     },

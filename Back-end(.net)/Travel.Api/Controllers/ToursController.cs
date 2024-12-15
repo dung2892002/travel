@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces.IServices;
+using Travel.Core.Services;
 
 namespace Travel.Api.Controllers
 {
@@ -46,6 +48,20 @@ namespace Travel.Api.Controllers
             {
                 var tour = await _tourService.GetByCity(id);
                 return StatusCode(200, tour);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> SearchTour([FromBody] SearchTourRequest request)
+        {
+            try
+            {
+                var tours = await _tourService.SearchTour(request);
+                return StatusCode(200, tours);
             }
             catch (Exception ex)
             {
@@ -137,6 +153,44 @@ namespace Travel.Api.Controllers
         }
 
         [Authorize(Policy = "TourPartner")]
+        [HttpPatch("schedule")]
+        public async Task<IActionResult> UpdateTourSchedule([FromBody] TourSchedule tourSchedule, [FromQuery] Guid id)
+        {
+            try
+            {
+                await _tourService.UpdatePriceSchedule(tourSchedule, id);
+                return StatusCode(201, "create schedule successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("schedule/detail")]
+        public async Task<IActionResult> GetScheduleDetail([FromQuery] Guid id)
+        {
+            try
+            {
+                var schedule = await _tourService.GetScheduleDetail(id);
+                return StatusCode(200, schedule);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("schedule")]
         public async Task<IActionResult> GetSchedule([FromQuery] Guid tourId)
         {
@@ -156,13 +210,31 @@ namespace Travel.Api.Controllers
             }
         }
 
-        [Authorize(Policy = "TourPartner")]
-        [HttpGet("schedule/available")]
+        [HttpGet("schedule/search")]
         public async Task<IActionResult> GetScheduleAvailable([FromQuery] Guid tourId)
         {
             try
             {
                 var schedules = await _tourService.GetScheduleAvailableByTour(tourId);
+                return StatusCode(200, schedules);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("schedule/search")]
+        public async Task<IActionResult> GetSearchSchedule([FromBody] SearchScheduleRequest request)
+        {
+            try
+            {
+                var schedules = await _tourService.SearchSchedule(request);
                 return StatusCode(200, schedules);
             }
             catch (ArgumentException ex)

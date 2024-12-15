@@ -390,7 +390,7 @@ async function uploadFiles() {
     formData.append('files', file)
   })
 
-  const response = await tourStore.addImageHotel(props.id, formData, userStore.getToken)
+  const response = await tourStore.addImageTour(props.id, formData, userStore.getToken)
 
   if (response.success) {
     closeForm()
@@ -562,7 +562,8 @@ function formatTourData() {
     Id: tourPrice.Id,
     TourId: tourPrice.TourId,
     AgeStart: tourPrice.AgeStart,
-    AgeEnd: tourPrice.AgeEnd === '' ? null : tourPrice.AgeEnd
+    AgeEnd: tourPrice.AgeEnd === '' ? null : tourPrice.AgeEnd,
+    Percent: tourPrice.Percent
   }))
   submitTour.value.Refund = tour.value.Refund
 }

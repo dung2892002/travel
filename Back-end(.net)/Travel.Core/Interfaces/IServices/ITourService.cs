@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Travel.Core.DTOs;
 using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IServices
@@ -20,5 +21,13 @@ namespace Travel.Core.Interfaces.IServices
 
         Task<IEnumerable<TourSchedule>> GetScheduleByTour(Guid tourId);
         Task<IEnumerable<TourSchedule>> GetScheduleAvailableByTour(Guid tourId);
+        Task<bool> UpdatePriceSchedule(TourSchedule schedule, Guid id);
+
+
+        Task<PagedResult<SearchTourResponse>> SearchTour(SearchTourRequest request);
+
+        Task<IEnumerable<TourSchedule>> SearchSchedule(SearchScheduleRequest request);
+
+        Task<TourSchedule?> GetScheduleDetail(Guid id);
     }
 }

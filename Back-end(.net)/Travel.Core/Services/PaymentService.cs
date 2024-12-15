@@ -103,7 +103,8 @@ namespace Travel.Core.Services
                 CreatedAt = time,
                 TransactionId = transactionId,
                 BookingRoomId = null,
-                BookingTourId = null
+                BookingTourId = null,
+                Type = true,
             };
 
             if (type == 0) payment.BookingRoomId = bookingId;

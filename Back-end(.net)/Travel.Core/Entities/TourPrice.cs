@@ -14,6 +14,8 @@ public class TourPrice
 
     public int Percent { get; set; }
 
+    public bool State { get; set; }
+
     [JsonIgnore]
     public virtual ICollection<BookingTourPeople> BookingTourPeople { get; set; } = new List<BookingTourPeople>();
 

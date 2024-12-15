@@ -98,3 +98,8 @@
 .filter-button:hover {
   background-color: var(--color-main-hover);
 }
+
+.cl-1 {
+  min-width: 250px;
+  margin-left: 320px;
+}
