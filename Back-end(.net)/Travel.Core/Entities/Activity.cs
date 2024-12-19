@@ -8,9 +8,7 @@ public class Activity
 
     public Guid TourDayId { get; set; }
 
-
     public string Description { get; set; } = null!;
-
 
     [JsonIgnore]
     public virtual TourDay? TourDay { get; set; } = null!;

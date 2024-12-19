@@ -101,9 +101,22 @@
             <span class="price__value"> {{ formatNumber(bookingTour.DiscountValue) }} VND</span>
           </div>
           <div class="price-item">
+            <span class="price__label">Thuế</span>
+            <span class="price__value">
+              {{ formatNumber(Math.round(bookingTour.Price * 0.15)) }} VND</span
+            >
+          </div>
+          <div class="price-item">
             <span class="price__label">Tổng cộng</span>
             <span class="price__value">
-              {{ formatNumber(bookingTour.Price - bookingTour.DiscountValue) }} VND</span
+              {{
+                formatNumber(
+                  bookingTour.Price -
+                    bookingTour.DiscountValue +
+                    Math.round(bookingTour.Price * 0.15)
+                )
+              }}
+              VND</span
             >
           </div>
         </div>
@@ -153,7 +166,12 @@
         <div class="info-value info-group">
           <span>Tổng cộng:</span>
           <span class="info--price">
-            {{ formatNumber(bookingTour.Price - bookingTour.DiscountValue) }} VND</span
+            {{
+              formatNumber(
+                bookingTour.Price - bookingTour.DiscountValue + Math.round(bookingTour.Price * 0.15)
+              )
+            }}
+            VND</span
           >
         </div>
         <button class="btn btn--add" @click="handleBookingTour">Đặt tour</button>

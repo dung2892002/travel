@@ -94,5 +94,40 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+  async fetchTourFavourites(tourId) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Favourites/tour`, {
+        params: {
+          id: tourId
+        }
+      })
+      const favourites = response.data
+      this.tourFavourites = favourites
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+
+  async fetchUserFavouriteTour(userId, token, tourId) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Favourites/tour/check`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          userId: userId,
+          tourId: tourId
+        }
+      })
+      const favourite = response.data
+      this.userFavouriteTour = favourite
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
   }
 }

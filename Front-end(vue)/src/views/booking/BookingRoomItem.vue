@@ -42,6 +42,9 @@
             <span v-if="booking.Status === 4" class="booking-status booking-status--cancel">
               Đã hoàn tiền</span
             >
+            <span v-if="booking.Status === 5" class="booking-status booking-status--paid">
+              Đã hoàn thành</span
+            >
           </div>
         </div>
         <div class="info-value info__rating">
@@ -75,7 +78,7 @@
         <div class="content--row" style="margin-top: 20px; justify-content: space-between">
           <div class="info-value info--price">
             <span>Tổng tiền: </span>
-            <div v-if="!booking.Discount">{{ formatNumber(booking.Price) }} vnd</div>
+            <div v-if="!booking.Discount">{{ formatNumber(booking.Price + booking.Fee) }} vnd</div>
             <div v-else>
               <span style="text-decoration: line-through"
                 >{{ formatNumber(booking.Price) }} vnd</span
@@ -159,7 +162,7 @@ const showCancelBooking = ref(false)
 function canculatePrice(booking) {
   const value = Math.round((booking.Discount.Percent * booking.Price) / 100)
   const discount = value <= booking.Discount.MaxDiscount ? value : booking.Discount.MaxDiscount
-  return Math.round(booking.Price - discount)
+  return Math.round(booking.Price - discount + booking.Fee)
 }
 
 const cancelReason = ref('')

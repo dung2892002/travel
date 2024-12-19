@@ -5,6 +5,7 @@ export default function () {
     hotelFavourites: null,
     userFavouriteHotel: null,
     userFavouriteTour: null,
-    userFavourites: null
+    userFavourites: null,
+    tourFavourites: null
   }
 }

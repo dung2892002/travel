@@ -23,6 +23,7 @@ public class BookingRoom
     public string ContactPhone { get; set; } = null!;
 
     public decimal Price { get; set; }
+    public decimal Fee { get; set; }
 
     public int Status { get; set; }
 

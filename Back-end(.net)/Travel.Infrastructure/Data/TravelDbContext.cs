@@ -72,7 +72,7 @@ public partial class TravelDbContext : DbContext
     public virtual DbSet<User> User { get; set; }
 
     public virtual DbSet<UserRole> UserRole { get; set; }
-
+    public virtual DbSet<Wallet> Wallet { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -115,6 +115,7 @@ public partial class TravelDbContext : DbContext
             entity.Property(e => e.ContactPhone).HasMaxLength(45);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Price).HasPrecision(19, 2);
+            entity.Property(e => e.Fee).HasPrecision(19, 2);
 
             entity.HasOne(d => d.Discount).WithMany(p => p.BookingRoom)
                 .HasForeignKey(d => d.DiscountId)
@@ -149,6 +150,7 @@ public partial class TravelDbContext : DbContext
             entity.Property(e => e.ContactPhone).HasMaxLength(45);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Price).HasPrecision(19, 2);
+            entity.Property(e => e.Fee).HasPrecision(19, 2);
 
             entity.HasOne(d => d.Discount).WithMany(p => p.BookingTour)
                 .HasForeignKey(d => d.DiscountId)
@@ -738,6 +740,21 @@ public partial class TravelDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_user");
         });
+
+        modelBuilder.Entity<Wallet>(entity =>
+        {
+            entity.HasKey(w => w.UserId).HasName("PRIMARY");
+            entity.ToTable("wallet");
+            entity.Property(w => w.Balance).IsRequired();
+            entity.Property(e => e.BankName).HasMaxLength(45);
+            entity.Property(e => e.BankNumber).HasMaxLength(45);
+        });
+
+        modelBuilder.Entity<User>()
+               .HasOne(u => u.Wallet)         
+               .WithOne(w => w.User)         
+               .HasForeignKey<Wallet>(w => w.UserId);
+
 
         OnModelCreatingPartial(modelBuilder);
     }

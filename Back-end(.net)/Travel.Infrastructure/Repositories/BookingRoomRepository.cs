@@ -34,7 +34,7 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<BookingRoom?> GetById(Guid? id)
         {
-            var booking = await _dbContext.BookingRoom.SingleOrDefaultAsync(b => b.Id == id);
+            var booking = await _dbContext.BookingRoom.Include(b => b.Discount).SingleOrDefaultAsync(b => b.Id == id);
             return booking;
         }
 
@@ -57,7 +57,7 @@ namespace Travel.Infrastructure.Repositories
                                             .AsQueryable();
 
             if (status == 0) query = query.Where(b => b.Status == 0);
-            if (status == 1) query = query.Where(b => b.Status == 1);
+            if (status == 1) query = query.Where(b => b.Status == 1 || b.Status == 5);
             if (status == 2) query = query.Where(b => b.Status == 2 || b.Status == 3 || b.Status == 4);
 
             var totalItems = await query.CountAsync();
@@ -84,7 +84,8 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<BookingRoom>> GetRefundBookings()
         {
-            var bookings = await _dbContext.BookingRoom.Where(b => b.Status == 3).ToListAsync();
+            var bookings = await _dbContext.BookingRoom
+                            .Where(b => b.Status == 3).ToListAsync();
             return bookings;
         }
 
@@ -97,6 +98,15 @@ namespace Travel.Infrastructure.Repositories
                             .OrderByDescending(r => r.DayBefore)) 
                         .FirstOrDefaultAsync();
             return refund;
+        }
+
+        public async Task<IEnumerable<BookingRoom>> GetSuccessBookings()
+        {
+            return await _dbContext.BookingRoom
+                            .Where(b => b.Status == 1 && b.CheckInDate.Date < DateTime.Now.Date)
+                            .Include(b => b.Discount)
+                            .Include(b => b.Room).ThenInclude(r => r.Hotel)
+                            .ToListAsync();
         }
     }
 }

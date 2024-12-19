@@ -52,7 +52,6 @@ namespace Travel.Api.Controllers
             try
             {
                 var result = await _userService.CreateAdminAccount(request);
-
                 if (!result) return StatusCode(409, "Username existing");
 
                 return StatusCode(201, "Created admin account successfully");

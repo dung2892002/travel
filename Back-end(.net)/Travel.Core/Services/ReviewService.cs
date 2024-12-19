@@ -40,13 +40,19 @@ namespace Travel.Core.Services
             await _unitOfWork.CompleteAsync();
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id, Guid userId)
         {
             var review = await _unitOfWork.Reviews.GetById(id);
             if (review == null)
             {
                return false;
             }
+
+            if (review.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("Only can delete review of you");
+            }
+
             foreach (var image in review.Image)
             {
                 await _firebaseStorageService.Delete(image.Path);

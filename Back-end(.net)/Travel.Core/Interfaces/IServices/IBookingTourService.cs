@@ -12,5 +12,7 @@ namespace Travel.Core.Interfaces.IServices
         Task<IEnumerable<BookingTour>> GetRefundBookings();
         Task<bool> CancelBooking(Guid id, string reason);
         Task<bool> Refund(Guid id);
+        Task<IEnumerable<BookingTour>> GetSuccessBookings();
+        Task<bool> SuccessBooking(Guid id);
     }
 }

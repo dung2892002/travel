@@ -12,6 +12,7 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<IEnumerable<BookingRoom>> GetByRoom(Guid roomId);
         Task<IEnumerable<BookingRoom>> GetExpiredBookings(DateTime expirationTime);
         Task<IEnumerable<BookingRoom>> GetRefundBookings();
+        Task<IEnumerable<BookingRoom>> GetSuccessBookings();
 
         Task<BookingRoom?> GetById(Guid? id);
 

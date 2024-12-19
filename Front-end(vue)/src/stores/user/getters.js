@@ -3,5 +3,7 @@ export default {
   getToken: (state) => state.token,
   getUsers: (state) => state.users,
   getTotalPages: (state) => state.totalPages,
-  getTotalItems: (state) => state.totalItems
+  getTotalItems: (state) => state.totalItems,
+  getWallet: (state) => state.wallet,
+  getWallets: (state) => state.wallets
 }

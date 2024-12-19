@@ -20,7 +20,7 @@ namespace Travel.Core.Services
                 throw new InvalidOperationException("Booking has been paid");
             }
             var discount = await _unitOfWork.Discounts.GetById(booking.DiscountId);
-            request.Amount = booking.Price - CalculateDiscount(booking.Price, discount);
+            request.Amount = booking.Price + Math.Round(booking.Price * 10 /100, 0) - CalculateDiscount(booking.Price, discount);
             return await ProcessPayment(request, 0);
         }
 
@@ -33,7 +33,7 @@ namespace Travel.Core.Services
             }
 
             var discount = await _unitOfWork.Discounts.GetById(booking.DiscountId);
-            request.Amount = booking.Price - CalculateDiscount(booking.Price, discount);
+            request.Amount = booking.Price + Math.Round(booking.Price * 10 / 100, 0) - CalculateDiscount(booking.Price, discount);
             return await ProcessPayment(request, 1);
         }
 

@@ -20,6 +20,8 @@ import TourDetail from '@/views/tour/TourDetail.vue'
 import BookingTourForm from '@/views/booking/BookingTourForm.vue'
 import MyBookingTour from '@/views/booking/MyBookingTour.vue'
 import UserList from '@/views/user/UserList.vue'
+import StatisticalPage from '@/views/user/StatisticalPage.vue'
+import WalletList from '@/views/user/WalletList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -113,6 +115,16 @@ const router = createRouter({
           path: 'users',
           name: 'userList',
           component: UserList
+        },
+        {
+          path: 'wallets',
+          name: 'walletList',
+          component: WalletList
+        },
+        {
+          path: 'statistical',
+          name: 'statistical',
+          component: StatisticalPage
         }
       ]
     },

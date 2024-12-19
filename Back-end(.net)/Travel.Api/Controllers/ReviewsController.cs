@@ -86,17 +86,21 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "User")]
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteReview([FromQuery] int id)
+        public async Task<IActionResult> DeleteReview([FromQuery] int id, [FromBody] Guid userId)
         {
             try
             {
-                var result = await _reviewService.Delete(id);
+                var result = await _reviewService.Delete(id, userId);
                 if (result)
                 {
                     return StatusCode(200, "delete review successfully");
                 }
                 return StatusCode(404, "not found");
             }
+            catch (UnauthorizedAccessException ex) {
+                return StatusCode(403, ex.Message);
+            }
+
             catch (ArgumentException ex)
             {
                 return StatusCode(400, ex.Message);

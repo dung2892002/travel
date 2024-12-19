@@ -33,7 +33,7 @@
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(5)">
-      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'statistical' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê khách sạn</p></RouterLink
       >
@@ -43,7 +43,7 @@
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(6)">
-      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'statistical' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê tour</p></RouterLink
       >
@@ -53,13 +53,17 @@
       </RouterLink>
     </div>
     <div class="sidebar__item" v-if="checkRole(10)">
-      <RouterLink :to="{ name: 'my-booking-room' }" class="sidebar__link">
+      <RouterLink :to="{ name: 'statistical' }" class="sidebar__link">
         <img src="../assets/icon/graph.png" alt="icon" class="link-icon" />
         <p>Thống kê</p></RouterLink
       >
       <RouterLink :to="{ name: 'userList' }" class="sidebar__link">
         <img src="../assets/icon/dic-employee.png" alt="icon" class="link-icon" />
         <p>Quản lý tài khoản</p></RouterLink
+      >
+      <RouterLink :to="{ name: 'walletList' }" class="sidebar__link">
+        <img src="../assets/icon/payment.png" alt="icon" class="link-icon" />
+        <p>Thanh toán cho đối tác</p></RouterLink
       >
     </div>
     <div class="sidebar__item" v-if="checkRole(5) || checkRole(6) || checkRole(10)">

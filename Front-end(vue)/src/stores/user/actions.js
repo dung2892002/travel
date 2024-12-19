@@ -161,5 +161,155 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+  async createAdmin(user, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Users/create-admin`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async createHotelPartner(user, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Users/create-hotel-account`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async createTourPartner(user, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Users/create-tour-account`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async fetchWallet(userId) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Wallets/${userId}`)
+
+      if (response.status === 200) {
+        this.wallet = response.data
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async fetchWalletPositive(token, pageNumber) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.get(`${apiServer}/Wallets`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          pageNumber: pageNumber
+        }
+      })
+
+      const data = response.data
+      this.wallets = data.Items
+      this.totalItems = data.TotalItems
+      this.totalPages = data.TotalPages
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+  async createWallet(wallet) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.post(`${apiServer}/Wallets`, wallet)
+
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      console.error(error)
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: error.message || 'Lỗi kết nối đến server' }
+    }
+  },
+  async updateWallet(wallet, id) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Wallets/${id}`, wallet)
+
+      if (response.status === 200) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
+  async paymentForWallet(id, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.patch(`${apiServer}/Wallets`, id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.status === 200) {
+        return { success: true }
+      }
+    } catch (error) {
+      console.error(error)
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

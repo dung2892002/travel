@@ -11,5 +11,13 @@ namespace Travel.Core.Interfaces.IRepositories
         Task Add(User user);
 
         Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber);
+
+        Task CreateWallet(Wallet wallet);
+
+        Task<Wallet?> GetWalletByUser(Guid userId);
+        Task<PagedResult<WalletDTO>> GetWalletsWithPositiveBalance(int pageNumber);
+
+        Task<Wallet> GetWalletByBookingRoomIdAsync(Guid bookingId);
+        Task<Wallet> GetWalletByBookingTourIdAsync(Guid bookingId);
     }
 }

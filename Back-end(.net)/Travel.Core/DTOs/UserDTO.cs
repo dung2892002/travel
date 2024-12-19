@@ -1,6 +1,4 @@
-﻿using Travel.Core.Entities;
-
-namespace Travel.Core.DTOs
+﻿namespace Travel.Core.DTOs
 {
     public class UserDTO
     {

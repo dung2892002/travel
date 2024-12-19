@@ -18,5 +18,15 @@ namespace Travel.Core.Interfaces.IServices
         Task<bool> UnlockUser(Guid id);
 
         Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber);
+
+        Task CreateWallet(Wallet wallet);
+        Task<Wallet?> GetWallet(Guid userId);
+        Task<PagedResult<WalletDTO>> GetWalletsWithPositiveBalance(int pageNumber);
+
+        Task<bool> UpdateWallet(Guid userId, Wallet wallet);
+
+        Task<bool> AddBalance(Guid userId, decimal value);
+
+        Task<bool> PaymentWallet(Guid userId);
     }
 }

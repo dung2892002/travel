@@ -51,7 +51,10 @@
   font-size: 14px;
   color: red;
 }
-
+.success-message {
+  font-size: 14px;
+  color: #078cf8;
+}
 .required {
   text-align: center;
   color: red;

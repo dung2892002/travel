@@ -10,6 +10,6 @@ namespace Travel.Core.Interfaces.IServices
         Task<PagedResult<Review>> GetByHotel(Guid hoteId, int pageNumber);
         Task<PagedResult<Review>> GetByTour(Guid tourId, int pageNumber);
         Task<IEnumerable<Review>> GetByDestination(int destinationId);
-        Task<bool> Delete(int id);
+        Task<bool> Delete(int id, Guid userId);
     }
 }

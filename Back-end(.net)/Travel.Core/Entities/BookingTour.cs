@@ -15,6 +15,7 @@ public class BookingTour
     public DateTime CreatedAt { get; set; }
 
     public decimal Price { get; set; }
+    public decimal Fee { get; set; }
 
     public int Status { get; set; }
 

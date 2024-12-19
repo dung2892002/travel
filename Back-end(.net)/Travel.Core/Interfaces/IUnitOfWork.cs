@@ -22,6 +22,7 @@ namespace Travel.Core.Interfaces
         IFacilityRepository Facilities { get; }
         IDiscountRepository Discounts { get; }
         IPaymentRepository Payments { get; }
+        IStatiscalRepository Statiscals { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitTransaction();

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 using Travel.Core.DTOs;
 using Travel.Core.Entities;
 using Travel.Core.Interfaces;
@@ -265,6 +266,60 @@ namespace Travel.Core.Services
         public async Task<PagedResult<User>> GetUser(string? keyword, int pageSize, int pageNumber)
         {
             return await _unitOfWork.Users.GetUser(keyword, pageSize, pageNumber);
+        }
+
+        public async Task CreateWallet(Wallet wallet)
+        {
+            var walletExisting = await _unitOfWork.Users.GetWalletByUser(wallet.UserId);
+            if (walletExisting != null)
+            {
+                throw new InvalidDataException("User already has a wallet");
+            }
+            wallet.Balance = 0;
+            await _unitOfWork.Users.CreateWallet(wallet);
+        }
+
+        public async Task<Wallet?> GetWallet(Guid userId)
+        {
+            return await _unitOfWork.Users.GetWalletByUser(userId);
+        }
+
+        public async Task<PagedResult<WalletDTO>> GetWalletsWithPositiveBalance(int pageNumber)
+        {
+            return await _unitOfWork.Users.GetWalletsWithPositiveBalance(pageNumber);
+        }
+
+        public async Task<bool> UpdateWallet(Guid userId, Wallet wallet)
+        {
+            var walletExisting = await _unitOfWork.Users.GetWalletByUser(userId) ?? throw new ArgumentException("User not have wallet");
+
+            if (walletExisting.UserId != wallet.UserId)
+            {
+                throw new InvalidOperationException("Can only update your wallet");
+            }
+
+            walletExisting.BankNumber = wallet.BankNumber;
+            walletExisting.BankName = wallet.BankName;
+
+            return await _unitOfWork.CompleteAsync() > 0;
+        }
+
+        public async Task<bool> AddBalance(Guid userId, decimal value)
+        {
+            var walletExisting = await _unitOfWork.Users.GetWalletByUser(userId) ?? throw new ArgumentException("User not have wallet");
+
+            walletExisting.Balance += value;
+
+            return await _unitOfWork.CompleteAsync() > 0;
+        }
+
+        public async Task<bool> PaymentWallet(Guid userId)
+        {
+            var walletExisting = await _unitOfWork.Users.GetWalletByUser(userId) ?? throw new ArgumentException("User not have wallet");
+
+            walletExisting.Balance = 0;
+
+            return await _unitOfWork.CompleteAsync() > 0;
         }
     }
 }

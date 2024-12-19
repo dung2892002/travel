@@ -12,5 +12,6 @@ namespace Travel.Core.Interfaces.IRepositories
         Task<BookingTour?> GetById(Guid? id);
         Task<IEnumerable<BookingTour>> GetRefundBookings();
         Task<Refund?> GetTourRefundByBookingTour(Guid bookingTourId, int numberDay);
+        Task<IEnumerable<BookingTour>> GetSuccessBookings();
     }
 }

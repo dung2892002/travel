@@ -4,6 +4,8 @@ export default function () {
     token: localStorage.getItem('jwt') || null,
     users: null,
     totalPages: 1,
-    totalItems: 1
+    totalItems: 1,
+    wallet: null,
+    wallets: null
   }
 }

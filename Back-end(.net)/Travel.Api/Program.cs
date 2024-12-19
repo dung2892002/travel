@@ -63,11 +63,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddQuartz(q =>
 {
-    // Đăng ký job và trigger
     var jobKey = new JobKey("BookingTimeoutJob");
     q.AddJob<BookingTimeoutJob>(opts => opts.WithIdentity(jobKey)); 
 
-    // Thiết lập trigger cho job
     q.AddTrigger(opts => opts
         .ForJob(jobKey) 
         .WithIdentity("BookingTimeoutJob") 
@@ -82,13 +80,26 @@ builder.Services.AddQuartz(q =>
 
     q.AddTrigger(opts => opts
         .ForJob(bookingRefundJobKey)
-        .WithIdentity("BookingRefundJobTrigger")
+        .WithIdentity("BookingRefundJob")
         .StartNow()
         .WithSimpleSchedule(x => x
             .WithInterval(TimeSpan.FromMinutes(3)) 
             .RepeatForever())
     );
+
+    var bookingSuccessJobKey = new JobKey("BookingSuccessJob");
+    q.AddJob<BookingSuccessJob>(opts => opts.WithIdentity(bookingSuccessJobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(bookingSuccessJobKey)
+        .WithIdentity("BookingSuccessJob")
+        .StartNow()
+        .WithSimpleSchedule(x => x
+            .WithInterval(TimeSpan.FromDays(1))
+            .RepeatForever())
+    );
 });
+
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 builder.Services.RegisterServicesAndRepositories(

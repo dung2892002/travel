@@ -70,6 +70,83 @@
     </div>
     <div class="detail-section detail-overview">
       <h2>Thông tin cần chú ý</h2>
+      <div class="content--row">
+        <div
+          @click="setShowValue(0)"
+          class="btn-detail"
+          :class="{ 'btn-detail--selected': showValue == 0 }"
+        >
+          Giá bao gồm
+        </div>
+        <div
+          @click="setShowValue(1)"
+          class="btn-detail"
+          :class="{ 'btn-detail--selected': showValue == 1 }"
+        >
+          Giá không bao gồm
+        </div>
+        <div
+          @click="setShowValue(2)"
+          class="btn-detail"
+          :class="{ 'btn-detail--selected': showValue == 2 }"
+        >
+          Các mức giá
+        </div>
+        <div
+          @click="setShowValue(3)"
+          class="btn-detail"
+          :class="{ 'btn-detail--selected': showValue == 3 }"
+        >
+          Hoàn tiền
+        </div>
+        <div
+          @click="setShowValue(4)"
+          class="btn-detail"
+          :class="{ 'btn-detail--selected': showValue == 4 }"
+        >
+          Lưu ý
+        </div>
+      </div>
+      <div style="margin-top: 10px">
+        <div v-if="showValue == 0" class="details">
+          <div
+            v-for="tourDetail in tour.TourDetail.filter((detail) => detail.Type == 1)"
+            :key="tourDetail.Id"
+          >
+            <span>- {{ tourDetail.Description }}</span>
+          </div>
+        </div>
+        <div v-if="showValue == 1" class="details">
+          <div
+            v-for="tourDetail in tour.TourDetail.filter((detail) => detail.Type == 0)"
+            :key="tourDetail.Id"
+          >
+            <span>- {{ tourDetail.Description }}</span>
+          </div>
+        </div>
+        <div v-if="showValue == 2" class="details">
+          <div v-for="price in tour.TourPrice" :key="price.Id">
+            <span
+              >- Từ đủ {{ price.AgeStart }} đến
+              <span v-if="price.AgeEnd">{{ price.AgeEnd }}</span> tuổi, chịu {{ price.Percent }}%
+              giá vé
+            </span>
+          </div>
+        </div>
+        <div v-if="showValue == 3" class="details">
+          <div v-for="refund in tour.Refund" :key="refund.Id">
+            <span
+              >- Huỷ trước ngày khởi hành từ {{ refund.DayBefore }} ngày trở lên, hoàn
+              {{ refund.RefundPercent }}% mức giá</span
+            >
+          </div>
+        </div>
+        <div v-if="showValue == 4" class="details">
+          <div v-for="notice in tour.TourNotice" :key="notice.Id" style="padding-left: 20px">
+            <span>- {{ notice.Description }}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="detail-section detail-review">
       <div
@@ -132,6 +209,12 @@ const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 
+const showValue = ref(0)
+
+function setShowValue(value) {
+  showValue.value = value
+}
+
 const id = ref(route.params.id)
 const showImagePopup = ref(false)
 
@@ -176,41 +259,41 @@ function renderRating(rating) {
   return fullStar.repeat(rating) + emptyStar.repeat(5 - rating)
 }
 
-// async function addTourFavourite() {
-//   const favourite = {
-//     UserId: user.value.Id,
-//     HotelId: null,
-//     TourId: id.value,
-//     CityId: null,
-//     DestinationId: null
-//   }
-//   await favouriteStore.createFavourite(favourite, token.value)
+async function addTourFavourite() {
+  const favourite = {
+    UserId: user.value.Id,
+    HotelId: null,
+    TourId: id.value,
+    CityId: null,
+    DestinationId: null
+  }
+  await favouriteStore.createFavourite(favourite, token.value)
 
-//   await fetchFavourites()
-// }
+  await fetchFavourites()
+}
 
-// async function deleteTourFavourite() {
-//   await favouriteStore.deleteFavourite(userFavourite.value.Id, token.value)
+async function deleteTourFavourite() {
+  await favouriteStore.deleteFavourite(userFavourite.value.Id, token.value)
 
-//   await fetchFavourites()
-// }
+  await fetchFavourites()
+}
 
-// async function fetchFavourites() {
-//   await favouriteStore.fetchHotelFavourites(id.value)
-//   if (user.value && token.value) {
-//     await favouriteStore.fetchUserFavouriteHotel(user.value.Id, token.value, id.value)
-//   }
-// }
+async function fetchFavourites() {
+  await favouriteStore.fetchTourFavourites(id.value)
+  if (user.value && token.value) {
+    await favouriteStore.fetchUserFavouriteTour(user.value.Id, token.value, id.value)
+  }
+}
 
 const querySchedule = JSON.parse(sessionStorage.getItem('querySchedule'))
 console.log(querySchedule)
 
 const tour = computed(() => tourStore.getTour)
 const schedules = computed(() => tourStore.getSearchSchedules)
-const quantityFavourites = computed(() => favouriteStore.getHotelFavourites)
+const quantityFavourites = computed(() => favouriteStore.getTourFavourites)
 const token = computed(() => userStore.getToken)
 const user = computed(() => userStore.getUser)
-const userFavourite = computed(() => favouriteStore.getUserFavouriteHotel)
+const userFavourite = computed(() => favouriteStore.getUserFavouriteTour)
 
 onMounted(() => {
   if (!id.value) {
@@ -223,3 +306,25 @@ onMounted(() => {
   //   fetchFavourites()
 })
 </script>
+
+<style scoped>
+.btn-detail {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ecf0f5;
+  background-color: #f9fbfc;
+  margin-right: 6px;
+}
+
+.btn-detail--selected {
+  font-weight: bold;
+  color: #078cf8;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 20px;
+}
+</style>

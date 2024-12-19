@@ -5,64 +5,79 @@ using Travel.Core.Interfaces.IServices;
 
 namespace Travel.Core.Services
 {
-    public class BookingRoomService(IUnitOfWork unitOfWork) : IBookingRoomService, IService
+    public class BookingRoomService(IUnitOfWork unitOfWork, IUserService userService) : IBookingRoomService, IService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+        private static decimal CanculateDiscountValue(decimal price, Discount discount)
+        {
+            var value = Math.Round(price * discount.Percent / 100, 2);
+            if (value <= discount.MaxDiscount) return value;
+            return discount.MaxDiscount;
+        }
+
         public async Task<bool> CancelBooking(Guid id, string reason)
         {
-            var bookingExisting = await _unitOfWork.BookingsRoom.GetById(id);
-            if (bookingExisting == null)
-            {
-                throw new ArgumentException("booking not exist");
-            }
+            var bookingExisting = await _unitOfWork.BookingsRoom.GetById(id) ?? throw new ArgumentException("Booking does not exist");
 
-            if (bookingExisting.Status == 2 || bookingExisting.Status == 3)
+            if (bookingExisting.Status == 2 || bookingExisting.Status == 3 || bookingExisting.Status == 4)
             {
-                throw new InvalidCastException("Booking has  been canceled");
+                throw new InvalidOperationException("Booking has already been canceled");
             }
 
             if (bookingExisting.Status == 0)
             {
                 bookingExisting.Status = 2;
                 bookingExisting.CancelReason = reason;
-                return await _unitOfWork.CompleteAsync() > 0 ;
-            }
 
-            var beforeCheckinDate = (bookingExisting.CheckInDate.Date - DateTime.Now.Date).Days;
-
-            if (beforeCheckinDate <= 0)
-            {
-                throw new InvalidCastException("Cannot cancel booking");
-            }
-
-            var refund = await _unitOfWork.BookingsRoom.GetHotelRefundByBookingRoom(id, beforeCheckinDate);
-
-            if (refund == null)
-            {
-                bookingExisting.Status = 2;
-                bookingExisting.CancelReason = reason;
                 return await _unitOfWork.CompleteAsync() > 0;
             }
 
+            var beforeCheckinDate = (bookingExisting.CheckInDate.Date - DateTime.Now.Date).Days;
+            if (beforeCheckinDate <= 0)
+            {
+                throw new InvalidOperationException("Cannot cancel booking after check-in date");
+            }
 
-            var payment = await _unitOfWork.Payments.GetByBookingRoom(id);
-            var refundValue = Math.Round(payment.Amount * refund.RefundPercent / 100, 0);
+            var refund = await _unitOfWork.BookingsRoom.GetHotelRefundByBookingRoom(id, beforeCheckinDate);
+            var wallet = await _unitOfWork.Users.GetWalletByBookingRoomIdAsync(id)
+                         ?? throw new InvalidOperationException("Wallet does not exist for the booking");
 
             var refundPayment = new Payment
             {
                 Id = Guid.NewGuid(),
                 BookingRoomId = id,
-                Amount = refundValue,
                 CreatedAt = DateTime.Now,
                 Type = false,
                 TransactionId = 0,
             };
 
-            await _unitOfWork.Payments.Create(refundPayment);
+            var discount = bookingExisting.Discount;
+            var discountValue = discount != null
+                                ? CanculateDiscountValue(bookingExisting.Price, discount)
+                                : 0;
 
+            if (refund != null)
+            {
+                refundPayment.Amount = Math.Round((bookingExisting.Price - discountValue) * refund.RefundPercent / 100, 0);
+            }
+            else
+            {
+                refundPayment.Amount = 0;
+            }
 
-            bookingExisting.Status = 3;
+            wallet.Balance += (discount != null && discount.Type == 1) ? 
+                            bookingExisting.Price - discountValue - refundPayment.Amount : 
+                            bookingExisting.Price - refundPayment.Amount;
+
+            if (refundPayment.Amount > 0)
+            {
+                await _unitOfWork.Payments.Create(refundPayment);
+            }
+
+            bookingExisting.Status = 3; 
             bookingExisting.CancelReason = reason;
+
             return await _unitOfWork.CompleteAsync() > 0;
         }
 
@@ -89,6 +104,7 @@ namespace Travel.Core.Services
             booking.CreatedAt = DateTime.Now;
             booking.Status = 0;
             booking.Price = roomExisting.Price * booking.Quantity * (booking.CheckOutDate - booking.CheckInDate).Days;
+            booking.Fee = Math.Round(booking.Price * 15 / 100, 0);
             var discount = await _unitOfWork.Discounts.GetById(booking.DiscountId);
             if (discount == null || discount.Start > DateTime.Now || discount.End < DateTime.Now) booking.DiscountId = null;
             await _unitOfWork.BookingsRoom.Create(booking);
@@ -144,10 +160,23 @@ namespace Travel.Core.Services
             return await _unitOfWork.BookingsRoom.GetRefundBookings();
         }
 
+        public async Task<IEnumerable<BookingRoom>> GetSuccessBookings()
+        {
+            return await _unitOfWork.BookingsRoom.GetSuccessBookings();
+        }
+
         public async Task<bool> Refund(Guid id)
         {
             var booking = await _unitOfWork.BookingsRoom.GetById(id) ?? throw new ArgumentException("booking not exist");
             booking.Status = 4;
+
+            return await _unitOfWork.CompleteAsync() > 0;
+        }
+
+        public async Task<bool> SuccessBooking(Guid id)
+        {
+            var booking = await _unitOfWork.BookingsRoom.GetById(id) ?? throw new ArgumentException("booking not exist");
+            booking.Status = 5;
 
             return await _unitOfWork.CompleteAsync() > 0;
         }

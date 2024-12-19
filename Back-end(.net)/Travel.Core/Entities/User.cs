@@ -45,4 +45,5 @@ public class User
 
     [JsonIgnore]
     public virtual ICollection<UserRole> UserRole { get; set; } = new List<UserRole>();
+    public virtual Wallet? Wallet { get; set; }
 }

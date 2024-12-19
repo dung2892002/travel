@@ -20,6 +20,7 @@ namespace Travel.Infrastructure.Repositories
         {
             return await _dbContext.BookingTour
                                     .Include(b => b.TourSchedule)
+                                    .Include(b => b.Discount)
                                     .SingleOrDefaultAsync(b => b.Id == id);
         }
 
@@ -39,7 +40,7 @@ namespace Travel.Infrastructure.Repositories
                                             .AsQueryable();
 
             if (status == 0) query = query.Where(b => b.Status == 0);
-            if (status == 1) query = query.Where(b => b.Status == 1);
+            if (status == 1) query = query.Where(b => b.Status == 1 || b.Status == 5);
             if (status == 2) query = query.Where(b => b.Status == 2 || b.Status == 3 || b.Status == 4);
             var totalItems = await query.CountAsync();
 
@@ -65,8 +66,21 @@ namespace Travel.Infrastructure.Repositories
 
         public async Task<IEnumerable<BookingTour>> GetRefundBookings()
         {
-            var bookings = await _dbContext.BookingTour.Where(b => b.Status == 3).ToListAsync();
+            var bookings = await _dbContext.BookingTour
+                                .Include(b => b.TourSchedule)
+                                    .ThenInclude(ts => ts.Tour)
+                                .Include(b => b.Discount)
+                                .Where(b => b.Status == 3).ToListAsync();
             return bookings;
+        }
+
+        public async Task<IEnumerable<BookingTour>> GetSuccessBookings()
+        {
+            return await _dbContext.BookingTour
+                        .Where(b => b.Status == 1 && b.TourSchedule.DateStart.Date < DateTime.Now.Date)
+                        .Include(b => b.Discount)
+                        .Include(b => b.TourSchedule).ThenInclude(b => b.Tour)
+                        .ToListAsync();
         }
 
         public async Task<Refund?> GetTourRefundByBookingTour(Guid bookingTourId, int numberDay)

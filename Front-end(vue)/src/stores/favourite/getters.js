@@ -4,5 +4,6 @@ export default {
   getHotelFavourites: (state) => state.hotelFavourites,
   getUserFavouriteHotel: (state) => state.userFavouriteHotel,
   getUserFavouriteTour: (state) => state.userFavouriteTour,
-  getUserFavourites: (state) => state.userFavourites
+  getUserFavourites: (state) => state.userFavourites,
+  getTourFavourites: (state) => state.tourFavourites
 }

@@ -14,7 +14,7 @@ namespace Travel.Api.Controllers
 
 
         [HttpGet("user")]
-        public async Task<IActionResult> GetDiscountByHotel([FromQuery] Guid userId)
+        public async Task<IActionResult> GetDiscountByUser([FromQuery] Guid userId)
         {
             try
             {
