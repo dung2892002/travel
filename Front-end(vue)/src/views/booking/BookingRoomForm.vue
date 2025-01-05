@@ -1,10 +1,12 @@
 <template>
   <div style="margin: 20px auto; min-width: 1080px" v-if="bookingRoom">
-    <div style="margin-bottom: 20px">
+    <div style="margin-bottom: 20px; display: flex; flex-direction: column">
       <h2 class="booking_label">Thông tin đặt phòng của bạn</h2>
       <span style="color: #687176; font-size: 16px; font-weight: 500"
-        >Chắc chắn các thông tin bên dưới là chính xác trước khi đặt phòng</span
+        >Chắc chắn các thông tin bên dưới là chính xác trước khi đặt tour</span
       >
+      <span v-if="errorMessage" class="error-message"> {{ errorMessage }}</span>
+      <span v-if="successMessage" class="success-message">{{ successMessage }}</span>
     </div>
     <div class="content--row" style="width: 100%; overflow-x: hidden">
       <div class="content--column" style="width: 100%">
@@ -148,6 +150,8 @@
             VND</span
           >
         </div>
+        <span v-if="errorMessage" class="error-message"> {{ errorMessage }}</span>
+        <span v-if="successMessage" class="success-message">{{ successMessage }}</span>
         <button class="btn btn--add" @click="handleBookingRoom">Đặt phòng</button>
       </div>
     </div>
@@ -170,6 +174,8 @@ const bookingStore = useBookingStore()
 
 const bookingRoom = ref(null)
 const discounts = computed(() => discountStore.getHotelDiscounts)
+const errorMessage = ref(null)
+const successMessage = ref(null)
 
 function selectDiscount(discount) {
   bookingRoom.value.DiscountId = discount.Id
@@ -210,9 +216,9 @@ async function handleBookingRoom() {
   formatDataBooking()
   const response = await bookingStore.createBookingRoom(submitBooking.value, token.value)
   if (response.success) {
-    console.log('Đặt phòng thành công, sau 15 phút nếu không thanh toán sẽ tự hủy')
+    successMessage.value = 'Đặt phòng thành công, sau 15 phút nếu không thanh toán sẽ tự hủy'
   } else {
-    console.log('Đặt phòng thất bại:', response.message)
+    errorMessage.value = response.message
   }
 }
 

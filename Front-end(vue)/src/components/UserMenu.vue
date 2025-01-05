@@ -57,7 +57,7 @@ const logout = () => {
 }
 
 const booking = () => {
-  router.push('my-booking')
+  router.push('my-booking-room')
   toggleMenu()
 }
 </script>

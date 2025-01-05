@@ -298,23 +298,12 @@ public partial class TravelDbContext : DbContext
 
             entity.ToTable("favourite");
 
-            entity.HasIndex(e => e.CityId, "FK_favourite_CityId");
-
-            entity.HasIndex(e => e.DestinationId, "FK_favourite_DestinationId");
 
             entity.HasIndex(e => e.HotelId, "FK_favourite_HotelId_idx");
 
             entity.HasIndex(e => e.TourId, "FK_favourite_TourId_idx");
 
             entity.HasIndex(e => e.UserId, "FK_favourite_UserId");
-
-            entity.HasOne(d => d.City).WithMany(p => p.Favourite)
-                .HasForeignKey(d => d.CityId)
-                .HasConstraintName("FK_favourite_CityId");
-
-            entity.HasOne(d => d.Destination).WithMany(p => p.Favourite)
-                .HasForeignKey(d => d.DestinationId)
-                .HasConstraintName("FK_favourite_DestinationId");
 
             entity.HasOne(d => d.Hotel).WithMany(p => p.Favourite)
                 .HasForeignKey(d => d.HotelId)
@@ -494,7 +483,6 @@ public partial class TravelDbContext : DbContext
 
             entity.ToTable("review");
 
-            entity.HasIndex(e => e.DestinationId, "FK_Review_DestinationId");
 
             entity.HasIndex(e => e.HotelId, "FK_Review_HotelId_idx");
 
@@ -505,9 +493,6 @@ public partial class TravelDbContext : DbContext
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(1500);
 
-            entity.HasOne(d => d.Destination).WithMany(p => p.Review)
-                .HasForeignKey(d => d.DestinationId)
-                .HasConstraintName("FK_Review_DestinationId");
 
             entity.HasOne(d => d.Hotel).WithMany(p => p.Review)
                 .HasForeignKey(d => d.HotelId)
@@ -587,7 +572,7 @@ public partial class TravelDbContext : DbContext
             entity.HasIndex(e => e.UserId, "FK_tour_UserId_idx");
 
             entity.Property(e => e.Description).HasMaxLength(2500);
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.Transport).HasMaxLength(255);
 
             entity.HasOne(d => d.DepartureCity).WithMany(p => p.Tour)

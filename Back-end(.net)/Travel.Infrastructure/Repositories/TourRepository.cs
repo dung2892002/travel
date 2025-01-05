@@ -233,7 +233,14 @@ namespace Travel.Infrastructure.Repositories
         {
             var query = _dbContext.Tour.AsQueryable();
 
-            query = query.Where(t => t.TourCity.Any(tc => tc.CityId==request.CityId));
+            if (request.CityId.HasValue)
+            {
+                query = query.Where(t => t.TourCity.Any(tc => tc.CityId == request.CityId));
+            }
+            else if (request.ProvinceId.HasValue)
+            {
+                query = query.Where(t => t.TourCity.Any(tc => tc.City.ProvinceId ==request.ProvinceId));
+            }
 
             if (request.DateStart.HasValue) query = query.Where(t => t.TourSchedule.Any(ts => ts.DateStart >= request.DateStart));
 

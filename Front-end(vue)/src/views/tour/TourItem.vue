@@ -1,5 +1,5 @@
 <template>
-  <div class="content--row content-item">
+  <div class="content--row content-item" style="height: 200px">
     <div class="item-img">
       <div v-if="tour.Image.length > 0" class="item-img--hasimage">
         <img :src="getLinkImage(tour.Image[0].Path)" alt="anh tour" class="item-img" />
@@ -9,7 +9,9 @@
     </div>
     <div class="content--column item-info" @click="handleSelectTour">
       <div class="content--row">
-        <div class="info-value info__name">{{ tour.Name }}</div>
+        <span class="info-value info__name" style="width: 420px">
+          {{ tour.Name }}
+        </span>
         <div class="info-value info__review">
           <span v-if="tour.QuantityReview > 0"> {{ tour.AverageReview }}</span>
           <span v-if="tour.QuantityReview > 0"> ({{ tour.QuantityReview }} đánh giá)</span>

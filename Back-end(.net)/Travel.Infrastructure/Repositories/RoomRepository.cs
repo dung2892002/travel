@@ -85,7 +85,7 @@ namespace Travel.Infrastructure.Repositories
 
             query = query.Where(r => r.HotelId == request.HotelId);
 
-            return await query.ToListAsync();
+            return await query.OrderBy(r => r.Price).ToListAsync();
         }
 
     }

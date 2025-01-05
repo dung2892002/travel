@@ -36,6 +36,7 @@ namespace Travel.Core.Services
                     refund.HotelId = hotel.Id;
                     refund.Hotel = null;
                     refund.Tour = null;
+                    refund.State = true;
                     await _unitOfWork.Hotels.CreateHotelRefund(refund);
                 }
                 await _unitOfWork.CommitTransaction();
@@ -175,6 +176,7 @@ namespace Travel.Core.Services
                 if (refund.Id == 0)
                 {
                     refund.HotelId = hotel.Id;
+                    refund.State = true;
                     await _unitOfWork.Hotels.CreateHotelRefund(refund);
                 }
                 else

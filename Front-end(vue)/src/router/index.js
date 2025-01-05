@@ -22,6 +22,7 @@ import MyBookingTour from '@/views/booking/MyBookingTour.vue'
 import UserList from '@/views/user/UserList.vue'
 import StatisticalPage from '@/views/user/StatisticalPage.vue'
 import WalletList from '@/views/user/WalletList.vue'
+import ChangePasswordPage from '@/views/user/ChangePasswordPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -137,6 +138,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterPage
+    },
+    {
+      path: '/change-password',
+      name: 'change-password',
+      component: ChangePasswordPage
     }
   ]
 })

@@ -1,14 +1,12 @@
 <template>
   <div>
-    <h2>Đăng ký</h2>
-    <input v-model="fullname" placeholder="Họ tên" />
-    <input v-model="phoneNumber" placeholder="Số điện thoại" />
-    <input v-model="email" placeholder="Email" />
+    <h2>Đổi mật khẩu</h2>
     <input v-model="username" placeholder="Username" />
-    <input v-model="password" type="password" placeholder="Mật khẩu" />
-    <input v-model="rePassword" type="password" placeholder="Nhập lại mật khẩu" />
+    <input v-model="password" placeholder="Mật khẩu hiện tại" type="password" />
+    <input v-model="newPassword" placeholder="Mật khẩu mới" type="password" />
+    <input v-model="reNewPassword" placeholder="Xác nhận mật khẩu" type="password" />
 
-    <button @click="register">Đăng ký</button>
+    <button @click="register">Đổi mật khẩu</button>
     <p v-if="errorMessage" style="color: red">{{ errorMessage }}</p>
     <div
       style="
@@ -23,8 +21,8 @@
       <span @click="goLoginPage" style="font-size: 14px; color: #078cf8; cursor: pointer"
         >Đăng nhập</span
       >
-      <span @click="goChangPasswordPage" style="font-size: 14px; color: #078cf8; cursor: pointer"
-        >Đổi mật khẩu</span
+      <span @click="goRegisterPage" style="font-size: 14px; color: #078cf8; cursor: pointer"
+        >Đăng ký</span
       >
     </div>
   </div>
@@ -37,12 +35,10 @@ import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
-const fullname = ref('')
-const phoneNumber = ref('')
 const username = ref('')
 const password = ref('')
-const rePassword = ref('')
-const email = ref('')
+const newPassword = ref('')
+const reNewPassword = ref('')
 const errorMessage = ref('')
 
 function goLoginPage() {
@@ -51,22 +47,20 @@ function goLoginPage() {
   })
 }
 
-function goChangPasswordPage() {
+function goRegisterPage() {
   router.push({
-    name: 'change-password'
+    name: 'register'
   })
 }
 
 const register = async () => {
   const credentials = {
-    Fullname: fullname.value,
-    PhoneNumber: phoneNumber.value,
     Username: username.value,
     Password: password.value,
-    RePassword: rePassword.value,
-    Email: email.value
+    NewPassword: newPassword.value,
+    ReNewPassword: reNewPassword.value
   }
-  const response = await userStore.register(credentials)
+  const response = await userStore.changePassword(credentials)
 
   if (response.success) {
     router.push('/login')

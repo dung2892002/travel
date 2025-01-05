@@ -25,8 +25,7 @@ namespace Travel.Infrastructure.Repositories
         {
             var reviews = await _dbcontext.Review
                 .Include(r => r.Image)
-                .Include(r => r.User)
-                .Where(r => r.DestinationId == destinationId).ToListAsync();
+                .Include(r => r.User).ToListAsync();
             return reviews;
         }
 
@@ -36,13 +35,24 @@ namespace Travel.Infrastructure.Repositories
                         .Where(r => r.HotelId == hoteId)
                         .OrderByDescending(r => r.CreatedAt);
 
+            var totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                return new PagedResult<Review>
+                {
+                    Items = new List<Review>(),
+                    TotalItems = totalCount,
+                    TotalPages = 0,
+                    OverallReview = new OverallReview() // Trả về đối tượng OverallReview mặc định
+                };
+            }
+
             var averagePoint = await query.AverageAsync(r => r.Point);
             var quantityFantastic = await query.Where(r => r.Point == 10).CountAsync();
             var quantityVerygood = await query.Where(r => r.Point == 9).CountAsync();
             var quantitySatisfying = await query.Where(r => r.Point == 7 || r.Point == 8).CountAsync(); 
             var quantityAverage = await query.Where(r => r.Point == 5 || r.Point == 6).CountAsync();
             var quantityPoor = await query.Where(r => r.Point < 5).CountAsync();
-            var totalCount = await query.CountAsync();
 
             var overall = new OverallReview
             {
@@ -85,13 +95,25 @@ namespace Travel.Infrastructure.Repositories
                 .Where(r => r.TourId == tourId)
                 .OrderByDescending(r => r.CreatedAt);
 
+            var totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                return new PagedResult<Review>
+                {
+                    Items = new List<Review>(),
+                    TotalItems = totalCount,
+                    TotalPages = 0,
+                    OverallReview = new OverallReview()
+                };
+            }
+
+
             var averagePoint = await query.AverageAsync(r => r.Point);
             var quantityFantastic = await query.Where(r => r.Point == 10).CountAsync();
             var quantityVerygood = await query.Where(r => r.Point == 9).CountAsync();
             var quantitySatisfying = await query.Where(r => r.Point == 7 || r.Point == 8).CountAsync();
             var quantityAverage = await query.Where(r => r.Point == 5 || r.Point == 6).CountAsync();
             var quantityPoor = await query.Where(r => r.Point < 5).CountAsync();
-            var totalCount = await query.CountAsync();
 
             var overall = new OverallReview
             {

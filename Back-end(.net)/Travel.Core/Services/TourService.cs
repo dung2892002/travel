@@ -18,19 +18,6 @@ namespace Travel.Core.Services
                 tour.Id = Guid.NewGuid();
                 await _unitOfWork.Tours.Create(tour);
 
-                var tasks = new List<Task>
-                {
-
-                    HandleTourDays(tour),
-                    HandleTourCities(tour),
-                    HandleTourDetails(tour),
-                    HandleTourNotices(tour),
-                    HandleTourPrices(tour),
-                    HandleTourRefunds(tour)
-                };
-
-                await Task.WhenAll(tasks);
-
                 await _unitOfWork.CommitTransaction();
             }
             catch (Exception ex)
@@ -111,91 +98,70 @@ namespace Travel.Core.Services
             return true;
         }
 
-        private async Task HandleTourDays(Tour tour)
+        private static async Task HandleTourDays(Tour tour, IUnitOfWork _unitOfWork)
         {
-            var tasks = tour.TourDay.Select(async tourDay =>
+
+            foreach (var tourDay in tour.TourDay)
             {
                 tourDay.Id = Guid.NewGuid();
                 tourDay.TourId = tour.Id;
                 await _unitOfWork.Tours.CreateTourDay(tourDay);
 
-                var activityTasks = tourDay.Activity.Select(async activity =>
+                foreach (var activity in tourDay.Activity)
                 {
                     activity.Id = Guid.NewGuid();
                     activity.TourDayId = tourDay.Id;
                     await _unitOfWork.Tours.CreateActitity(activity);
-                });
-
-                // Chờ tất cả các Activity được tạo
-                await Task.WhenAll(activityTasks);
-            });
-
-            // Chờ tất cả các TourDay được tạo
-            await Task.WhenAll(tasks);
+                }
+            }
         }
-
-        private async Task HandleTourCities(Tour tour)
+        
+        private static async Task HandleTourCities(Tour tour, IUnitOfWork _unitOfWork)
         {
-            var tasks = tour.TourCity.Select(async tourCity =>
+            foreach (var tourCity in tour.TourCity)
             {
                 tourCity.TourId = tour.Id;
-                tourCity.City = null; // Đặt null nếu không cần xử lý thêm City
+                tourCity.City = null;
                 await _unitOfWork.Tours.CreateTourCity(tourCity);
-            });
-
-            // Chờ tất cả các TourCity được tạo
-            await Task.WhenAll(tasks);
+            }
         }
 
-        private async Task HandleTourDetails(Tour tour)
+        private static async Task HandleTourDetails(Tour tour, IUnitOfWork _unitOfWork)
         {
-            var tasks = tour.TourDetail.Select(async tourDetail =>
+            foreach (var tourDetail in tour.TourDetail)
             {
                 tourDetail.TourId = tour.Id;
                 await _unitOfWork.Tours.CreateTourDetail(tourDetail);
-            });
-
-            // Chờ tất cả các TourDetail được tạo
-            await Task.WhenAll(tasks);
+            }
         }
 
-        private async Task HandleTourNotices(Tour tour)
-        {
-            var tasks = tour.TourNotice.Select(async tourNotice =>
+        private static async Task HandleTourNotices(Tour tour, IUnitOfWork _unitOfWork)
+        {            
+            foreach (var tourNotice in tour.TourNotice)
             {
                 tourNotice.TourId = tour.Id;
                 await _unitOfWork.Tours.CreateTourNotice(tourNotice);
-            });
-
-            // Chờ tất cả các TourNotice được tạo
-            await Task.WhenAll(tasks);
+            }
         }
 
-        private async Task HandleTourPrices(Tour tour)
+        private static async Task HandleTourPrices(Tour tour, IUnitOfWork _unitOfWork)
         {
-            var tasks = tour.TourPrice.Select(async tourPrice =>
+            foreach (var tourPrice in tour.TourPrice)
             {
                 tourPrice.TourId = tour.Id;
                 tourPrice.State = true;
                 await _unitOfWork.Tours.CreateTourPrice(tourPrice);
-            });
-
-            // Chờ tất cả các TourPrice được tạo
-            await Task.WhenAll(tasks);
+            }
         }
 
-        private async Task HandleTourRefunds(Tour tour)
+        private static async Task HandleTourRefunds(Tour tour, IUnitOfWork _unitOfWork)
         {
-            var tasks = tour.Refund.Select(async refund =>
-            {
+            foreach (var refund in tour.Refund) {
                 refund.TourId = tour.Id;
                 refund.Tour = null; // Đặt null nếu không cần xử lý thêm Tour
                 refund.Hotel = null; // Đặt null nếu không cần xử lý thêm Hotel
                 await _unitOfWork.Tours.CreateTourRefund(refund);
-            });
-
-            // Chờ tất cả các Refund được tạo
-            await Task.WhenAll(tasks);
+            }
         }
 
         public async Task<IEnumerable<TourSchedule>> GetScheduleByTour(Guid tourId)
@@ -255,7 +221,6 @@ namespace Travel.Core.Services
                 throw new ApplicationException("Error updating tour", ex);
             }
         }
-
         private async Task HandleTourDaysForUpdate(Tour tour)
         {
             var existingTourDays = await _unitOfWork.Tours.GetTourDaysByTour(tour.Id);
@@ -343,7 +308,7 @@ namespace Travel.Core.Services
                 else
                 {
                     var existingCity = await _unitOfWork.Tours.GetTourCityById(tourCity.Id);
-                    existingCity.CityId = tourCity.Id;
+                    existingCity.CityId = tourCity.CityId;
                     existingCity.VisitOrder = tourCity.VisitOrder;
 
                     //var result = await _unitOfWork.CompleteAsync();

@@ -1,10 +1,12 @@
 <template>
   <div style="margin: 20px auto; width: 1080px" v-if="bookingTour && bookingTourPeople">
-    <div style="margin-bottom: 20px">
+    <div style="margin-bottom: 20px; display: flex; flex-direction: column">
       <h2 class="booking_label">Thông tin đặt tour của bạn</h2>
       <span style="color: #687176; font-size: 16px; font-weight: 500"
         >Chắc chắn các thông tin bên dưới là chính xác trước khi đặt tour</span
       >
+      <span v-if="errorMessage" class="error-message"> {{ errorMessage }}</span>
+      <span v-if="successMessage" class="success-message">{{ successMessage }}</span>
     </div>
     <div class="content--row" style="width: 100%; overflow-x: hidden">
       <div class="content--column" style="width: 100%">
@@ -198,6 +200,9 @@ const bookingTour = ref(null)
 const bookingTourPeople = ref(null)
 const discounts = computed(() => discountStore.getTourDiscounts)
 
+const errorMessage = ref(null)
+const successMessage = ref(null)
+
 watch(
   bookingTourPeople,
   (newBookingTourPeople) => {
@@ -255,11 +260,10 @@ async function handleBookingTour() {
   formatDataBooking()
   const response = await bookingStore.createBookingTour(submitBooking.value, token.value)
   if (response.success) {
-    console.log('Đặt tour thành công, sau 15 phút nếu không thanh toán sẽ tự hủy')
+    successMessage.value = 'Đặt phòng thành công, sau 15 phút nếu không thanh toán sẽ tự hủy'
   } else {
-    console.log('Đặt tour thất bại:', response.message)
+    errorMessage.value = response.message
   }
-  console.log(submitBooking.value, token)
 }
 
 const user = computed(() => userStore.getUser)

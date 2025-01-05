@@ -11,15 +11,7 @@ public class Favourite
 
     public Guid? HotelId { get; set; }
 
-    public int? CityId { get; set; }
-
-    public int? DestinationId { get; set; }
-
     public Guid? TourId { get; set; }
-
-    public virtual City? City { get; set; }
-
-    public virtual Destination? Destination { get; set; }
 
     public virtual Hotel? Hotel { get; set; }
 

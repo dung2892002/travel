@@ -16,12 +16,9 @@ public class Review
 
     public Guid? HotelId { get; set; }
 
-    public int? DestinationId { get; set; }
 
     public Guid? TourId { get; set; }
 
-    [JsonIgnore]
-    public virtual Destination? Destination { get; set; }
 
     [JsonIgnore]
     public virtual Hotel? Hotel { get; set; }

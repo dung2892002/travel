@@ -41,13 +41,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("User", policy => policy.RequireRole("User"));
-    options.AddPolicy("HotelPartner", policy => policy.RequireRole("HotelPartner"));
-    options.AddPolicy("TourPartner", policy => policy.RequireRole("TourPartner"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Admin", policy => policy.RequireRole("Admin"))
+    .AddPolicy("User", policy => policy.RequireRole("User"))
+    .AddPolicy("HotelPartner", policy => policy.RequireRole("HotelPartner"))
+    .AddPolicy("TourPartner", policy => policy.RequireRole("TourPartner"));
 
 // Cấu hình CORS
 builder.Services.AddCors(options =>

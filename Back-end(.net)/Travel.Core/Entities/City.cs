@@ -16,9 +16,6 @@ public class City
     public virtual ICollection<Destination> Destination { get; set; } = new List<Destination>();
 
     [JsonIgnore]
-    public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
-
-    [JsonIgnore]
     public virtual ICollection<Hotel> Hotel { get; set; } = new List<Hotel>();
 
     public virtual Province Province { get; set; } = null!;

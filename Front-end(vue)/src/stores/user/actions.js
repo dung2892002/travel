@@ -48,6 +48,22 @@ export default {
     }
   },
 
+  async changePassword(credentials) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      const response = await axios.put(`${apiServer}/Users/change-password`, credentials)
+
+      if (response.status === 201) {
+        return { success: true }
+      }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
+  },
+
   async updateUser(id, user, token) {
     try {
       const apiServer = import.meta.env.VITE_API_HOST

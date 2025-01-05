@@ -191,11 +191,11 @@ function handlePageChange(newPageNumber) {
 }
 
 function validateForm(user) {
-  const usernameRegex = /^[a-z]{6,}$/
-  if (!usernameRegex.test(user.Username)) {
-    errorMessage.value = 'Username chỉ được chứa chữ thường và phải từ 6 ký tự trở lên.'
-    return false
-  }
+  // const usernameRegex = /^[a-z]{6,}$/
+  // if (!usernameRegex.test(user.Username)) {
+  //   errorMessage.value = 'Username chỉ được chứa chữ thường và phải từ 6 ký tự trở lên.'
+  //   return false
+  // }
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/ // Chữ hoa, thường, số, ký tự đặc biệt, ít nhất 8 ký tự
   if (!passwordRegex.test(user.Password)) {

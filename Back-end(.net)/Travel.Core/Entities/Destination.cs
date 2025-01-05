@@ -14,10 +14,6 @@ public class Destination
     [JsonIgnore]
     public virtual City? City { get; set; } = null!;
     [JsonIgnore]
-    public virtual ICollection<Favourite> Favourite { get; set; } = new List<Favourite>();
-    [JsonIgnore]
     public virtual ICollection<HotelDestination> HotelDestination { get; set; } = new List<HotelDestination>();
     public virtual ICollection<Image> Image { get; set; } = new List<Image>();
-    [JsonIgnore]
-    public virtual ICollection<Review> Review { get; set; } = new List<Review>();
 }

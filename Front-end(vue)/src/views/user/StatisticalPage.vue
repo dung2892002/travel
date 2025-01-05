@@ -66,27 +66,40 @@
         </div>
       </div>
       <div class="main-container" v-if="statistical">
-        <div class="content--column" style="margin-bottom: 10px">
-          <span>Tống số booking: {{ statistical.TotalBooking }}</span>
-          <span>Số booking hoàn thành: {{ statistical.TotalBookingSuccess }}</span>
-          <span>Số booking bị hủy: {{ statistical.TotalBookingCancel }}</span>
-          <span
-            >Tống số tiền được thanh toán:
-            {{ formatNumber(statistical.TotalPaymentAccessValue) }}vnd</span
-          >
-          <span
-            >Tống số tiền hoàn trả: {{ formatNumber(statistical.TotalPaymentRefundValue) }}vnd</span
-          >
+        <div class="content--row">
+          <div class="content--column" style="margin-bottom: 10px">
+            <span>Tống số booking: {{ statistical.TotalBooking }}</span>
+            <span>Số booking hoàn thành: {{ statistical.TotalBookingSuccess }}</span>
+            <span>Số booking bị hủy: {{ statistical.TotalBookingCancel }}</span>
+            <span>Số booking chưa hoàn thành: {{ statistical.TotalBookingPending }}</span>
+            <span
+              >Tống số tiền được thanh toán:
+              {{ formatNumber(statistical.TotalPaymentAccessValue) }} vnd</span
+            >
+            <span
+              >Tống số tiền hoàn trả:
+              {{ formatNumber(statistical.TotalPaymentRefundValue) }} vnd</span
+            >
+          </div>
+          <!-- Biểu đồ tròn -->
+          <div class="chart-container" style="width: 300px; height: 300px; margin: 20px auto">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+        <!-- Biểu đồ cột -->
+        <div class="chart-container" style="margin-bottom: 20px">
+          <canvas id="barChart"></canvas>
         </div>
         <table class="travel-table">
           <thead>
             <tr>
-              <th class="w-16">Ngày</th>
-              <th class="w-14">Tổng booking</th>
+              <th class="w-12">Ngày</th>
+              <th class="w-8">Tổng</th>
               <th class="w-11">Hoàn thành</th>
               <th class="w-9">Đã hủy</th>
-              <th class="w-20">Số tiền thanh toán (vnd)</th>
-              <th>Số tiền hoàn trả (vnd)</th>
+              <th class="w-18">Chưa hoàn thành</th>
+              <th class="w-20">Thanh toán (vnd)</th>
+              <th>Hoàn trả (vnd)</th>
             </tr>
           </thead>
           <tbody>
@@ -95,6 +108,7 @@
               <td>{{ statisticalDay.TotalBooking }}</td>
               <td>{{ statisticalDay.TotalBookingSuccess }}</td>
               <td>{{ statisticalDay.TotalBookingCancel }}</td>
+              <td>{{ statisticalDay.TotalBookingPending }}</td>
               <td>{{ formatNumber(statisticalDay.PaymentValue) }}</td>
               <td>{{ formatNumber(statisticalDay.RefundValue) }}</td>
             </tr>
@@ -111,7 +125,7 @@ import { useStatiscalStore } from '@/stores/statiscal'
 import { useTourStore } from '@/stores/tour'
 import { useUserStore } from '@/stores/user'
 import { formatDate, formatDateForm, formatNumber } from '@/utils'
-// import { formatDate, formatDateForm, formatNumber } from '@/utils'
+import Chart from 'chart.js/auto'
 import { computed, onMounted, ref } from 'vue'
 
 const userStore = useUserStore()
@@ -168,6 +182,63 @@ async function handleStatistical() {
       token.value
     )
   }
+
+  createCharts()
+}
+
+function createCharts() {
+  const pieCtx = document.getElementById('pieChart').getContext('2d')
+  const barCtx = document.getElementById('barChart').getContext('2d')
+
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Hoàn thành', 'Chưa hoàn thành', 'Đã hủy'],
+      datasets: [
+        {
+          data: [
+            (statistical.value.TotalBookingSuccess / statistical.value.TotalBooking) * 100,
+            (statistical.value.TotalBookingPending / statistical.value.TotalBooking) * 100,
+            (statistical.value.TotalBookingCancel / statistical.value.TotalBooking) * 100
+          ],
+          backgroundColor: ['#4caf50', '#ff9800', '#f44336']
+        }
+      ]
+    }
+  })
+
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: statistical.value.StatisticalDay.filter(
+        (day) => day.PaymentValue > 0 || day.RefundValue > 0
+      ).map((day) => formatDate(day.Day)),
+      datasets: [
+        {
+          label: 'Thanh toán (vnd)',
+          data: statistical.value.StatisticalDay.filter(
+            (day) => day.PaymentValue > 0 || day.RefundValue > 0
+          ).map((day) => day.PaymentValue),
+          backgroundColor: '#4caf50'
+        },
+        {
+          label: 'Hoàn trả (vnd)',
+          data: statistical.value.StatisticalDay.filter(
+            (day) => day.PaymentValue > 0 || day.RefundValue > 0
+          ).map((day) => day.RefundValue),
+          backgroundColor: '#f44336'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        }
+      }
+    }
+  })
 }
 
 const user = computed(() => userStore.getUser)

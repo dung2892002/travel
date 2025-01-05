@@ -306,7 +306,7 @@
               <div>
                 <div class="group-header">
                   <p class="form__label">
-                    Chính sách hủy phòng, hoàn tiền<span class="required">*</span>
+                    Chính sách hủy, hoàn tiền<span class="required">*</span>
                   </p>
                   <button class="btn btn--add" @click="addTourRefund">Thêm</button>
                 </div>
@@ -326,7 +326,14 @@
             </div>
           </div>
           <div class="form__footer">
-            <button class="btn btn--add" @click="triggerFileInput" v-if="id">Thêm ảnh</button>
+            <button
+              class="btn btn--add"
+              @click="triggerFileInput"
+              v-if="id"
+              v-loading="uploadLoading"
+            >
+              Thêm ảnh
+            </button>
             <input
               type="file"
               ref="fileInput"
@@ -358,6 +365,8 @@ import { getLinkImage } from '@/utils'
 import { useUserStore } from '@/stores/user'
 import { useTourStore } from '@/stores/tour'
 
+const uploadLoading = ref(false)
+
 const tourStore = useTourStore()
 
 const tour = ref(null)
@@ -380,6 +389,7 @@ function handleFileChange(event) {
   const files = event.target.files
   selectedFiles.value = Array.from(files)
 
+  uploadLoading.value = true
   uploadFiles()
 }
 
@@ -389,9 +399,9 @@ async function uploadFiles() {
   selectedFiles.value.forEach((file) => {
     formData.append('files', file)
   })
-
+  uploadLoading.value = true
   const response = await tourStore.addImageTour(props.id, formData, userStore.getToken)
-
+  uploadLoading.value = false
   if (response.success) {
     closeForm()
   } else {
@@ -467,7 +477,8 @@ function addTourPrice() {
   tour.value.TourPrice.push({
     AgeStart: 0,
     AgeEnd: null,
-    Percent: 100
+    Percent: 100,
+    State: true
   })
 }
 
@@ -478,7 +489,8 @@ function deleteTourPrice(index) {
 function addTourRefund() {
   tour.value.Refund.push({
     DayBefore: 0,
-    RefundPercent: 0
+    RefundPercent: 0,
+    State: true
   })
 }
 
@@ -563,7 +575,8 @@ function formatTourData() {
     TourId: tourPrice.TourId,
     AgeStart: tourPrice.AgeStart,
     AgeEnd: tourPrice.AgeEnd === '' ? null : tourPrice.AgeEnd,
-    Percent: tourPrice.Percent
+    Percent: tourPrice.Percent,
+    State: tourPrice.State
   }))
   submitTour.value.Refund = tour.value.Refund
 }

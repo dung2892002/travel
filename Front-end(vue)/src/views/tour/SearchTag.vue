@@ -9,6 +9,17 @@
       />
       <span v-if="errorLocation" class="error-message"> {{ errorLocation }}</span>
       <div v-if="showSelectSearch === 1" class="show-select select-location">
+        <ul v-if="provincesFilter.length > 0">
+          <li
+            v-for="province in provincesFilter"
+            :key="province.Id"
+            @click="selectProvince(province)"
+            class="location-item"
+          >
+            <p class="location--name">{{ province.Name }}</p>
+            <p class="location--type">Tỉnh</p>
+          </li>
+        </ul>
         <ul v-if="citiesFilter.length > 0">
           <li
             v-for="city in citiesFilter"
@@ -55,6 +66,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 const keyword = ref('')
 const showSelectSearch = ref(0)
 const citiesFilter = ref([])
+const provincesFilter = ref([])
 
 const searchLocationRef = ref(null)
 const searchTimeRef = ref(null)
@@ -65,6 +77,7 @@ const errorLocation = ref(null)
 const emit = defineEmits(['searchTour'])
 
 const query = ref({
+  ProvinceId: null,
   CityId: null,
   DateStart: formatDateForm(new Date())
 })
@@ -75,13 +88,16 @@ function showSearch() {
 }
 
 function searchTour() {
-  if (query.value.CityId == null) {
+  if (query.value.CityId == null && query.value.ProvinceId == null) {
     errorLocation.value = 'Vui lòng chọn địa điểm'
   } else emit('searchTour', query.value)
 }
 
 function filterLocation() {
   const query = keyword.value.toLowerCase()
+  provincesFilter.value = provinces.value
+    ? provinces.value.filter((province) => province.Name.toLowerCase().includes(query))
+    : []
 
   citiesFilter.value = cities.value
     ? cities.value.filter((city) => city.Name.toLowerCase().includes(query))
@@ -111,7 +127,15 @@ function validateTime() {
   return true
 }
 
+function selectProvince(province) {
+  query.value.ProvinceId = province.Id
+  query.value.CityId = null
+  keyword.value = province.Name
+  showSelectSearch.value = 0
+}
+
 function selectCity(city) {
+  query.value.ProvinceId = null
   query.value.CityId = city.Id
   keyword.value = city.Name
   showSelectSearch.value = 0
@@ -120,6 +144,7 @@ function selectCity(city) {
 const locationStore = useLocationStore()
 
 const cities = computed(() => locationStore.getCities)
+const provinces = computed(() => locationStore.getProvinces)
 
 function handleClickOutside(event) {
   if (
@@ -151,6 +176,7 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   locationStore.fetchCities()
+  locationStore.fetchProvinces()
   document.addEventListener('click', handleClickOutside)
 })
 </script>

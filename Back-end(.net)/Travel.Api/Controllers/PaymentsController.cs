@@ -72,7 +72,7 @@ namespace Travel.Api.Controllers
             {
                 return BadRequest("Payment failed.");
             }
-            return Ok("Payment successful.");
+            return Redirect("http://localhost:5173/my-booking-room");
         }
 
         [HttpGet("payment-response/tour")]
@@ -90,7 +90,7 @@ namespace Travel.Api.Controllers
             {
                 return BadRequest("Payment failed.");
             }
-            return Ok("Payment successful.");
+            return Redirect("http://localhost:5173/my-booking-tour");
         }
     }
 }

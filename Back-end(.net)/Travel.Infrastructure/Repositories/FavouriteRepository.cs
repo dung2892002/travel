@@ -48,13 +48,11 @@ namespace Travel.Infrastructure.Repositories
         public async Task<IEnumerable<Favourite>> GetByUser(Guid userId)
         {
             var query = _dbContext.Favourite
-                .Where(f => f.UserId == userId)
-                .Include(f => f.Hotel).ThenInclude(h => h.Image)
-                .Include(f => f.Hotel).ThenInclude(h => h.City).ThenInclude(c => c.Province)
-                .Include(f => f.Hotel).ThenInclude(h => h.HotelFacility).ThenInclude(hf => hf.Facility)
-                .Include(f => f.City)
-                .Include(f => f.Tour).ThenInclude(t => t.Image)
-                .Include(f => f.Destination).ThenInclude(d => d.Image);
+                    .Where(f => f.UserId == userId) // Lọc theo userId
+                    .Include(f => f.Hotel).ThenInclude(h => h.Image) // Bao gồm thông tin khách sạn và ảnh
+                    .Include(f => f.Hotel)
+                    .Include(f => f.Hotel).ThenInclude(h => h.HotelFacility).ThenInclude(hf => hf.Facility) // Bao gồm thông tin tiện nghi
+                    .Include(f => f.Tour).ThenInclude(t => t.Image); // Bao gồm thông tin tour và ảnh
 
             return await query.ToListAsync();
         }
