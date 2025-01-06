@@ -27,10 +27,12 @@
             margin-top: 10px;
           "
         >
-          <span
-            >{{ booking.TourSchedule.Tour.Name }} - Khởi hành:
-            {{ formatDate(booking.TourSchedule.DateStart) }}
-          </span>
+          <div class="content--column">
+            <span style="max-width: 400px">{{ booking.TourSchedule.Tour.Name }} </span>
+            <span style="margin-top: 10px"
+              >Khởi hành: {{ formatDate(booking.TourSchedule.DateStart) }}</span
+            >
+          </div>
           <div>
             <span v-if="booking.Status === 0" class="booking-status booking-status--notpaid">
               Chưa thanh toán</span
@@ -75,7 +77,7 @@
             <div v-if="!booking.Discount">{{ formatNumber(booking.Price + booking.Fee) }} vnd</div>
             <div v-else>
               <span style="text-decoration: line-through"
-                >{{ formatNumber(booking.Price) }} vnd</span
+                >{{ formatNumber(booking.Price + booking.Fee) }} vnd</span
               >
               <span>{{ formatNumber(canculatePrice(booking)) }} vnd</span>
             </div>

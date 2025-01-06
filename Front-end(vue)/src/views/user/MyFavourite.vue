@@ -35,13 +35,9 @@ const user = computed(() => userStore.getUser)
 const token = computed(() => userStore.getToken)
 
 async function deleteFavourite(id) {
-  const response = await favouriteStore.deleteFavourite(id, token.value)
+  await favouriteStore.deleteFavourite(id, token.value)
 
-  if (response.success) {
-    fetchFavourties()
-  } else {
-    console.log('co loi xay ra')
-  }
+  fetchFavourties()
 }
 
 async function fetchFavourties() {

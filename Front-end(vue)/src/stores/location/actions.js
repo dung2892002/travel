@@ -36,5 +36,29 @@ export default {
     } catch (error) {
       return { success: false, message: error.response.data }
     }
+  },
+  async fetchProvincesHotel() {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+
+      const response = await axios.get(`${apiServer}/Provinces/hotel`)
+      const provinces = response.data
+
+      this.provincesHotel = provinces
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
+  },
+  async fetchProvincesTour() {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+
+      const response = await axios.get(`${apiServer}/Provinces/tour`)
+      const provinces = response.data
+
+      this.provincesTour = provinces
+    } catch (error) {
+      return { success: false, message: error.response.data }
+    }
   }
 }

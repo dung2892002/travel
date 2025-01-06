@@ -1,5 +1,5 @@
 <template>
-  <div class="content--row content-item" style="height: 200px">
+  <div class="content--row content-item tour-item" style="height: 200px">
     <div class="item-img">
       <div v-if="tour.Image.length > 0" class="item-img--hasimage">
         <img :src="getLinkImage(tour.Image[0].Path)" alt="anh tour" class="item-img" />
@@ -8,13 +8,25 @@
       <img src="../../assets/image/hotel.jpg" alt="" v-else class="item-img" />
     </div>
     <div class="content--column item-info" @click="handleSelectTour">
-      <div class="content--row">
+      <div
+        class="content--row"
+        style="display: flex; flex-direction: row; justify-content: space-between"
+      >
         <span class="info-value info__name" style="width: 420px">
           {{ tour.Name }}
         </span>
         <div class="info-value info__review">
           <span v-if="tour.QuantityReview > 0"> {{ tour.AverageReview }}</span>
           <span v-if="tour.QuantityReview > 0"> ({{ tour.QuantityReview }} đánh giá)</span>
+        </div>
+        <div class="info-value info__review" v-if="mode == 3" style="position: absolute; right: 0">
+          <button
+            @click="handleSelectTour"
+            class="action-button action--first"
+            style="width: 64px; height: 32px"
+          >
+            Xóa
+          </button>
         </div>
       </div>
       <div class="content--row">
@@ -41,9 +53,6 @@
     <div class="item-action" v-if="mode === 1">
       <button @click="handleSelectTour" class="action-button action--first">Chỉnh sửa</button>
       <button @click="showSchedule" class="action-button action--first">Lịch khởi hành</button>
-    </div>
-    <div class="item-action" v-if="mode === 3">
-      <button @click="handleSelectTour" class="action-button action--first">Xóa</button>
     </div>
 
     <ImageGallery :images="tour.Image" :visible="showImagePopup" @close="toggleImagePopup" />
@@ -97,3 +106,9 @@ function renderRating(rating) {
   return fullStar.repeat(rating) + emptyStar.repeat(5 - rating)
 }
 </script>
+
+<style scoped>
+.tour-item:hover {
+  border: 1px solid #078cf8;
+}
+</style>

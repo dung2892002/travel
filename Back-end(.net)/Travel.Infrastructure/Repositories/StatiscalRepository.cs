@@ -107,7 +107,22 @@ namespace Travel.Infrastructure.Repositories
                     })
                     .ToListAsync();
 
-                statisticalDays.AddRange(tourStatsByDay);
+                //statisticalDays.AddRange(tourStatsByDay);
+                foreach (var tourStat in tourStatsByDay)
+                {
+                    var existingDay = statisticalDays.FirstOrDefault(s => s.Day == tourStat.Day);
+                    if (existingDay != null)
+                    {
+                        existingDay.TotalBooking += tourStat.TotalBooking;
+                        existingDay.TotalBookingSuccess += tourStat.TotalBookingSuccess;
+                        existingDay.TotalBookingPending += tourStat.TotalBookingPending;
+                        existingDay.TotalBookingCancel += tourStat.TotalBookingCancel;
+                    }
+                    else
+                    {
+                        statisticalDays.Add(tourStat);
+                    }
+                }
             }
 
             if (paymentQuery != null)

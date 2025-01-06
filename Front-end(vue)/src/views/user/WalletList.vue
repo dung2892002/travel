@@ -13,11 +13,11 @@
           <thead>
             <tr>
               <th class="w-6">STT</th>
-              <th>Email</th>
-              <th class="w-12">Số điện thoại</th>
-              <th class="w-14">Số tài khoản</th>
-              <th class="w-12">Ngân hàng</th>
-              <th class="w-10">Số dư</th>
+              <th class="w-16">Email</th>
+              <th class="w-16">Số điện thoại</th>
+              <th class="w-16">Số tài khoản</th>
+              <th class="w-16">Ngân hàng</th>
+              <th>Số dư</th>
             </tr>
           </thead>
           <tbody>
@@ -29,7 +29,7 @@
               <td>{{ wallet.BankName }}</td>
               <td>
                 <div class="action">
-                  {{ formatNumber(wallet.Balance) }}
+                  <span>{{ formatNumber(wallet.Balance) }} vnd</span>
                   <div class="action-buttons">
                     <button
                       class="action-button btn--add"

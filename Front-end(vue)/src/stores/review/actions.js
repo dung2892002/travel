@@ -61,5 +61,26 @@ export default {
       }
       return { success: false, message: 'Lỗi kết nối đến server' }
     }
+  },
+
+  async deleteReview(id, userId, token) {
+    try {
+      const apiServer = import.meta.env.VITE_API_HOST
+      await axios.delete(`${apiServer}/Reviews/delete`, {
+        params: {
+          reviewId: id,
+          userId: userId
+        },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      return { success: true }
+    } catch (error) {
+      if (error.response) {
+        return { success: false, message: error.response.data }
+      }
+      return { success: false, message: 'Lỗi kết nối đến server' }
+    }
   }
 }

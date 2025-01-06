@@ -56,7 +56,9 @@ const login = async () => {
   const response = await userStore.login(credentials)
 
   if (response.success) {
-    router.push('/')
+    router.push({
+      name: 'profile'
+    })
   } else {
     errorMessage.value = response.message
   }

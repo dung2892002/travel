@@ -5,7 +5,7 @@ using Travel.Core.Interfaces.IServices;
 
 namespace Travel.Core.Services
 {
-    public class BookingRoomService(IUnitOfWork unitOfWork, IUserService userService) : IBookingRoomService, IService
+    public class BookingRoomService(IUnitOfWork unitOfWork) : IBookingRoomService, IService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 

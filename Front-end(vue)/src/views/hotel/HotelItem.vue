@@ -1,5 +1,5 @@
 <template>
-  <div class="content--row content-item">
+  <div class="content--row content-item hotel-item">
     <div class="item-img">
       <div v-if="hotel.Image.length > 0" class="item-img--hasimage">
         <img :src="getLinkImage(hotel.Image[0].Path)" alt="anh ks" class="item-img" />
@@ -8,11 +8,23 @@
       <img src="../../assets/image/hotel.jpg" alt="" v-else class="item-img" />
     </div>
     <div class="content--column item-info" @click="handleSelectHotel">
-      <div class="content--row">
+      <div
+        class="content--row"
+        style="display: flex; flex-direction: row; justify-content: space-between"
+      >
         <div class="info-value info__name">{{ hotel.Name }}</div>
         <div class="info-value info__review">
           <span v-if="hotel.QuantityReview > 0"> {{ hotel.AverageReview }}</span>
           <span v-if="hotel.QuantityReview > 0"> ({{ hotel.QuantityReview }} đánh giá)</span>
+        </div>
+        <div class="info-value info__review" v-if="mode == 3" style="position: absolute; right: 0">
+          <button
+            @click="handleSelectHotel"
+            class="action-button action--first"
+            style="width: 64px; height: 32px"
+          >
+            Xóa
+          </button>
         </div>
       </div>
       <div class="content--row">
@@ -65,9 +77,6 @@
     <div class="item-action" v-if="mode == 1">
       <button @click="handleSelectHotel" class="action-button action--first">Chỉnh sửa</button>
       <button @click="showRoom" class="action-button">Xem phòng</button>
-    </div>
-    <div class="item-action" v-if="mode == 3">
-      <button @click="handleSelectHotel" class="action-button action--first">Xóa</button>
     </div>
 
     <ImageGallery :images="hotel.Image" :visible="showImagePopup" @close="toggleImagePopup" />
@@ -135,3 +144,9 @@ function renderRating(rating) {
   return fullStar.repeat(rating) + emptyStar.repeat(5 - rating)
 }
 </script>
+
+<style scoped>
+.hotel-item:hover {
+  border: 1px solid #078cf8;
+}
+</style>

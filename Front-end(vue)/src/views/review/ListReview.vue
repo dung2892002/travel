@@ -1,5 +1,5 @@
 <template>
-  <div v-if="reviews">
+  <div v-if="reviews" ref="reviewContainer">
     <div class="review-overall">
       <div>
         <h3>Đánh giá và nhận xét chung</h3>
@@ -58,11 +58,17 @@
     <div v-else>
       <RouterLink :to="{ name: 'login' }">
         <span style="font-size: 14px; color: #0194f3"
-          >Đăng nhập để có thể đánh giá khách sạn</span
+          >Đăng nhập để có thể đánh giá</span
         ></RouterLink
       >
     </div>
-    <ReviewItem v-for="review in reviews" :key="review.Id" :review="review" />
+    <ReviewItem
+      v-for="review in reviews"
+      :key="review.Id"
+      :review="review"
+      @delete="fetchReviews"
+    />
+
     <ThePagnigation
       :pageNumber="pageNumber"
       :totalItems="totalItems"
@@ -83,6 +89,8 @@ const reviewStore = useReviewStore()
 const userStore = useUserStore()
 
 const pageNumber = ref(1)
+
+const reviewContainer = ref(null)
 
 const sending = ref(false)
 const reviewForm = ref({
@@ -125,6 +133,7 @@ async function handleSubmit() {
     reviewForm.value.point = 1
     reviewForm.value.description = ''
     reviewForm.value.files = []
+    previewImage.value = []
     pageNumber.value = 1
     fetchReviews()
   } else {
@@ -170,6 +179,9 @@ function getQuantity(index) {
 function handlePageChange(value) {
   pageNumber.value = value
   fetchReviews()
+  if (reviewContainer.value) {
+    reviewContainer.value.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 async function fetchReviews() {
   if (props.hotelId) {

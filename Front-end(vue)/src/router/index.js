@@ -45,7 +45,8 @@ const router = createRouter({
     {
       path: '/create-booking-room',
       name: 'createBookingRoom',
-      component: BookingRoomForm
+      component: BookingRoomForm,
+      meta: { requiresAuth: true }
     },
     {
       path: '/tours',
@@ -60,52 +61,62 @@ const router = createRouter({
     {
       path: '/create-booking-tour',
       name: 'createBookingTour',
-      component: BookingTourForm
+      component: BookingTourForm,
+      meta: { requiresAuth: true }
     },
     {
       path: '/user',
       name: 'user',
       component: UserPage,
+      meta: { requiresAuth: true },
       children: [
         {
           path: '/profile',
           name: 'profile',
-          component: MyProfile
+          component: MyProfile,
+          meta: { requiresAuth: true }
         },
         {
           path: '/my-booking-room',
           name: 'my-booking-room',
-          component: MyBookingRoom
+          component: MyBookingRoom,
+          meta: { requiresAuth: true }
         },
         {
           path: '/my-booking-tour',
           name: 'my-booking-tour',
-          component: MyBookingTour
+          component: MyBookingTour,
+          meta: { requiresAuth: true }
         },
         {
           path: '/my-hotel',
           name: 'my-hotel',
-          component: MyHotel
+          component: MyHotel,
+          meta: { requiresAuth: true }
         },
         {
           path: 'rooms/hotel/:hotelId',
           name: 'RoomsList',
-          component: HotelsRoom
+          component: HotelsRoom,
+          meta: { requiresAuth: true }
         },
         {
           path: '/discount',
           name: 'myDiscount',
-          component: MyDiscount
+          component: MyDiscount,
+          meta: { requiresAuth: true }
         },
         {
           path: '/my-favourites',
           name: 'myFavourite',
-          component: MyFavourite
+          component: MyFavourite,
+          meta: { requiresAuth: true }
         },
         {
           path: '/my-tour',
           name: 'myTour',
-          component: MyTour
+          component: MyTour,
+          meta: { requiresAuth: true }
         },
         {
           path: 'schedules/tour/:tourId',
@@ -115,17 +126,20 @@ const router = createRouter({
         {
           path: 'users',
           name: 'userList',
-          component: UserList
+          component: UserList,
+          meta: { requiresAuth: true }
         },
         {
           path: 'wallets',
           name: 'walletList',
-          component: WalletList
+          component: WalletList,
+          meta: { requiresAuth: true }
         },
         {
           path: 'statistical',
           name: 'statistical',
-          component: StatisticalPage
+          component: StatisticalPage,
+          meta: { requiresAuth: true }
         }
       ]
     },
@@ -145,6 +159,17 @@ const router = createRouter({
       component: ChangePasswordPage
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('jwt')
+  if (to.meta.requiresAuth && isAuthenticated === null) {
+    next({
+      name: 'login'
+    })
+  } else {
+    next()
+  }
 })
 
 export default router

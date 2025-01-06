@@ -343,6 +343,7 @@
               style="display: none"
             />
             <button class="btn btn--add" id="submitButton" @click="submitForm">Lưu</button>
+            <button class="btn btn--remove" id="submitButton" @click="closeForm">Hủy</button>
           </div>
         </div>
       </div>

@@ -37,5 +37,33 @@ namespace Travel.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("hotel")]
+        public async Task<IActionResult> GetHotel()
+        {
+            try
+            {
+                var provinces = await _provinceService.GetByHotel();
+                return StatusCode(200, provinces);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("tour")]
+        public async Task<IActionResult> GetTour()
+        {
+            try
+            {
+                var provinces = await _provinceService.GetByTour();
+                return StatusCode(200, provinces);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

@@ -36,7 +36,7 @@
         <button class="btn btn--add" id="submitButton" @click="submitForm">Lưu</button>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v-if="checkRole(5) || checkRole(6)">
       <div class="form__header">
         <div>
           <h2>Thông tin ví</h2>
@@ -167,6 +167,10 @@ function validateForm() {
     return false
   }
   return true
+}
+
+function checkRole(value) {
+  return user.value.Roles.some((role) => role.RoleValue === value)
 }
 
 const user = computed(() => userStore.getUser)

@@ -1,5 +1,5 @@
 <template>
-  <div class="content--row content-item">
+  <div class="content--row content-item hotel-item">
     <div class="item-img">
       <div v-if="room.Image.length > 0" class="item-img--hasimage">
         <img :src="getLinkImage(room.Image[0].Path)" alt="anh ks" class="item-img" />
@@ -138,3 +138,9 @@ const props = defineProps({
   }
 })
 </script>
+
+<style scoped>
+.hotel-item:hover {
+  border: 1px solid #078cf8;
+}
+</style>

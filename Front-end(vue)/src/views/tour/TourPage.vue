@@ -21,6 +21,13 @@
       </div>
       <div v-else class="content--column" style="margin-left: 320px">Không tìm thấy tour</div>
     </div>
+    <div v-else style="margin: 0; padding: 0">
+      <img
+        src="https://ik.imagekit.io/tvlk/image/imageResource/2025/01/05/1736039105980-f92c5570060d22e1a5d244eed8bc7f87.png?tr=dpr-2,q-75"
+        alt=""
+        style="margin: 0; padding: 0"
+      />
+    </div>
   </div>
 </template>
 

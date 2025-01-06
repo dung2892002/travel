@@ -8,7 +8,6 @@ public class Province
 
     public string Name { get; set; } = null!;
 
-
     [JsonIgnore]
     public virtual ICollection<City> City { get; set; } = new List<City>();
 }

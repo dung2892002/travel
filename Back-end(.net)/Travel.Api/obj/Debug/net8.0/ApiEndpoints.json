@@ -717,6 +717,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Travel.Api.Controllers.ProvincesController",
+    "Method": "GetHotel",
+    "RelativePath": "api/v1/Provinces/hotel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Travel.Api.Controllers.ProvincesController",
+    "Method": "GetTour",
+    "RelativePath": "api/v1/Provinces/tour",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Travel.Api.Controllers.ReviewsController",
     "Method": "CreateReview",
     "RelativePath": "api/v1/Reviews",
@@ -1671,14 +1691,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
+        "Name": "reviewId",
         "Type": "System.Int32",
         "IsRequired": false
       },
       {
         "Name": "userId",
         "Type": "System.Guid",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

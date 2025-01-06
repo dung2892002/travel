@@ -197,6 +197,11 @@ function getTypeHotel(type) {
 }
 
 async function handleSelectRoom(room) {
+  if (!user.value) {
+    router.push({
+      name: 'login'
+    })
+  }
   const booking = {
     Room: room,
     Hotel: hotel.value,

@@ -81,7 +81,7 @@ builder.Services.AddQuartz(q =>
         .WithIdentity("BookingRefundJob")
         .StartNow()
         .WithSimpleSchedule(x => x
-            .WithInterval(TimeSpan.FromMinutes(3)) 
+            .WithInterval(TimeSpan.FromMinutes(1)) 
             .RepeatForever())
     );
 
@@ -129,7 +129,6 @@ app.UseHttpsRedirection();
 app.UseCors("AllowVueApp");
 app.UseMiddleware<HotelOwnershipMiddleware>();
 app.UseMiddleware<RoomOwnershipMiddleware>();
-//app.UseMiddleware<ReviewMiddleware>();
 
 app.UseAuthentication();
 

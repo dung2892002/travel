@@ -86,11 +86,11 @@ namespace Travel.Api.Controllers
 
         [Authorize(Policy = "User")]
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteReview([FromQuery] int id, [FromBody] Guid userId)
+        public async Task<IActionResult> DeleteReview([FromQuery] int reviewId, [FromQuery] Guid userId)
         {
             try
             {
-                var result = await _reviewService.Delete(id, userId);
+                var result = await _reviewService.Delete(reviewId, userId);
                 if (result)
                 {
                     return StatusCode(200, "delete review successfully");

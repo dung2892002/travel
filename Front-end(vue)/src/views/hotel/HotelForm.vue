@@ -248,7 +248,7 @@
             </div>
           </div>
           <div class="form__footer">
-            <button class="btn btn--add" @click="triggerFileInput">Thêm ảnh</button>
+            <button class="btn btn--add" @click="triggerFileInput" v-if="id">Thêm ảnh</button>
             <input
               type="file"
               ref="fileInput"
@@ -258,6 +258,7 @@
               style="display: none"
             />
             <button class="btn btn--add" id="submitButton" @click="submitForm">Lưu</button>
+            <button class="btn btn--remove" id="submitButton" @click="closeForm">Hủy</button>
           </div>
         </div>
       </div>

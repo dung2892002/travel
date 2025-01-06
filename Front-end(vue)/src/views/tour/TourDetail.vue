@@ -223,6 +223,11 @@ function toggleImagePopup() {
 }
 
 async function handleSelectSchedule(schedule) {
+  if (!user.value) {
+    router.push({
+      name: 'login'
+    })
+  }
   const bookingTour = {
     Schedule: schedule,
     TourId: tour.value.Id,

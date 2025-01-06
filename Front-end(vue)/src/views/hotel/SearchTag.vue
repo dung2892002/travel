@@ -1,12 +1,7 @@
 <template>
   <div class="search">
     <div class="search-item search-location" ref="searchLocationRef" @click="showSearch">
-      <input
-        v-if="!errorLocation"
-        type="text"
-        v-model="keyword"
-        placeholder="Nhập từ khóa để tìm kiếm..."
-      />
+      <input v-if="!errorLocation" type="text" v-model="keyword" placeholder="Chọn địa điểm..." />
       <span v-if="errorLocation" class="error-message"> {{ errorLocation }}</span>
       <div v-if="showSelectSearch === 1" class="show-select select-location">
         <ul v-if="provincesFilter.length > 0">

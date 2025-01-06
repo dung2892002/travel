@@ -299,7 +299,7 @@ namespace Travel.Infrastructure.Repositories
             if (request.MinPrice.HasValue) query = query.Where(s => s.Price >= request.MinPrice);
             if (request.MaxPrice.HasValue) query = query.Where(s => s.Price <= request.MaxPrice);
 
-            var schedules = await query.ToListAsync();
+            var schedules = await query.OrderBy(s => s.DateStart).ToListAsync();
 
             return schedules;
         }

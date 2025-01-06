@@ -81,7 +81,7 @@
             <div v-if="!booking.Discount">{{ formatNumber(booking.Price + booking.Fee) }} vnd</div>
             <div v-else>
               <span style="text-decoration: line-through"
-                >{{ formatNumber(booking.Price) }} vnd</span
+                >{{ formatNumber(booking.Price + booking.Fee) }} vnd</span
               >
               <span>{{ formatNumber(canculatePrice(booking)) }} vnd</span>
             </div>

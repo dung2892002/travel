@@ -1,4 +1,5 @@
-﻿using Travel.Core.Entities;
+﻿using Travel.Core.DTOs;
+using Travel.Core.Entities;
 
 namespace Travel.Core.Interfaces.IServices
 {
@@ -6,5 +7,7 @@ namespace Travel.Core.Interfaces.IServices
     {
         Task<IEnumerable<Province>> GetAll();
         Task<IEnumerable<Province>> GetByName(string keyword);
+        Task<IEnumerable<ProvinceAds>> GetByHotel();
+        Task<IEnumerable<ProvinceAds>> GetByTour();
     }
 }

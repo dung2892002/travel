@@ -28,6 +28,16 @@
               <input type="text" v-model="bookingRoom.ContactPhone" class="form__input" />
             </div>
           </div>
+          <div class="form-group">
+            <div class="form__item form__item--2">
+              <label>Nhận phòng</label>
+              <input type="date" v-model="bookingRoom.CheckInDate" class="form__input" />
+            </div>
+            <div class="form__item form__item--2">
+              <label>Trả phòng</label>
+              <input type="date" v-model="bookingRoom.CheckOutDate" class="form__input" />
+            </div>
+          </div>
         </div>
         <div class="booking-section booking--discount" v-if="discounts && discounts.length > 0">
           <h3 class="booking_label">Chọn khuyến mãi</h3>
